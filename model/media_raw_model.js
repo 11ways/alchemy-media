@@ -50,7 +50,7 @@ Model.extend(function MediaRawModel() {
 			type: {
 				type: 'Enum'
 			},
-			info: {
+			extra: {
 				type: 'Object'
 			}
 		};
@@ -59,20 +59,61 @@ Model.extend(function MediaRawModel() {
 	/**
 	 * Add a file
 	 */
-	this.addFile = function addFile(file, callback) {
+	this.addFile = function addFile(file, options, callback) {
+
+		var that = this,
+		    removeOriginal = false,
+		    MediaFile = this.getModel('MediaFile');
+
+		if (typeof options == 'function') {
+			callback = options;
+			options = {};
+		}
+
+		if (typeof options.move == 'undefined') {
+			options.move = false;
+		}
+
+		if (options.move) {
+			removeOriginal = true;
+		}
 
 		alchemy.getFileInfo(file, {hash: hashType}, function(err, info) {
 
 			var type = MediaType.determineType(info.mimetype);
 
-			type.normalize(file, info, function afterNormalize() {
+			type.normalize(file, info, function afterNormalize(err, rawPath, rawInfo, rawExtra, extra) {
 
-				callback(err, null, info);
 
+				options.rawExtra = rawExtra;
+				options.move = true;
+				options.name = info.name;
+				options.extension = info.extension;
+
+				// Store the raw file in the database & filesystem
+				that.storeFile(rawPath, options, function afterRawStore(err, id, item) {
+
+					var FileData = {
+						MediaFile: {
+							media_raw_id: item._id,
+							name: info.name,
+							filename: info.filename,
+							extra: extra,
+							type: type.typeName
+						}
+					};
+
+					MediaFile.save(FileData, function(err, result) {
+
+						if (err) {
+							return callback(err);
+						}
+
+						callback(null, result[0].item);
+					});
+				});
 			});
-
 		});
-
 	};
 
 
@@ -153,7 +194,7 @@ Model.extend(function MediaRawModel() {
 			transferType = 'copyFile';
 		}
 
-		prepareId.call(this, file, function gotDatabaseInfo(err, alreadyCopied, id, item) {
+		prepareId.call(this, file, options, function gotDatabaseInfo(err, alreadyCopied, id, item) {
 
 			var targetPath;
 
@@ -198,25 +239,23 @@ Model.extend(function MediaRawModel() {
 	 * @since    0.0.1
 	 * @version  0.0.1
 	 */
-	var prepareId = function prepareId(file, callback) {
+	var prepareId = function prepareId(file, options, callback) {
 
 		var that = this,
 		    data;
 
 		alchemy.getFileInfo(file, {hash: hashType}, function(err, info) {
 
-			pr(info, true)
-
 			// See if this file already exists,
 			// based on the hash and the file size
-			var options = {
+			var search_options = {
 				conditions: {
 					hash: info.hash,
 					size: info.size
 				}
 			};
 
-			that.find('first', options, function(err, result) {
+			that.find('first', search_options, function(err, result) {
 
 				// Return the existing id if we found a match
 				if (result.length) {
@@ -226,11 +265,12 @@ Model.extend(function MediaRawModel() {
 					// If not: save the data to the database
 					data = {
 						MediaRaw: {
-							name: info.name,
-							extension: info.extension,
+							name: options.name || info.name,
+							extension: options.extension || info.extension,
 							mimetype: info.mimetype,
 							hash: info.hash,
-							size: info.size
+							size: info.size,
+							extra: options.rawExtra
 						}
 					};
 
