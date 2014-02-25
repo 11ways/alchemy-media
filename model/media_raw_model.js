@@ -84,10 +84,9 @@ Model.extend(function MediaRawModel() {
 
 			type.normalize(file, info, function afterNormalize(err, rawPath, rawInfo, rawExtra, extra) {
 
-
 				options.rawExtra = rawExtra;
 				options.move = true;
-				options.name = info.name;
+				options.name = options.name || info.name;
 				options.extension = info.extension;
 
 				// Store the raw file in the database & filesystem
@@ -96,8 +95,8 @@ Model.extend(function MediaRawModel() {
 					var FileData = {
 						MediaFile: {
 							media_raw_id: item._id,
-							name: info.name,
-							filename: info.filename,
+							name: options.name || info.name,
+							filename: options.filename || info.filename,
 							extra: extra,
 							type: type.typeName
 						}
@@ -245,6 +244,10 @@ Model.extend(function MediaRawModel() {
 		    data;
 
 		alchemy.getFileInfo(file, {hash: hashType}, function(err, info) {
+
+			if (err) {
+				return callback(err);
+			}
 
 			// See if this file already exists,
 			// based on the hash and the file size

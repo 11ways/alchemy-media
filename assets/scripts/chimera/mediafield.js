@@ -1,0 +1,159 @@
+(function() {
+
+var MediaFields = [];
+
+/**
+ * The MediaFileInput class
+ */
+function MediaFileField($input) {
+
+	// Get the index in the MediaFields array
+	this.index = (MediaFields.push(this)-1);
+
+	// The original input
+	this.input = $input;
+
+	// The wrapper div
+	this.wrapper = false;
+
+	// The preview object
+	this.preview = false;
+
+	// The controls
+	this.controls = false;
+
+	// Init the field
+	this.init();
+}
+
+/**
+ * Init the field, add html code
+ */
+MediaFileField.prototype.init = function init() {
+
+	var html,
+	    value;
+
+	// Create the html
+	html = '<div class="mediafilechooser">';
+	html += '<div class="preview"></div>';
+	html += '<div class="controls"></div>';
+	html += '</div>';
+
+	// Prepare the jquery objects
+	this.wrapper = $(html);
+	this.preview = $('.preview', this.wrapper);
+	this.controls = $('.controls', this.wrapper);
+
+	// Add the wrapper after the hidden input
+	this.input.after(this.wrapper);
+
+	// And now put the hidden input into the wrapper
+	this.wrapper.append(this.input);
+
+	// Get the current value
+	value = this.input.val();
+
+	// If the value is set, generate the preview
+	if (value) {
+		this.setId(value);
+	} else {
+		this.setControls();
+	}
+};
+
+/**
+ * Set the image id and update the preview
+ */
+MediaFileField.prototype.setId = function setId(id) {
+
+	var that = this,
+	    html;
+
+	// Generate the image html
+	html = '<img src="/media/file/' + id + '?profile=thumbnail" srcset="/media/file/' + id + '?profile=thumbnail2x 2x" />';
+
+	// Add the button to remove the image
+	html += '<span class="remove">';
+	html += '<span class="icon"><i class="fa fa-times fa-inverse"></i></span>';
+	html += '<span class="message">Remove</span>';
+	html += '</span>';
+
+	// Set the preview image
+	this.preview.html(html);
+
+	// Hide the controls
+	this.controls.hide();
+
+	// Set the value in the hidden input
+	this.input.val(id);
+
+	// Show the preview
+	this.preview.show();
+
+	// Attach a listener to the remove button
+	$('remove.icon, remove.message', this.preview).click(function() {
+		that.setControls();
+	});
+};
+
+/**
+ * Set the controls
+ */
+MediaFileField.prototype.setControls = function setControls() {
+
+	var that = this,
+	    $progress,
+	    $bar,
+	    html;
+
+	html = '<span class="btn btn-success fileinput-button">';
+	html += '<i class="fa fa-plus"></i>';
+	html += '<span>Select files...</span>';
+	html += '<input class="fileupload" type="file" name="newfile">';
+	html += '</span>';
+	html += '<div class="progress">';
+	html += '<div class="progress-bar progress-bar-success"></div>';
+	html += '</div>';
+
+	// Remove the current value
+	this.input.val('');
+
+	// Set the html
+	this.controls.html(html);
+
+	// Get the $progress wrapper
+	$progress = $('.progress', this.controls);
+
+	// Get the bar self
+	$bar = $('.progress-bar', $progress);
+
+	// Hide the current preview image
+	this.preview.hide();
+
+	// Show the controls
+	this.controls.show();
+
+	// Attach the fileupload code
+	$('.fileupload', this.controls).fileupload({
+		url: '/media/upload',
+		dataType: 'json',
+		formData: {},
+		done: function (e, data) {
+			// We only allow 1 file to be uploaded
+			var file = data.result.files[0];
+			that.setId(file.id);
+		},
+		progressall: function (e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			$bar.css('width', progress + '%');
+		}
+	})
+};
+
+// Listen to the mediafield event, which tells us we need to init a new field
+hawkejs.event.on('mediafield', function(query, $input) {
+	new MediaFileField($input);
+});
+
+}());

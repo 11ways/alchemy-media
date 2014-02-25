@@ -8,7 +8,8 @@
 	},
 	"dependencies": {
 		"exiv2": "0.4.1",
-		"faced": "1.1.3"
+		"faced": "1.1.3",
+		"gm": "1.14.2"
 	},
 	"license": "MIT",
 	"engines": {
