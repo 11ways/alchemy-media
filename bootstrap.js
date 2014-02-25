@@ -1,4 +1,5 @@
-var path = require('path');
+var path     = alchemy.use('path'),
+    Veronica = alchemy.use('veronica');
 
 // Define the default options
 var options = {
@@ -32,10 +33,13 @@ alchemy.createDir(options.cache);
 // Create routes
 alchemy.connect('media::image', options.url + '/:id', {controller: 'media_file', action: 'image'});
 alchemy.connect('media::file', '/media/file/:id', {controller: 'media_file', action: 'file'});
-alchemy.connect('media::file', '/media/thumb/:id', {controller: 'media_file', action: 'thumb'});
+alchemy.connect('media::file', '/media/thumbnail/:id', {controller: 'media_file', action: 'thumbnail'});
 alchemy.connect('media::upload', '/media/upload', {controller: 'media_file', action: 'upload'});
 
 var profiles = alchemy.shared('Media.profiles');
+
+// Create a new veronica instance
+options.veronica = new Veronica({temp: alchemy.plugins.media.scratch, cache: alchemy.plugins.media.cache});
 
 // Add a new profile
 options.addProfile = function addProfile(name, settings) {
@@ -43,4 +47,3 @@ options.addProfile = function addProfile(name, settings) {
 };
 
 options.addProfile('thumbnail', {width: 100, height: 100});
-options.addProfile('thumbnail2x', {width: 200, height: 200});

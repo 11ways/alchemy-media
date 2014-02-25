@@ -25,9 +25,29 @@ Controller.extend(function MediaFilesController (){
 	 *
 	 * @param    {renderCallback}   render
 	 */
-	this.thumb = function thumb(render) {
+	this.thumbnail = function thumbnail(render) {
 
-	}
+		// Get the requested file
+		this.getModel('MediaFile').getFile(render.req.params.id, function(err, file, record) {
+
+			var Type;
+
+			if (err) {
+				return render.res.end(String(err));
+			}
+
+			Type = MediaTypes[file.type];
+
+			if (Type) {
+				Type = new Type();
+				Type.thumbnail(render, record);
+			} else {
+				render.res.end('Error generating thumbnail of ' + file.type);
+			}
+
+		});
+
+	};
 
 	this.image = function image(render) {
 
