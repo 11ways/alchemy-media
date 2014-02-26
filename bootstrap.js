@@ -1,5 +1,5 @@
-var path     = alchemy.use('path'),
-    Veronica = alchemy.use('veronica');
+var path      = alchemy.use('path'),
+    Veronica  = alchemy.use('veronica');
 
 // Define the default options
 var options = {
@@ -18,6 +18,9 @@ var options = {
 
 	// The location of cwebp
 	cwebp: '/usr/bin/cwebp',
+
+	// Enable webp
+	webp: true,
 
 	// Temporary map for intermediate file changes
 	scratch: path.resolve(PATH_TEMP, 'scratch'),
