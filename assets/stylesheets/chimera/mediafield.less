@@ -1,9 +1,19 @@
 
+.mediafieldgroup {
+
+	// Make the "Add new" button always appear under all the documents
+	button[data-chimera-add-entry] {
+		display: block;
+		clear: both;
+	}
+}
+
 .mediafilechooser {
 	
 	.preview {
 		position: relative;
 		float: left;
+		margin: 0 10px 10px 0;
 
 		.remove {
 			display: none;
@@ -53,5 +63,43 @@
 				display: block;
 			}
 		}
+	}
+
+	.controls {
+		width: 114px;
+		float: left;
+		margin: 0 10px 10px 0;
+
+		.progress {
+			margin-top: 8px;
+		}
+	}
+}
+
+/*
+ * jQuery File Upload Plugin CSS 1.3.0
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+.fileinput-button {
+	position: relative;
+	overflow: hidden;
+
+	input {
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin: 0;
+		opacity: 0;
+		-ms-filter: 'alpha(opacity=0)';
+		font-size: 200px;
+		direction: ltr;
+		cursor: pointer;
 	}
 }

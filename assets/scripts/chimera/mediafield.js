@@ -22,6 +22,9 @@ function MediaFileField($input) {
 	// The controls
 	this.controls = false;
 
+	// Is this part of an array-field?
+	this.array = false;
+
 	// Init the field
 	this.init();
 }
@@ -79,6 +82,9 @@ MediaFileField.prototype.setId = function setId(id) {
 	html += '<span class="message">Remove</span>';
 	html += '</span>';
 
+	// See if this is an arrayable field
+	this.array = !!this.wrapper.parents('.mediafieldgroup').find('button[data-chimera-add-entry]').length;
+
 	// Set the preview image
 	this.preview.html(html);
 
@@ -92,9 +98,26 @@ MediaFileField.prototype.setId = function setId(id) {
 	this.preview.show();
 
 	// Attach a listener to the remove button
-	$('remove.icon, remove.message', this.preview).click(function() {
-		that.setControls();
+	$('.remove .icon, .remove .message', this.preview).click(function() {
+		that.removeFile();
 	});
+};
+
+/**
+ * Remove the set file
+ */
+MediaFileField.prototype.removeFile = function removeFile() {
+
+	if (this.array) {
+		// Remove the wrapper element
+		this.wrapper.remove();
+
+		// Set the only reference to this object to null
+		MediaFields[this.index] = null;
+	} else {
+		this.setControls();
+	}
+
 };
 
 /**

@@ -16,6 +16,9 @@ var options = {
 	// The location of the exiv2 binary
 	exiv2: '/usr/bin/exiv2',
 
+	// The location of cwebp
+	cwebp: '/usr/bin/cwebp',
+
 	// Temporary map for intermediate file changes
 	scratch: path.resolve(PATH_TEMP, 'scratch'),
 
@@ -39,7 +42,11 @@ alchemy.connect('media::upload', '/media/upload', {controller: 'media_file', act
 var profiles = alchemy.shared('Media.profiles');
 
 // Create a new veronica instance
-options.veronica = new Veronica({temp: alchemy.plugins.media.scratch, cache: alchemy.plugins.media.cache});
+options.veronica = new Veronica({
+	cwebp: options.cwebp,
+	temp: options.scratch,
+	cache: options.cache
+});
 
 // Add a new profile
 options.addProfile = function addProfile(name, settings) {
