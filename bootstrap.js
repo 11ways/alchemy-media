@@ -51,9 +51,19 @@ options.veronica = new Veronica({
 	cache: options.cache
 });
 
-// Add a new profile
+/**
+ * Register a profile under the given name
+ *
+ * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @since    0.0.1
+ * @version  0.0.1
+ *
+ * @param    {String}   name
+ * @param    {Object}   settings
+ */
 options.addProfile = function addProfile(name, settings) {
 	profiles[name] = settings;
 };
 
+// Add the thumbnail profile
 options.addProfile('thumbnail', {width: 100, height: 100});
