@@ -1,6 +1,8 @@
-var fs     = require('fs'),
-    path   = require('path'),
-    crypto = require('crypto');
+var fs     = alchemy.use('fs'),
+    Url    = alchemy.use('url'),
+    path   = alchemy.use('path'),
+    http   = alchemy.use('http'),
+    crypto = alchemy.use('crypto');
 
 /**
  * Media Raw Model
@@ -58,17 +60,50 @@ Model.extend(function MediaRawModel() {
 
 	/**
 	 * Add a file
+	 *
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    0.0.1
+	 * @version  0.1.0
+	 *
+	 * @param    {String}   file      The path to the file, can be a URL
+	 * @param    {Object}   options
+	 * @param    {Function} callback
 	 */
 	this.addFile = function addFile(file, options, callback) {
 
 		var that = this,
-		    removeOriginal = false,
-		    MediaFile = this.getModel('MediaFile');
+		    removeOriginal,
+		    MediaFile;
 
 		if (typeof options == 'function') {
 			callback = options;
 			options = {};
 		}
+
+		// If the given file is actually a url, we'll need to download it first
+		if (file.startsWith('http')) {
+
+			if (!options.filename) {
+				options.filename = Url.parse(file).pathname.split('/').last();
+			}
+
+			// Don't keep the original, temporary file
+			options.move = true;
+
+			alchemy.downloadFile(file, options, function(err, tempfile) {
+
+				if (err) {
+					return callback(err);
+				}
+
+				that.addFile(tempfile, options, callback);
+			});
+
+			return;
+		};
+
+		removeOriginal = false;
+		MediaFile = this.getModel('MediaFile');
 
 		if (typeof options.move == 'undefined') {
 			options.move = false;
@@ -90,7 +125,11 @@ Model.extend(function MediaRawModel() {
 				options.extension = info.extension;
 
 				// Store the raw file in the database & filesystem
-				that.storeFile(rawPath, options, function afterRawStore(err, id, item) {
+				that.storeFile(rawPath, options, function afterRawStore(err, id, item, createdNew) {
+
+					if (err) {
+						return callback(err);
+					}
 
 					var FileData = {
 						MediaFile: {
@@ -102,20 +141,34 @@ Model.extend(function MediaRawModel() {
 						}
 					};
 
-					MediaFile.save(FileData, function(err, result) {
+					if (createdNew || (!createdNew && !options.reusefile)) {
 
-						if (err) {
-							return callback(err);
-						}
+						MediaFile.save(FileData, function(err, result) {
+							if (err) return callback(err);
+							callback(null, result[0].item);
+						});
+					} else {
 
-						callback(null, result[0].item);
-					});
+						MediaFile.find('first', {conditions: {media_raw_id: item._id}, recursive: 0}, function(err, items) {
+
+							if (err) {
+								return callback(err);
+							}
+
+							if (items && items[0] && items[0].MediaFile) {
+								callback(null, items[0].MediaFile)
+							} else {
+								MediaFile.save(FileData, function(err, result) {
+									if (err) return callback(err);
+									callback(null, result[0].item);
+								});
+							}
+						});
+					}
 				});
 			});
 		});
 	};
-
-
 
 
 
@@ -205,7 +258,7 @@ Model.extend(function MediaRawModel() {
 			item.path = targetPath;
 
 			if (alreadyCopied) {
-				callback(null, id, item);
+				callback(null, id, item, false);
 
 				// If we wanted to move this file, remove the original
 				if (options.move) {
@@ -218,7 +271,7 @@ Model.extend(function MediaRawModel() {
 						callback(err);
 					} else {
 						item.path = targetPath;
-						callback(null, id, item);
+						callback(null, id, item, true);
 					}
 				});
 			} else {

@@ -84,11 +84,12 @@ Model.extend(function MediaFileModel() {
 	 * @author   Jelle De Loecker   <jelle@codedor.be>
 	 * @since    0.0.1
 	 * @version  0.0.1
+	 *
+	 * @param    {String}   file      The path to the file, can be a URL
+	 * @param    {Object}   options
+	 * @param    {Function} callback
 	 */
 	this.addFile = function addFile(file, options, callback) {
 		this.getModel('MediaRaw').addFile(file, options, callback);
 	};
-
-
-
 });
