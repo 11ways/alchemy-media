@@ -40,6 +40,7 @@ alchemy.createDir(options.cache);
 alchemy.connect('media::image', options.url + '/:id', {controller: 'media_file', action: 'image'});
 alchemy.connect('media::file', '/media/file/:id', {controller: 'media_file', action: 'file'});
 alchemy.connect('media::file', '/media/thumbnail/:id', {controller: 'media_file', action: 'thumbnail'});
+alchemy.connect('media::placeholder', '/media/placeholder', {controller: 'media_file', action: 'placeholder'});
 alchemy.connect('media::upload', '/media/upload', {controller: 'media_file', action: 'upload'});
 
 var profiles = alchemy.shared('Media.profiles');

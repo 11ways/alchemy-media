@@ -44,37 +44,66 @@ Controller.extend(function MediaFilesController (){
 			} else {
 				render.res.end('Error generating thumbnail of ' + file.type);
 			}
-
 		});
-
 	};
 
+	/**
+	 * Serve a placeholder
+	 *
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    0.1.0
+	 * @version  0.1.0
+	 *
+	 * @param    {renderCallback}   render
+	 */
+	this.placeholder = function placeholder(render) {
+		var Image = new MediaTypes.image;
+		return Image.placeholder(render, render.req.query);
+	};
+
+	/**
+	 * Serve an image file
+	 *
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    0.0.1
+	 * @version  0.1.0
+	 *
+	 * @param    {renderCallback}   render
+	 */
 	this.image = function image(render) {
 
-		this.getModel('MediaFile').getFile(render.req.params.id, function(err, file) {
+		this.getModel('MediaFile').getFile(render.req.params.id, function(err, file, record) {
 
-			if (err) {
-				render.res.end('Error: ' + err);
-			} else {
+			var Image = new MediaTypes.image;
 
-				render.res.writeHead(200, {
-					'Content-Type': file.mimetype,
-					'Content-Length': file.size
-				});
-
-				var readStream = fs.createReadStream(file.path);
-				readStream.pipe(render.res);
+			if (!file) {
+				return Image.placeholder(render, {text: 404});
 			}
 
+			Image.serve(render, record);
 		});
-
 	};
 
+	/**
+	 * Serve a file
+	 *
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    0.0.1
+	 * @version  0.1.0
+	 *
+	 * @param    {renderCallback}   render
+	 */
 	this.file = function file(render) {
 
 		this.getModel('MediaFile').getFile(render.req.params.id, function(err, file, record) {
+
+			var Type;
+
+			if (!file) {
+				return render.res.status(404).send('File not found!');
+			}
 			
-			var Type = MediaTypes[file.type];
+			Type = MediaTypes[file.type];
 
 			if (Type) {
 				Type = new Type();

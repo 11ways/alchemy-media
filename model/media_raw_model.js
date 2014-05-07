@@ -81,7 +81,7 @@ Model.extend(function MediaRawModel() {
 		}
 
 		// If the given file is actually a url, we'll need to download it first
-		if (file.startsWith('http')) {
+		if (file.startsWith('http://')) {
 
 			if (!options.filename) {
 				options.filename = Url.parse(file).pathname.split('/').last();
