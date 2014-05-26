@@ -115,7 +115,13 @@ Model.extend(function MediaRawModel() {
 
 		alchemy.getFileInfo(file, {hash: hashType}, function(err, info) {
 
-			var type = MediaType.determineType(info.mimetype);
+			var type;
+
+			if (err) {
+				return callback(err);
+			}
+
+			type = MediaType.determineType(info.mimetype)
 
 			type.normalize(file, info, function afterNormalize(err, rawPath, rawInfo, rawExtra, extra) {
 
