@@ -37,7 +37,7 @@ alchemy.createDir(options.scratch);
 alchemy.createDir(options.cache);
 
 // Create routes
-Router.get('Media::image', options.url + '/id', 'MediaFile#image');
+Router.get('Media::image', options.url + '/:id', 'MediaFile#image');
 Router.get('Media::file', '/media/file/:id', 'MediaFile#file');
 Router.get('Media::thumb', '/media/thumbnail/:id', 'MediaFile#thumbnail');
 Router.get('Media::placeholder', '/media/placeholder', 'MediaFile#placeholder');
@@ -68,3 +68,4 @@ options.addProfile = function addProfile(name, settings) {
 
 // Add the thumbnail profile
 options.addProfile('thumbnail', {width: 100, height: 100});
+options.addProfile('chimera-gallery', {width: 400, height: 400});

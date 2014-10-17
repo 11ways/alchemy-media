@@ -1,3 +1,108 @@
+module.exports = function HawkejsMedia(Hawkejs, Blast) {
+
+	var Media = Hawkejs.Helper.extend(function MediaHelper(view) {
+		Hawkejs.Helper.call(this, view);
+	});
+
+	/**
+	 * Get the base url for a single image
+	 *
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    1.0.0
+	 * @version  1.0.0
+	 *
+	 * @param    {String}   image_id
+	 *
+	 * @return   {URL}
+	 */
+	Media.setMethod(function imageUrl(image_id, options) {
+
+		var url;
+
+		url = URL.parse(this.view.helpers.Router.routeUrl('Media::image', {id: image_id}));
+
+		if (options != null) {
+			if (options.profile) {
+				url.addQuery('profile', options.profile);
+			}
+		}
+
+		return url;
+	});
+
+	/**
+	 * Get an array of srcset image urls
+	 *
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    1.0.0
+	 * @version  1.0.0
+	 *
+	 * @param    {String}   image_id
+	 * @parma    {Object}   options
+	 *
+	 * @return   {Array}    An array of URL objects
+	 */
+	Media.setMethod(function imageUrls(image_id, options) {
+
+		var result,
+		    base;
+
+		base = this.imageUrl(image_id, options);
+		result = [base];
+
+		result.push(base.clone().addQuery('dpr', '2 2x'));
+
+		return result;
+	});
+
+	/**
+	 * Get background-image CSS, including srcset
+	 *
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    1.0.0
+	 * @version  1.0.0
+	 *
+	 * @param    {String}   image_id
+	 * @parma    {Object}   options
+	 *
+	 * @return   {String}
+	 */
+	Media.setMethod(function imageCssSet(image_id, options) {
+
+		var result,
+		    prefix,
+		    clone,
+		    url,
+		    i;
+
+		prefix = ['-webkit-', '-moz-', '-o-', '-ms-']
+		url = this.imageUrl(image_id, options);
+		result = 'background-image: url(' + url + ');';
+
+		for (i = 0; i < prefix.length; i++) {
+			result += '\n';
+
+			result += 'background-image: ';
+
+			result += prefix[i] + 'image-set(\n';
+
+			clone = url.clone();
+			clone.addQuery('dpr', 1);
+
+			result += 'url(' + clone + ') 1x,\n';
+
+			clone = url.clone();
+			clone.addQuery('dpr', 2);
+
+			result += 'url(' + clone + ') 2x\n);';
+		}
+
+		return result;
+	});
+
+};
+
+return;
 module.exports = function alchemyMediaHelpers(hawkejs) {
 	
 	// References

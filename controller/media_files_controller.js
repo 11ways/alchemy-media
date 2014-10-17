@@ -74,19 +74,25 @@ MediaFiles.setMethod(function placeholder(conduit) {
  * @since    0.0.1
  * @version  0.1.0
  *
- * @param    {Conduit}   render
+ * @param    {Conduit}   conduit
  */
 MediaFiles.setMethod(function image(conduit) {
 
-	this.getModel('MediaFile').getFile(render.req.params.id, function(err, file, record) {
+	var id = conduit.param('id');
+
+	if (!id) {
+		return conduit.notFound('No valid id given');
+	}
+
+	this.getModel('MediaFile').getFile(id, function(err, file, record) {
 
 		var Image = new MediaTypes.image;
 
 		if (!file) {
-			return Image.placeholder(render, {text: 404});
+			return Image.placeholder(conduit, {text: 404});
 		}
 
-		Image.serve(render, record);
+		Image.serve(conduit, record);
 	});
 });
 
