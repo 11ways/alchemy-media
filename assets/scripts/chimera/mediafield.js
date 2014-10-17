@@ -77,7 +77,7 @@ MediaFileField.prototype.setId = function setId(id) {
 	    html;
 
 	// Generate the image html
-	html = '<img src="/media/thumbnail/' + id + '" srcset="/media/file/' + id + '?dpr=2 2x" />';
+	html = '<img src="/media/thumbnail/' + id + '" srcset="/media/thumbnail/' + id + '?dpr=2 2x" />';
 
 	// Add the button to remove the image
 	html += '<span class="remove">';

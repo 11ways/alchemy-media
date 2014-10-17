@@ -76,9 +76,7 @@ MediaFiles.setMethod(function placeholder(conduit) {
  *
  * @param    {Conduit}   conduit
  */
-MediaFiles.setMethod(function image(conduit) {
-
-	var id = conduit.param('id');
+MediaFiles.setMethod(function image(conduit, id) {
 
 	if (!id) {
 		return conduit.notFound('No valid id given');
@@ -105,23 +103,31 @@ MediaFiles.setMethod(function image(conduit) {
  *
  * @param    {Conduit}   Conduit
  */
-MediaFiles.setMethod(function file(conduit) {
+MediaFiles.setMethod(function file(conduit, id) {
 
-	this.getModel('MediaFile').getFile(render.req.params.id, function(err, file, record) {
+	if (!id) {
+		return conduit.notFound('No valid id given');
+	}
+
+	this.getModel('MediaFile').getFile(id, function(err, file, record) {
 
 		var Type;
 
+		if (err) {
+			return conduit.error(err);
+		}
+
 		if (!file) {
-			return render.res.status(404).send('File not found!');
+			return conduit.notFound('File not found');
 		}
 		
 		Type = MediaTypes[file.type];
 
 		if (Type) {
 			Type = new Type();
-			Type.serve(render, record);
+			Type.serve(conduit, record);
 		} else {
-			render.res.end('Error serving type ' + file.type);
+			conduit.error('Error serving type ' + file.type);
 		}
 	});
 });
