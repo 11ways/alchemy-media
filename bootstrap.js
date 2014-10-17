@@ -68,4 +68,5 @@ options.addProfile = function addProfile(name, settings) {
 
 // Add the thumbnail profile
 options.addProfile('thumbnail', {width: 100, height: 100});
+options.addProfile('pickerThumb', {width: 250, height: 250});
 options.addProfile('chimera-gallery', {width: 400, height: 400});

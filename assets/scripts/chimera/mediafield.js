@@ -121,7 +121,7 @@ MediaFileField.prototype.removeFile = function removeFile() {
 		this.setControls();
 	}
 
-	that.element.data('new-value', null);
+	this.element.data('new-value', null);
 };
 
 /**
@@ -134,11 +134,15 @@ MediaFileField.prototype.setControls = function setControls() {
 	    $bar,
 	    html;
 
-	html = '<span class="btn btn-success fileinput-button">';
-	html += '<i class="fa fa-plus"></i>';
-	html += '<span>Select files...</span>';
+	html = '<span class="btn btn-inline fileinput-button">';
+	html += '<span>Upload file</span>';
 	html += '<input class="fileupload" type="file" name="newfile">';
 	html += '</span>';
+
+	html += '<span class="btn btn-inline fileinput-pick">';
+	html += '<span>Pick file</span>';
+	html += '</span>';
+
 	html += '<div class="progress">';
 	html += '<div class="progress-bar progress-bar-success"></div>';
 	html += '</div>';
@@ -176,7 +180,23 @@ MediaFileField.prototype.setControls = function setControls() {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
 			$bar.css('width', progress + '%');
 		}
-	})
+	});
+
+	// Attach the media picker
+	$('.fileinput-pick', this.controls).click(function(e) {
+
+		pickMediaId(function(err, id) {
+
+			if (!id) {
+				return;
+			}
+
+			that.setId(id);
+			that.element.data('new-value', id);
+		});
+
+		e.preventDefault();
+	});
 };
 
 // Listen to the mediafield event, which tells us we need to init a new field
@@ -185,3 +205,36 @@ hawkejs.scene.on({type: 'create', implement: 'chimera/fields/file_edit'}, functi
 });
 
 }());
+
+function pickMediaId(callback) {
+
+	var madeSelection;
+
+	vex.open({
+		className: vex.defaultOptions.className + ' chimeraMedia-picker',
+		content: '<x-hawkejs class="" data-type="block" data-name="mediaGalleryPicker">test</x-hawkejs>',
+		afterOpen: function($vexContent) {
+			hawkejs.scene.openUrl('/chimera/media_gallery/media_files/gallery_picker', null, null, function(err, viewRender) {
+				
+				$('.chimeraGallery-thumb', $vexContent).click(function(e) {
+
+					var $thumb = $(this),
+					    id = $thumb.data('id');
+
+					madeSelection = true;
+
+					if (callback) {
+						callback(null, id);
+					}
+
+					vex.close();
+				});
+			});
+		},
+		afterClose: function() {
+			if (!madeSelection && callback) {
+				callback(null, false);
+			}
+		}
+	});
+}

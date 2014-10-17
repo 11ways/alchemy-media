@@ -1,0 +1,26 @@
+<% expands('layouts/chimera') %>
+
+<% start('pageCentral') %>
+	<main>
+		<article class="chimeraEditor">
+			<header class="chimeraEditor-header u-stretch">
+				<h1 class="pageTitle u-child"><%= pageTitle %>:</h1>
+				<nav class="u-child">
+					<% Chimera.printActions('model', {className: 'btn-top'}) %>
+				</nav>
+			</header>
+			<div class="chimeraGallery">
+				<%
+					iterator = records.createIterator();
+					while (iterator.hasNext()) {
+
+						item = iterator.next();
+						record = item.value;
+
+						implement('chimera/elements/gallery_image', null, {item: item, record: record});
+					}
+				%>
+			</div>
+		</article>
+	</main>
+<% end('pageCentral') %>
