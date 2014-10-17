@@ -5,13 +5,16 @@ var MediaFields = [];
 /**
  * The MediaFileInput class
  */
-function MediaFileField($input) {
+function MediaFileField($element) {
 
 	// Get the index in the MediaFields array
 	this.index = (MediaFields.push(this)-1);
 
+	// The hawkejs element
+	this.element = $element;
+
 	// The original input
-	this.input = $input;
+	this.input = $element.find('.chimeraEditor-input');
 
 	// The wrapper div
 	this.wrapper = false;
@@ -52,7 +55,7 @@ MediaFileField.prototype.init = function init() {
 	this.input.after(this.wrapper);
 
 	// And now put the hidden input into the wrapper
-	this.wrapper.append(this.input);
+	this.wrapper.prepend(this.input);
 
 	// Get the current value
 	value = this.input.val();
@@ -118,6 +121,7 @@ MediaFileField.prototype.removeFile = function removeFile() {
 		this.setControls();
 	}
 
+	that.element.data('new-value', null);
 };
 
 /**
@@ -166,6 +170,7 @@ MediaFileField.prototype.setControls = function setControls() {
 			// We only allow 1 file to be uploaded
 			var file = data.result.files[0];
 			that.setId(file.id);
+			that.element.data('new-value', file.id);
 		},
 		progressall: function (e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -175,8 +180,8 @@ MediaFileField.prototype.setControls = function setControls() {
 };
 
 // Listen to the mediafield event, which tells us we need to init a new field
-hawkejs.event.on('mediafield', function(query, $input) {
-	new MediaFileField($input);
+hawkejs.scene.on({type: 'create', implement: 'chimera/fields/file_edit'}, function(el) {
+	new MediaFileField($(el));
 });
 
 }());

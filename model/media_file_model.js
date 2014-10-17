@@ -5,91 +5,104 @@
  *
  * @author   Jelle De Loecker   <jelle@codedor.be>
  * @since    0.0.1
- * @version  0.0.1
+ * @version  1.0.0
  */
-Model.extend(function MediaFileModel() {
+var MediaFile = Function.inherits('Model', function MediaFileModel(options) {
 
-	this.types = alchemy.shared('Media.types');
-	
-	this.preInit = function preInit() {
+	var chimera,
+	    gallery,
+	    list,
+	    edit;
 
-		this.parent();
+	this.constructor.super.call(this, options);
 
-		this.belongsTo = {
-			MediaRaw: {
-				modelName: 'MediaRaw',
-				foreignKey: 'media_raw_id'
-			}
-		};
+	// Create the chimera behaviour
+	chimera = this.addBehaviour('chimera');
 
-		this.blueprint = {
-			media_raw_id: {
-				type: 'ObjectId'
-			},
-			name: {
-				type: 'String'
-			},
-			filename: {
-				type: 'String'
-			},
-			type: {
-				type: 'Enum'
-			},
-			extra: {
-				type: 'Object'
-			}
-		};
+	// Get the list group
+	list = chimera.getActionFields('list');
+
+	list.addField('name');
+	list.addField('filename');
+	list.addField('type');
+
+	// Get the edit group
+	edit = chimera.getActionFields('edit');
+
+	edit.addField('name');
+	edit.addField('filename');
+	edit.addField('type');
+
+	// Get the galery group
+	gallery = chimera.getActionFields('gallery');
+
+	gallery.addField('name');
+	gallery.addField('filename');
+	gallery.addField('type');
+	gallery.addField('extra');
+});
+
+MediaFile.addField('name', 'String');
+MediaFile.addField('filename', 'String');
+MediaFile.addField('type', 'Enum');
+MediaFile.addField('extra', 'Object');
+
+MediaFile.belongsTo('MediaRaw');
+
+MediaFile.setProperty('types', alchemy.shared('Media.types'));
+
+/**
+ * Get a file based on its media file id
+ *
+ * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @since    0.0.1
+ * @version  0.0.1
+ *
+ * @param    {String|ObjectID}   id
+ * @param    {Function}          callback
+ */
+MediaFile.setMethod(function getFile(id, callback) {
+
+	var that = this,
+	    Raw  = this.getModel('MediaRaw'),
+	    options = {
+		conditions: {
+			'_id': id
+		}
 	};
 
-	/**
-	 * Get a file based on its media file id
-	 *
-	 * @author   Jelle De Loecker   <jelle@codedor.be>
-	 * @since    0.0.1
-	 * @version  0.0.1
-	 *
-	 * @param    {String|ObjectID}   id
-	 * @param    {Function}          callback
-	 */
-	this.getFile = function getFile(id, callback) {
+	this.find('first', options, function gotResult(err, result) {
 
-		var that = this,
-		    Raw  = this.getModel('MediaRaw'),
-		    options = {
-			conditions: {
-				'_id': id
-			}
-		};
+		var item;
 
-		this.find('first', options, function(err, result) {
+		if (err != null) {
+			return callback(err);
+		}
 
-			var item;
+		if (result.length) {
+			item = result[0].MediaFile;
 
-			if (result.length) {
-				item = result[0].MediaFile;
+			item.path = Raw.getPathFromId(item.media_raw_id);
 
-				item.path = Raw.getPathFromId(item.media_raw_id);
+			callback(null, item, result[0]);
 
-				callback(null, item, result[0]);
+		} else {
+			callback(new Error('No image found'));
+		}
+	});
+});
 
-			} else {
-				callback(alchemy.createError('No image found'));
-			}
-		});
-	};
-
-	/**
-	 * Add a new file
-	 *
-	 * @author   Jelle De Loecker   <jelle@codedor.be>
-	 * @since    0.0.1
-	 * @version  0.0.1
-	 *
-	 * @param    {String}   file      The path to the file, can be a URL
-	 * @param    {Object}   options
-	 * @param    {Function} callback
-	 */
-	this.addFile = function addFile(file, options, callback) {
-		this.getModel('MediaRaw').addFile(file, options, callback);
-	};
+/**
+ * Add a new file
+ *
+ * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @since    0.0.1
+ * @version  1.0.0
+ *
+ * @param    {String}   file      The path to the file, can be a URL
+ * @param    {Object}   options
+ * @param    {Function} callback
+ */
+MediaFile.setMethod(function addFile(file, options, callback) {
+	this.getModel('MediaRaw').addFile(file, options, callback);
 });

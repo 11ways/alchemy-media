@@ -30,18 +30,18 @@ var options = {
 };
 
 // Inject the user-overridden options
-alchemy.plugins.media = alchemy.inject(options, alchemy.plugins.media);
+alchemy.plugins.media = Object.assign(options, alchemy.plugins.media);
 
 // Make sure these folders exist
 alchemy.createDir(options.scratch);
 alchemy.createDir(options.cache);
 
 // Create routes
-alchemy.connect('media::image', options.url + '/:id', {controller: 'media_file', action: 'image'});
-alchemy.connect('media::file', '/media/file/:id', {controller: 'media_file', action: 'file'});
-alchemy.connect('media::file', '/media/thumbnail/:id', {controller: 'media_file', action: 'thumbnail'});
-alchemy.connect('media::placeholder', '/media/placeholder', {controller: 'media_file', action: 'placeholder'});
-alchemy.connect('media::upload', '/media/upload', {controller: 'media_file', action: 'upload'});
+Router.get('Media::image', options.url + '/id', 'MediaFile#image');
+Router.get('Media::file', '/media/file/:id', 'MediaFile#file');
+Router.get('Media::thumb', '/media/thumbnail/:id', 'MediaFile#thumbnail');
+Router.get('Media::placeholder', '/media/placeholder', 'MediaFile#placeholder');
+Router.post('Media::upload', '/media/upload', 'MediaFile#upload');
 
 var profiles = alchemy.shared('Media.profiles');
 
