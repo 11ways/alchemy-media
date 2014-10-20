@@ -31,6 +31,45 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	});
 
 	/**
+	 * Create a base placeholder image url
+	 *
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    1.0.0
+	 * @version  1.0.0
+	 *
+	 * @param    {Object}   options
+	 *
+	 * @return   {URL}
+	 */
+	Media.setMethod(function placeholderUrl(options) {
+
+		var url;
+
+		url = URL.parse(this.view.helpers.Router.routeUrl('Media::placeholder'));
+
+		if (options != null) {
+
+			if (options.profile) {
+				url.addQuery('profile', options.profile);
+			}
+
+			if (options.width) {
+				url.addQuery('width', options.width);
+			}
+
+			if (options.height) {
+				url.addQuery('height', options.height);
+			}
+
+			if (options.text) {
+				url.addQuery('text', options.text);
+			}
+		}
+
+		return url;
+	});
+
+	/**
 	 * Get an array of srcset image urls
 	 *
 	 * @author   Jelle De Loecker   <jelle@codedor.be>
@@ -98,6 +137,52 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		}
 
 		return result;
+	});
+
+
+
+	/**
+	 * Serve a placeholder image
+
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    0.1.0
+	 * @version  1.0.0
+	 *
+	 * @param    {Object}    options
+	 */
+	Media.setMethod(function placeholder(options) {
+
+		var query = '?a',
+		    html;
+
+		options = options || {};
+
+		if (options.profile) {
+			query += '&profile=' + options.profile;
+		} else {
+			if (options.width) {
+				query += '&width=' + options.width;
+			}
+
+			if (options.height) {
+				query += '&height=' + options.height;
+			}
+		}
+
+		if (options.text) {
+			query += '&text=' + encodeURIComponent(options.text);
+		}
+
+		html = '<img src="/media/placeholder' + query + '" srcset="';
+		html += '/media/placeholder' + query + '&dpr=2 2x"';
+
+		if (options['class']) {
+			html += ' class="' + options['class'] + '"';
+		}
+
+		html += '>';
+
+		this.echo(html);
 	});
 
 };
@@ -183,47 +268,5 @@ module.exports = function alchemyMediaHelpers(hawkejs) {
 		}
 	};
 
-	/**
-	 * Serve a placeholder image
-
-	 * @author   Jelle De Loecker   <jelle@codedor.be>
-	 * @since    0.1.0
-	 * @version  0.1.0
-	 *
-	 * @param    {Object}    options
-	 */
-	media.placeholder = function placeholder(options) {
-
-		var query = '?a',
-		    html;
-
-		options = options || {};
-
-		if (options.profile) {
-			query += '&profile=' + options.profile;
-		} else {
-			if (options.width) {
-				query += '&width=' + options.width;
-			}
-
-			if (options.height) {
-				query += '&height=' + options.height;
-			}
-		}
-
-		if (options.text) {
-			query += '&text=' + encodeURIComponent(options.text);
-		}
-
-		html = '<img src="/media/placeholder' + query + '" srcset="';
-		html += '/media/placeholder' + query + '&dpr=2 2x"';
-
-		if (options['class']) {
-			html += ' class="' + options['class'] + '"';
-		}
-
-		html += '>';
-
-		this.echo(html);
-	};
+	
 };

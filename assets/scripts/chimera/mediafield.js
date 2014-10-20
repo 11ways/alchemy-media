@@ -192,16 +192,37 @@ MediaFileField.prototype.setControls = function setControls() {
 			}
 
 			that.setId(id);
-			that.element.data('new-value', id);
+			that.chimerafield.setValue(id);
 		});
 
 		e.preventDefault();
 	});
 };
 
-// Listen to the mediafield event, which tells us we need to init a new field
-hawkejs.scene.on({type: 'create', implement: 'chimera/fields/file_edit'}, function(el) {
-	new MediaFileField($(el));
+/**
+ * The File ChimeraField class
+ *
+ * @constructor
+ *
+ * @author   Jelle De Loecker   <jelle@kipdola.be>
+ * @since    1.0.0
+ * @version  1.0.0
+ *
+ * @param    {DOMElement}   container
+ * @param    {Object}       variables
+ */
+var FileChimeraField = ChimeraField.extend(function FileChimeraField(container, variables) {
+	FileChimeraField.super.call(this, container, variables);
+});
+
+/**
+ * Initialize the field in the edit action
+ *
+ * @param    {Mixed}   value
+ */
+FileChimeraField.setMethod(function initEdit() {
+	this.mediafile = new MediaFileField(this.intake);
+	this.mediafile.chimerafield = this;
 });
 
 }());
