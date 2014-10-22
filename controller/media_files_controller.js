@@ -197,3 +197,47 @@ MediaFiles.setMethod(function upload(conduit) {
 		conduit.send(JSON.stringify({files: files}))
 	});
 });
+
+/**
+ * Upload a single file and return the path
+ *
+ * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @since    1.0.0
+ * @version  1.0.0
+ *
+ * @param    {Conduit}   conduit
+ */
+MediaFiles.setMethod(function uploadsingle(conduit) {
+
+	var MediaFile = this.getModel('MediaFile'),
+	    options,
+	    files = conduit.files,
+	    file = files.file,
+	    name;
+
+	options = {
+		move: true,
+		filename: file.name
+	};
+
+	name = file.name.split('.');
+
+	// Remove the last piece if there are more than 1
+	if (name.length > 1) {
+		name.pop();
+	}
+
+	// Join them again
+	name = name.join('.');
+
+	options.name = name;
+
+	MediaFile.addFile(file.path, options, function afterAdd(err, result) {
+
+		if (err) {
+			return conduit.error(err);
+		}
+
+		conduit.response.end('/media/image/' + result._id);
+	});
+});

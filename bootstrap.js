@@ -42,6 +42,7 @@ Router.get('Media::file', '/media/file/:id', 'MediaFile#file');
 Router.get('Media::thumb', '/media/thumbnail/:id', 'MediaFile#thumbnail');
 Router.get('Media::placeholder', '/media/placeholder', 'MediaFile#placeholder');
 Router.post('Media::upload', '/media/upload', 'MediaFile#upload');
+Router.post('Media::uploadsingle', '/media/uploadsingle', 'MediaFile#uploadsingle');
 
 var profiles = alchemy.shared('Media.profiles');
 

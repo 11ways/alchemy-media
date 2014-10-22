@@ -1,4 +1,4 @@
-(function() {
+hawkejs.require('chimera/chimera', function onChimeraLoad() {
 
 var MediaFields = [];
 
@@ -225,7 +225,19 @@ FileChimeraField.setMethod(function initEdit() {
 	this.mediafile.chimerafield = this;
 });
 
-}());
+});
+
+hawkejs.scene.on('filebrowser', function onFilebrowse(input, dialog, filebrowser) {
+
+	pickMediaId(function picked(err, result) {
+
+		if (err) {
+			throw err;
+		}
+
+		input.setValue('/media/image/' + result);
+	});
+});
 
 function pickMediaId(callback) {
 
