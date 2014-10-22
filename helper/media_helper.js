@@ -5,6 +5,24 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	});
 
 	/**
+	 * Function to execute on the client side, when the scene is made
+	 *
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    1.0.0
+	 * @version  1.0.0
+	 *
+	 * @param    {Scene}   scene
+	 */
+	Media.setStatic(function onScene(scene) {
+
+		// Get the screen size of this client, so we can send them correct pictures
+		scene.cookie('mediaResolution', {
+			width: Math.max(320, screen.availWidth||0, window.outerWidth||0),
+			height: Math.max(240, screen.availHeight||0, window.outerHeight||0)
+		});
+	});
+
+	/**
 	 * Get the base url for a single image
 	 *
 	 * @author   Jelle De Loecker   <jelle@codedor.be>
@@ -19,11 +37,23 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 
 		var url;
 
-		url = URL.parse(this.view.helpers.Router.routeUrl('Media::image', {id: image_id}));
+		if (String(image_id).isObjectId()) {
+			url = URL.parse(this.view.helpers.Router.routeUrl('Media::image', {id: image_id}));
+		} else {
+			url = URL.parse('/media/static/' + image_id);
+		}
 
 		if (options != null) {
 			if (options.profile) {
 				url.addQuery('profile', options.profile);
+			}
+
+			if (options.width) {
+				url.addQuery('width', options.width);
+			}
+
+			if (options.height) {
+				url.addQuery('height', options.height);
 			}
 		}
 

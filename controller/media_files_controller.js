@@ -68,6 +68,21 @@ MediaFiles.setMethod(function placeholder(conduit) {
 });
 
 /**
+ * Serve a static image file
+ *
+ * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @since    0.0.1
+ * @version  1.0.0
+ *
+ * @param    {Conduit}   conduit
+ */
+MediaFiles.setMethod(function static(conduit, path) {
+	var Image = new MediaTypes.image;
+	return Image.serve(conduit, path);
+});
+
+
+/**
  * Serve an image file
  *
  * @author   Jelle De Loecker   <jelle@codedor.be>

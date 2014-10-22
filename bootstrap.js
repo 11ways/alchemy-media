@@ -37,6 +37,7 @@ alchemy.createDir(options.scratch);
 alchemy.createDir(options.cache);
 
 // Create routes
+Router.get('Media::static', /\/media\/static\/(.*)*/, 'MediaFile#static');
 Router.get('Media::image', options.url + '/:id', 'MediaFile#image');
 Router.get('Media::file', '/media/file/:id', 'MediaFile#file');
 Router.get('Media::thumb', '/media/thumbnail/:id', 'MediaFile#thumbnail');
