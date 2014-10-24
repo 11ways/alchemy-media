@@ -51,6 +51,12 @@ MediaFileField.prototype.init = function init() {
 	// Add the wrapper after the hidden input
 	this.input.after(this.wrapper);
 
+	this.readOnly = this.input.attr('readonly') != null;
+
+	if (this.readOnly) {
+		this.controls.hide();
+	}
+
 	// And now put the hidden input into the wrapper
 	this.wrapper.append(this.input);
 
@@ -97,10 +103,14 @@ MediaFileField.prototype.setId = function setId(id) {
 	// Show the preview
 	this.preview.show();
 
-	// Attach a listener to the remove button
-	$('.remove .icon, .remove .message', this.preview).click(function() {
-		that.removeFile();
-	});
+	if (this.readOnly) {
+		$('.remove .icon, .remove .message', this.preview).hide();
+	} else {
+		// Attach a listener to the remove button
+		$('.remove .icon, .remove .message', this.preview).click(function() {
+			that.removeFile();
+		});
+	}
 };
 
 /**
@@ -129,6 +139,10 @@ MediaFileField.prototype.setControls = function setControls() {
 	    $progress,
 	    $bar,
 	    html;
+
+	if (this.readOnly) {
+		return;
+	}
 
 	html = '<span class="btn btn-success fileinput-button">';
 	html += '<i class="fa fa-plus"></i>';
