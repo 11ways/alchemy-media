@@ -142,9 +142,36 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		    prefix,
 		    clone,
 		    url,
+		    ua,
 		    i;
 
-		prefix = ['-webkit-', '-moz-', '-o-', '-ms-']
+		ua = this.view.internal('useragent') || {};
+
+		switch (ua.family) {
+
+			case 'Mobile Safari':
+			case 'Safari':
+			case 'Chrome':
+				prefix = ['-webkit-'];
+				break;
+
+			case 'Firefox':
+				prefix = ['-moz-'];
+				break;
+
+			case 'Opera':
+				prefix = ['-webkit-', '-o-'];
+				break;
+
+			case 'IE':
+			case 'IE Mobile':
+				prefix = ['-ms-'];
+				break;
+
+			default:
+				prefix = ['-webkit-', '-moz-', '-o-', '-ms-'];
+		}
+
 		url = this.imageUrl(image_id, options);
 		result = 'background-image: url(' + url + ');';
 
