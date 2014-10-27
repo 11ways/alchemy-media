@@ -1,8 +1,11 @@
 module.exports = function HawkejsMedia(Hawkejs, Blast) {
 
-	var Media = Hawkejs.Helper.extend(function MediaHelper(view) {
+	var URL,
+	    Media = Hawkejs.Helper.extend(function MediaHelper(view) {
 		Hawkejs.Helper.call(this, view);
 	});
+
+	URL = Blast.Classes.URL;
 
 	/**
 	 * Function to execute on the client side, when the scene is made
