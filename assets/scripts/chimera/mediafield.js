@@ -247,7 +247,7 @@ function pickMediaId(callback) {
 		className: vex.defaultOptions.className + ' chimeraMedia-picker',
 		content: '<x-hawkejs class="" data-type="block" data-name="mediaGalleryPicker">test</x-hawkejs>',
 		afterOpen: function($vexContent) {
-			hawkejs.scene.openUrl('/chimera/media_gallery/media_files/gallery_picker', null, null, function(err, viewRender) {
+			hawkejs.scene.openUrl('/chimera/media_gallery/media_files/gallery_picker', {history: false}, function(err, viewRender) {
 				
 				$('.chimeraGallery-thumb', $vexContent).click(function(e) {
 
