@@ -14,7 +14,7 @@ var MediaFile = Function.inherits('Model', function MediaFileModel(options) {
 	    list,
 	    edit;
 
-	this.constructor.super.call(this, options);
+	MediaFileModel.super.call(this, options);
 
 	// Create the chimera behaviour
 	chimera = this.addBehaviour('chimera');

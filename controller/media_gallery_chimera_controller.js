@@ -12,6 +12,10 @@ var MediaGallery = Function.inherits('EditorChimeraController', function MediaGa
 	this.addComponent('paginate');
 
 	this.addAction('model', 'gallery', {title: 'Gallery'});
+
+	// Remove the "index" action
+	var types = this.getActions('model');
+	types.set('index', null);
 });
 
 /**
