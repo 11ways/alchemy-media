@@ -242,7 +242,7 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 
 		html += '>';
 
-		this.echo(html);
+		return html;
 	});
 
 };
