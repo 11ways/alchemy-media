@@ -42,8 +42,10 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 
 		if (String(image_id).isObjectId()) {
 			url = URL.parse(this.view.helpers.Router.routeUrl('Media::image', {id: image_id}));
-		} else {
+		} else if (image_id) {
 			url = URL.parse('/media/static/' + image_id);
+		} else {
+			return this.placeholderUrl(options);
 		}
 
 		if (options != null) {
@@ -119,7 +121,12 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		var result,
 		    base;
 
-		base = this.imageUrl(image_id, options);
+		if (image_id) {
+			base = this.imageUrl(image_id, options);
+		} else {
+			base = this.placeholderUrl(options);
+		}
+
 		result = [base];
 
 		result.push(base.clone().addQuery('dpr', '2 2x'));
@@ -176,6 +183,7 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		}
 
 		url = this.imageUrl(image_id, options);
+
 		result = 'background-image: url(' + url + ');';
 
 		for (i = 0; i < prefix.length; i++) {
