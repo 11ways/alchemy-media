@@ -121,7 +121,7 @@ MediaFileField.prototype.removeFile = function removeFile() {
 		this.setControls();
 	}
 
-	this.element.data('new-value', null);
+	this.chimerafield.setValue(null);
 };
 
 /**
