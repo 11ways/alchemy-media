@@ -207,7 +207,55 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		return result;
 	});
 
+	/**
+	 * Output a figure element
+	 *
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    1.0.0
+	 * @version  1.0.0
+	 *
+	 * @param    {String}   image
+	 * @parma    {Object}   options
+	 *
+	 * @return   {String}
+	 */
+	Media.setMethod(function figure(image, options) {
 
+		var cssSet,
+		    style,
+		    ratio;
+
+		style = 'background-size: cover;';
+
+		options = Object.assign({}, options);
+
+		if (options.width) {
+			style += 'width: ' + options.width + 'px;';
+		}
+
+		if (options.height) {
+			style += 'height: ' + options.height + 'px;';
+		}
+
+		if (options.rWidth && options.rHeight && !options.height) {
+			ratio = ((options.rHeight / options.rWidth)*100).toPrecision(5);
+			style += 'padding-bottom: ' + ratio + '%;';
+
+			options.height = options.rHeight;
+			options.width = options.rWidth;
+		}
+
+		if (options.profile) {
+			options.width = null;
+			options.height = null;
+		}
+
+		cssSet = this.imageCssSet(image, options);
+		style += cssSet;
+
+		this.print('<figure class="' + (options.class || options.className || '') + '" ');
+		this.print('style="' + style + '"></figure>');
+	});
 
 	/**
 	 * Serve a placeholder image
@@ -223,7 +271,7 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		var query = '?a',
 		    html;
 
-		options = options || {};
+		options = Object.assign({}, options);
 
 		if (options.profile) {
 			query += '&profile=' + options.profile;
