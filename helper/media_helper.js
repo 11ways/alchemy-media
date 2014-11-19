@@ -1,11 +1,8 @@
 module.exports = function HawkejsMedia(Hawkejs, Blast) {
 
-	var URL,
-	    Media = Hawkejs.Helper.extend(function MediaHelper(view) {
+	var Media = Hawkejs.Helper.extend(function MediaHelper(view) {
 		Hawkejs.Helper.call(this, view);
 	});
-
-	URL = Blast.Classes.URL;
 
 	/**
 	 * Function to execute on the client side, when the scene is made
@@ -41,9 +38,9 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		var url;
 
 		if (String(image_id).isObjectId()) {
-			url = URL.parse(this.view.helpers.Router.routeUrl('Media::image', {id: image_id}));
+			url = this.parseURL(this.view.helpers.Router.routeUrl('Media::image', {id: image_id}));
 		} else if (image_id) {
-			url = URL.parse('/media/static/' + image_id);
+			url = this.parseURL('/media/static/' + image_id);
 		} else {
 			return this.placeholderUrl(options);
 		}
@@ -80,7 +77,7 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 
 		var url;
 
-		url = URL.parse(this.view.helpers.Router.routeUrl('Media::placeholder'));
+		url = this.parseURL(this.view.helpers.Router.routeUrl('Media::placeholder'));
 
 		if (options != null) {
 
