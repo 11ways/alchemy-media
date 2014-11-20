@@ -2,6 +2,15 @@
 
 <% start('mediaGalleryPicker') %>
 <div class="chimeraGallery">
+	<div class="chimeraGallery-pickup">
+		<span class="btn btn-inline fileinput-button">
+			<span>Upload file</span>
+			<input class="fileupload" type="file" name="newfile">
+		</span>
+		<div class="chimeraMedia-progress progress">
+			<div class="progress-bar progress-bar-success"></div>
+		</div>
+	</div>
 	<%
 		iterator = records.createIterator();
 		while (iterator.hasNext()) {

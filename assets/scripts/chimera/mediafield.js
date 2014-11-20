@@ -143,7 +143,7 @@ MediaFileField.prototype.setControls = function setControls() {
 	html += '<span>Pick file</span>';
 	html += '</span>';
 
-	html += '<div class="progress">';
+	html += '<div class="chimeraMedia-progress progress">';
 	html += '<div class="progress-bar progress-bar-success"></div>';
 	html += '</div>';
 
@@ -245,11 +245,39 @@ function pickMediaId(callback) {
 
 	vex.open({
 		className: vex.defaultOptions.className + ' chimeraMedia-picker',
-		content: '<x-hawkejs class="" data-type="block" data-name="mediaGalleryPicker">test</x-hawkejs>',
+		content: '<x-hawkejs class="" data-type="block" data-name="mediaGalleryPicker"></x-hawkejs>',
 		afterOpen: function($vexContent) {
 			hawkejs.scene.openUrl('/chimera/media_gallery/media_files/gallery_picker', {history: false}, function(err, viewRender) {
-				
-				$('.chimeraGallery-thumb', $vexContent).click(function(e) {
+
+				var $bar = $('.progress-bar', $vexContent),
+				    $fileupload = $('.fileupload', $vexContent);
+
+				$fileupload.fileupload({
+					url: '/media/upload',
+					dataType: 'json',
+					formData: {},
+					done: function (e, data) {
+
+						var renderer = new hawkejs.constructor.ViewRender(hawkejs),
+						    file = data.result.files[0],
+						    html;
+
+						renderer.initHelpers();
+
+						html = '<figure class="chimeraGallery-thumb" data-id="' + file.id + '" style="';
+						html += renderer.helpers.Media.imageCssSet(file.id, {profile: 'pickerThumb'});
+						html += '"><div class="chimeraGallery-thumbInfo"><span>Select</span></div></figure>';
+
+						$('.chimeraGallery-pickup', $vexContent).after(html);
+						$bar.css('width', '');
+					},
+					progressall: function (e, data) {
+						var progress = parseInt(data.loaded / data.total * 100, 10);
+						$bar.css('width', progress + '%');
+					}
+				});
+
+				$vexContent.on('click', '.chimeraGallery-thumb', function onThumbClick(e) {
 
 					var $thumb = $(this),
 					    id = $thumb.data('id');
