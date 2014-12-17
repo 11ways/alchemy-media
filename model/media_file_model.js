@@ -19,27 +19,29 @@ var MediaFile = Function.inherits('Model', function MediaFileModel(options) {
 	// Create the chimera behaviour
 	chimera = this.addBehaviour('chimera');
 
-	// Get the list group
-	list = chimera.getActionFields('list');
+	if (chimera) {
+		// Get the list group
+		list = chimera.getActionFields('list');
 
-	list.addField('name');
-	list.addField('filename');
-	list.addField('type');
+		list.addField('name');
+		list.addField('filename');
+		list.addField('type');
 
-	// Get the edit group
-	edit = chimera.getActionFields('edit');
+		// Get the edit group
+		edit = chimera.getActionFields('edit');
 
-	edit.addField('name');
-	edit.addField('filename');
-	edit.addField('type');
+		edit.addField('name');
+		edit.addField('filename');
+		edit.addField('type');
 
-	// Get the galery group
-	gallery = chimera.getActionFields('gallery');
+		// Get the galery group
+		gallery = chimera.getActionFields('gallery');
 
-	gallery.addField('name');
-	gallery.addField('filename');
-	gallery.addField('type');
-	gallery.addField('extra');
+		gallery.addField('name');
+		gallery.addField('filename');
+		gallery.addField('type');
+		gallery.addField('extra');
+	}
 });
 
 MediaFile.addField('name', 'String');

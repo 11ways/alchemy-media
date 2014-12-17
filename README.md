@@ -10,4 +10,4 @@ This plugin requires libopencv packages!
 
 This plugin requires magick++
 
-    apt-get install libmagick++-dev
+    apt-get install libmagick++-dev graphicsmagick
