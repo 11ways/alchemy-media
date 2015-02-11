@@ -252,7 +252,7 @@ MediaRaw.setMethod(function storeFile(file, options, callback) {
 				}
 			});
 		} else {
-			return callback(alchemy.createError('Could not copy file to undefined target'));
+			return callback(new Error('Could not copy file to undefined target'));
 		}
 
 	});
