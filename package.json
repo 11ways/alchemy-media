@@ -8,7 +8,7 @@
 	},
 	"dependencies": {
 		"exiv2": "0.4.3",
-		"faced": "1.1.3",
+		"faced": "skerit/faced#f5761b0",
 		"veronica": "0.1.x"
 	},
 	"license": "MIT",
