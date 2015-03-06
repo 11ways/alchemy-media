@@ -82,11 +82,11 @@ MediaFile.setMethod(function getFile(id, callback) {
 		}
 
 		if (result.length) {
-			item = result[0].MediaFile;
+			item = result.MediaFile;
 
 			item.path = Raw.getPathFromId(item.media_raw_id);
 
-			callback(null, item, result[0]);
+			callback(null, item, result);
 
 		} else {
 			callback(new Error('No image found'));

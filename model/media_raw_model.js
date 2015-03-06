@@ -126,7 +126,7 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 
 					MediaFile.save(FileData, function(err, result) {
 						if (err) return callback(err);
-						callback(null, result[0]);
+						callback(null, result);
 					});
 				} else {
 
@@ -136,12 +136,12 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 							return callback(err);
 						}
 
-						if (items && items[0] && items[0].MediaFile) {
-							callback(null, items[0].MediaFile)
+						if (items && items.MediaFile) {
+							callback(null, items.MediaFile)
 						} else {
 							MediaFile.save(FileData, function(err, result) {
 								if (err) return callback(err);
-								callback(null, result[0]);
+								callback(null, result);
 							});
 						}
 					});
@@ -183,7 +183,7 @@ MediaRaw.setMethod(function getFile(id, callback) {
 		}
 
 
-		item = result[0].MediaRaw;
+		item = result.MediaRaw;
 
 		item.path = that.getPathFromId(item._id);
 
@@ -266,7 +266,7 @@ MediaRaw.setMethod(function storeFile(file, options, callback) {
  *
  * @author   Jelle De Loecker   <jelle@codedor.be>
  * @since    0.0.1
- * @version  0.0.1
+ * @version  1.0.0
  */
 var prepareId = function prepareId(file, options, callback) {
 
@@ -296,7 +296,7 @@ var prepareId = function prepareId(file, options, callback) {
 
 			// Return the existing id if we found a match
 			if (result.length) {
-				callback(null, true, result[0].MediaRaw._id, result[0].MediaRaw);
+				callback(null, true, result.MediaRaw._id, result.MediaRaw);
 			} else {
 
 				// If not: save the data to the database
@@ -318,7 +318,7 @@ var prepareId = function prepareId(file, options, callback) {
 					}
 
 					if (result.length) {
-						callback(null, false, result[0]._id, result[0]);
+						callback(null, false, result._id, result);
 					}
 				});
 			}
