@@ -15,6 +15,13 @@
 		float: left;
 		margin: 0 10px 10px 0;
 
+		// Make sure the image is shown, even when the link breaks
+		// That way the remove button will still be visible
+		img {
+			min-width: 100px;
+			min-height: 100px;
+		}
+
 		.remove {
 			display: none;
 			height: 100%;
