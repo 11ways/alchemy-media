@@ -7,7 +7,7 @@
 		"url": "https://github.com/codedor/alchemy-media.git"
 	},
 	"dependencies": {
-		"exiv2": "0.4.3",
+		"exiv2": "dberesford/exiv2node#28ec1191996469bf87bf523b77640b518a6720b8",
 		"faced": "skerit/faced#f5761b0",
 		"veronica": "0.1.x"
 	},

@@ -78,6 +78,9 @@ MediaFiles.setMethod(function placeholder(conduit) {
  */
 MediaFiles.setMethod(function static(conduit, path) {
 	var Image = new MediaTypes.image;
+
+	path = 'assets/images/' + path;
+
 	return Image.serve(conduit, path);
 });
 
