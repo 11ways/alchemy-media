@@ -62,9 +62,9 @@ MediaFiles.setMethod(function thumbnail(conduit, id) {
  *
  * @param    {Conduit}   conduit
  */
-MediaFiles.setMethod(function placeholder(conduit) {
+MediaFiles.setMethod(function placeholder(conduit, options) {
 	var Image = new MediaTypes.image;
-	return Image.placeholder(conduit);
+	return Image.placeholder(conduit, options);
 });
 
 /**
@@ -97,7 +97,7 @@ MediaFiles.setMethod(function static(conduit, path) {
 MediaFiles.setMethod(function image(conduit, id) {
 
 	if (!id) {
-		return conduit.notFound('No valid id given');
+		return this.placeholder(conduit, {text: 'Invalid image ID', status: 404});
 	}
 
 	this.getModel('MediaFile').getFile(id, function(err, file, record) {
@@ -105,7 +105,7 @@ MediaFiles.setMethod(function image(conduit, id) {
 		var Image = new MediaTypes.image;
 
 		if (!file) {
-			return Image.placeholder(conduit, {text: 404});
+			return Image.placeholder(conduit, {text: 404, status: 404});
 		}
 
 		Image.serve(conduit, record);
