@@ -16,6 +16,11 @@ var MediaFile = Function.inherits('Model', function MediaFileModel(options) {
 
 	MediaFileModel.super.call(this, options);
 
+	this.queue = Function.createQueue();
+	this.queue.limit = 5;
+	this.queue.throttle = 10;
+	this.queue.start();
+
 	// Create the chimera behaviour
 	chimera = this.addBehaviour('chimera');
 
@@ -67,7 +72,9 @@ MediaFile.setMethod(function getFile(id, callback) {
 
 	var that = this,
 	    Raw  = this.getModel('MediaRaw'),
-	    options = {
+	    options;
+
+	options = {
 		conditions: {
 			'_id': id
 		}
@@ -106,5 +113,13 @@ MediaFile.setMethod(function getFile(id, callback) {
  * @param    {Function} callback
  */
 MediaFile.setMethod(function addFile(file, options, callback) {
-	this.getModel('MediaRaw').addFile(file, options, callback);
+
+	var that = this;
+
+	this.queue.add(function(done) {
+		that.getModel('MediaRaw').addFile(file, options, function(err, response) {
+			callback(err, response);
+			done();
+		});
+	});
 });

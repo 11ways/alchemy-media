@@ -20,6 +20,19 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 			width: Math.max(320, screen.availWidth||0, window.outerWidth||0),
 			height: Math.max(240, screen.availHeight||0, window.outerHeight||0)
 		});
+
+		// Look for lazy load images
+		scene.appears('js-he-lazy', {padding: 600, live: true}, function onAppear(el) {
+
+			// Get the current style
+			var style = el.getAttribute('style');
+
+			// Add the lazy style
+			el.setAttribute('style', style + el.dataset.lazy);
+
+			// Remove the data-lazy attribute
+			el.dataset.lazy = '';
+		});
 	});
 
 	/**
@@ -35,10 +48,22 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	 */
 	Media.setMethod(function imageUrl(image_id, options) {
 
-		var url;
+		var routeName,
+		    url;
+
+		if (!options) {
+			options = {};
+		}
 
 		if (String(image_id).isObjectId()) {
-			url = this.parseURL(this.view.helpers.Router.routeUrl('Media::image', {id: image_id}));
+
+			if (options.route) {
+				routeName = options.route;
+			} else {
+				routeName = 'Media::image';
+			}
+
+			url = this.parseURL(this.view.helpers.Router.routeUrl(routeName, {id: image_id}));
 		} else if (image_id) {
 			url = this.parseURL('/media/static/' + image_id);
 		} else {
@@ -218,19 +243,25 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	 */
 	Media.setMethod(function figure(image, options) {
 
-		var cssSet,
+		var classes,
+		    cssSet,
 		    style,
-		    ratio;
+		    ratio,
+		    data;
 
-		style = 'background-size: cover;';
+		if (options.defaultStyle) {
+			style = 'background-size:cover;background-position:center;';
+		} else {
+			style = '';
+		}
 
 		options = Object.assign({}, options);
 
-		if (options.width) {
+		if (typeof options.width == 'number') {
 			style += 'width: ' + options.width + 'px;';
 		}
 
-		if (options.height) {
+		if (typeof options.height == 'number') {
 			style += 'height: ' + options.height + 'px;';
 		}
 
@@ -248,10 +279,24 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		}
 
 		cssSet = this.imageCssSet(image, options);
-		style += cssSet;
 
-		this.print('<figure class="' + (options.class || options.className || '') + '" ');
-		this.print('style="' + style + '"></figure>');
+		classes = (options.class || options.className || '');
+
+		if (options.lazy) {
+			classes += ' js-he-lazy';
+			data = cssSet;
+		} else {
+			style += cssSet;
+		}
+
+		this.print('<figure class="' + classes + '" ');
+
+		if (data) {
+			this.print('data-lazy="' + data + '" ');
+		}
+
+		this.print('style="' + style + '"');
+		this.print('></figure>');
 	});
 
 	/**

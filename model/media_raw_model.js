@@ -96,7 +96,7 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 			return callback(err);
 		}
 
-		type = that.MediaType.determineType(info.mimetype);
+		type = that.MediaType.determineType(info.mimetype, options);
 
 		type.normalize(file, info, function afterNormalize(err, rawPath, rawInfo, rawExtra, extra) {
 
@@ -124,24 +124,26 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 
 				if (createdNew || (!createdNew && !options.reusefile)) {
 
-					MediaFile.save(FileData, function(err, result) {
+					MediaFile.save(FileData, {document: false}, function(err, result) {
 						if (err) return callback(err);
 						callback(null, result);
 					});
 				} else {
 
-					MediaFile.find('first', {conditions: {media_raw_id: item._id}, recursive: 0}, function(err, items) {
+					MediaFile.find('first', {conditions: {media_raw_id: item._id}, recursive: 0, document: false}, function(err, items) {
 
 						if (err) {
 							return callback(err);
 						}
 
+						items = items[0];
+
 						if (items && items.MediaFile) {
 							callback(null, items.MediaFile)
 						} else {
-							MediaFile.save(FileData, function(err, result) {
+							MediaFile.save(FileData, {document: false}, function(err, result) {
 								if (err) return callback(err);
-								callback(null, result);
+								callback(null, result[0]);
 							});
 						}
 					});
@@ -152,7 +154,7 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 });
 
 /**
- * Get a file based on its  raw id
+ * Get a file based on its raw id
  *
  * @author   Jelle De Loecker   <jelle@codedor.be>
  * @since    0.0.1
@@ -167,7 +169,8 @@ MediaRaw.setMethod(function getFile(id, callback) {
 	    options = {
 		conditions: {
 			'_id': id
-		}
+		},
+		document: false
 	};
 
 	this.find('first', options, function gotFileRecord(err, result) {
@@ -285,7 +288,8 @@ var prepareId = function prepareId(file, options, callback) {
 			conditions: {
 				hash: info.hash,
 				size: info.size
-			}
+			},
+			document: false
 		};
 
 		that.find('first', search_options, function gotFindResult(err, result) {
@@ -294,8 +298,10 @@ var prepareId = function prepareId(file, options, callback) {
 				return callback(err);
 			}
 
+			result = result[0];
+
 			// Return the existing id if we found a match
-			if (result.length) {
+			if (result) {
 				callback(null, true, result.MediaRaw._id, result.MediaRaw);
 			} else {
 
@@ -311,13 +317,15 @@ var prepareId = function prepareId(file, options, callback) {
 					}
 				};
 
-				that.save(data, function getSaveResult(err, result) {
+				that.save(data, {document: false}, function getSaveResult(err, result) {
 
 					if (err) {
 						return callback(err);
 					}
 
-					if (result.length) {
+					result = result[0];
+
+					if (result) {
 						callback(null, false, result._id, result);
 					}
 				});
