@@ -1,17 +1,20 @@
-(function() {
+hawkejs.require('chimera/chimera', function onChimeraLoad() {
 
 var MediaFields = [];
 
 /**
  * The MediaFileInput class
  */
-function MediaFileField($input) {
+function MediaFileField($element) {
 
 	// Get the index in the MediaFields array
 	this.index = (MediaFields.push(this)-1);
 
+	// The hawkejs element
+	this.element = $element;
+
 	// The original input
-	this.input = $input;
+	this.input = $element.find('.chimeraEditor-input');
 
 	// The wrapper div
 	this.wrapper = false;
@@ -58,7 +61,7 @@ MediaFileField.prototype.init = function init() {
 	}
 
 	// And now put the hidden input into the wrapper
-	this.wrapper.append(this.input);
+	this.wrapper.prepend(this.input);
 
 	// Get the current value
 	value = this.input.val();
@@ -80,7 +83,7 @@ MediaFileField.prototype.setId = function setId(id) {
 	    html;
 
 	// Generate the image html
-	html = '<img src="/media/thumbnail/' + id + '" srcset="/media/file/' + id + '?dpr=2 2x" />';
+	html = '<img src="/media/thumbnail/' + id + '" srcset="/media/thumbnail/' + id + '?dpr=2 2x" />';
 
 	// Add the button to remove the image
 	html += '<span class="remove">';
@@ -128,6 +131,7 @@ MediaFileField.prototype.removeFile = function removeFile() {
 		this.setControls();
 	}
 
+	this.chimerafield.setValue(null);
 };
 
 /**
@@ -144,12 +148,17 @@ MediaFileField.prototype.setControls = function setControls() {
 		return;
 	}
 
-	html = '<span class="btn btn-success fileinput-button">';
-	html += '<i class="fa fa-plus"></i>';
-	html += '<span>Select files...</span>';
+	html = '<span class="btn btn-inline fileinput-button">';
+	html += '<span>Upload file</span>';
+
 	html += '<input class="fileupload" type="file" name="newfile">';
 	html += '</span>';
-	html += '<div class="progress">';
+
+	html += '<span class="btn btn-inline fileinput-pick">';
+	html += '<span>Pick file</span>';
+	html += '</span>';
+
+	html += '<div class="chimeraMedia-progress progress">';
 	html += '<div class="progress-bar progress-bar-success"></div>';
 	html += '</div>';
 
@@ -180,17 +189,128 @@ MediaFileField.prototype.setControls = function setControls() {
 			// We only allow 1 file to be uploaded
 			var file = data.result.files[0];
 			that.setId(file.id);
+			that.element.data('new-value', file.id);
 		},
 		progressall: function (e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
 			$bar.css('width', progress + '%');
 		}
-	})
+	});
+
+	// Attach the media picker
+	$('.fileinput-pick', this.controls).click(function(e) {
+
+		pickMediaId(function(err, id) {
+
+			if (!id) {
+				return;
+			}
+
+			that.setId(id);
+			that.chimerafield.setValue(id);
+		});
+
+		e.preventDefault();
+	});
 };
 
-// Listen to the mediafield event, which tells us we need to init a new field
-hawkejs.event.on('mediafield', function(query, $input) {
-	new MediaFileField($input);
+/**
+ * The File ChimeraField class
+ *
+ * @constructor
+ *
+ * @author   Jelle De Loecker   <jelle@kipdola.be>
+ * @since    1.0.0
+ * @version  1.0.0
+ *
+ * @param    {DOMElement}   container
+ * @param    {Object}       variables
+ */
+var FileChimeraField = ChimeraField.extend(function FileChimeraField(container, variables) {
+	FileChimeraField.super.call(this, container, variables);
 });
 
-}());
+/**
+ * Initialize the field in the edit action
+ *
+ * @param    {Mixed}   value
+ */
+FileChimeraField.setMethod(function initEdit() {
+	this.mediafile = new MediaFileField(this.intake);
+	this.mediafile.chimerafield = this;
+});
+
+});
+
+hawkejs.scene.on('filebrowser', function onFilebrowse(input, dialog, filebrowser) {
+
+	pickMediaId(function picked(err, result) {
+
+		if (err) {
+			throw err;
+		}
+
+		input.setValue('/media/image/' + result);
+	});
+});
+
+function pickMediaId(callback) {
+
+	var madeSelection;
+
+	vex.open({
+		className: vex.defaultOptions.className + ' chimeraMedia-picker',
+		content: '<x-hawkejs class="" data-type="block" data-name="mediaGalleryPicker"></x-hawkejs>',
+		afterOpen: function($vexContent) {
+			hawkejs.scene.openUrl('/chimera/media_gallery/media_files/gallery_picker', {history: false}, function(err, viewRender) {
+
+				var $bar = $('.progress-bar', $vexContent),
+				    $fileupload = $('.fileupload', $vexContent);
+
+				$fileupload.fileupload({
+					url: '/media/upload',
+					dataType: 'json',
+					formData: {},
+					done: function (e, data) {
+
+						var renderer = new hawkejs.constructor.ViewRender(hawkejs),
+						    file = data.result.files[0],
+						    html;
+
+						renderer.initHelpers();
+
+						html = '<figure class="chimeraGallery-thumb" data-id="' + file.id + '" style="';
+						html += renderer.helpers.Media.imageCssSet(file.id, {profile: 'pickerThumb'});
+						html += '"><div class="chimeraGallery-thumbInfo"><span>Select</span></div></figure>';
+
+						$('.chimeraGallery-pickup', $vexContent).after(html);
+						$bar.css('width', '');
+					},
+					progressall: function (e, data) {
+						var progress = parseInt(data.loaded / data.total * 100, 10);
+						$bar.css('width', progress + '%');
+					}
+				});
+
+				$vexContent.on('click', '.chimeraGallery-thumb', function onThumbClick(e) {
+
+					var $thumb = $(this),
+					    id = $thumb.data('id');
+
+					madeSelection = true;
+
+					if (callback) {
+						callback(null, id);
+					}
+
+					vex.close();
+				});
+			});
+		},
+		afterClose: function() {
+			if (!madeSelection && callback) {
+				callback(null, false);
+			}
+		}
+	});
+}

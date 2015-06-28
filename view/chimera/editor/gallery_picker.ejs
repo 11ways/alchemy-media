@@ -1,0 +1,36 @@
+<% style('chimera/mediafield') %>
+
+<% start('mediaGalleryPicker') %>
+<div class="chimeraGallery">
+	<div class="chimeraGallery-pickup">
+		<span class="btn btn-inline fileinput-button">
+			<span>Upload file</span>
+			<input class="fileupload" type="file" name="newfile">
+		</span>
+		<div class="chimeraMedia-progress progress">
+			<div class="progress-bar progress-bar-success"></div>
+		</div>
+	</div>
+	<%
+		iterator = records.createIterator();
+		while (iterator.hasNext()) {
+
+			item = iterator.next();
+			record = item.value;
+
+			//implement('chimera/elements/gallery_image', null, {item: item, record: record});
+			%>
+			<figure
+				class="chimeraGallery-thumb"
+				style="<%= Media.imageCssSet(record.id, {profile: 'pickerThumb'}) %>"
+				data-id="<%= record.id %>"
+			>
+				<div class="chimeraGallery-thumbInfo">
+					<span>Select</span>
+				</div>
+			</figure>
+			<%
+		}
+	%>
+</div>
+<% end('mediaGalleryPicker') %>

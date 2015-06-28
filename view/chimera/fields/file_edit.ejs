@@ -1,0 +1,6 @@
+<% script(['jqueryui1.10/jquery.ui.widget', 'fileupload/jquery.fileupload', 'chimera/mediafield']) %>
+<% style('chimera/mediafield') %>
+
+<% start('field') %>
+<input type="hidden" class="chimeraEditor-input" name="data.<%= data.field.path %>" value="<%= data.value || '' %>">
+<% end('field') %>
