@@ -18,20 +18,29 @@ var MediaRaw = Function.inherits('Model', function MediaRawModel(options) {
 	this.MediaType = alchemy.classes.MediaType;
 });
 
-MediaRaw.addField('name', 'String');
-MediaRaw.addField('extension', 'String');
+/**
+ * Constitute the class wide schema
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    1.0.0
+ * @version  1.0.0
+ */
+MediaRaw.constitute(function addFields() {
 
-// Hash & size should be one unique index together
-MediaRaw.addField('hash', 'String');
-MediaRaw.addField('size', 'Number');
-MediaRaw.addField('mimetype', 'String');
-MediaRaw.addField('type', 'String');
-MediaRaw.addField('extra', 'Object');
+	this.addField('name', 'String');
+	this.addField('extension', 'String');
+
+	// Hash & size should be one unique index together
+	this.addField('hash', 'String');
+	this.addField('size', 'Number');
+	this.addField('mimetype', 'String');
+	this.addField('type', 'String');
+	this.addField('extra', 'Object');
+});
 
 MediaRaw.setProperty('basePath', alchemy.plugins.media.path);
 MediaRaw.setProperty('hash', alchemy.plugins.media.hash);
 MediaRaw.setProperty('types', alchemy.shared('Media.types'));
-
 
 /**
  * Add a file

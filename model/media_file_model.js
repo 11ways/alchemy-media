@@ -3,16 +3,11 @@
  *
  * @constructor
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
  * @version  1.0.0
  */
 var MediaFile = Function.inherits('Model', function MediaFileModel(options) {
-
-	var chimera,
-	    gallery,
-	    list,
-	    edit;
 
 	MediaFileModel.super.call(this, options);
 
@@ -20,43 +15,66 @@ var MediaFile = Function.inherits('Model', function MediaFileModel(options) {
 	this.queue.limit = 5;
 	this.queue.throttle = 10;
 	this.queue.start();
-
-	// Create the chimera behaviour
-	chimera = this.addBehaviour('chimera');
-
-	if (chimera) {
-		// Get the list group
-		list = chimera.getActionFields('list');
-
-		list.addField('name');
-		list.addField('filename');
-		list.addField('type');
-
-		// Get the edit group
-		edit = chimera.getActionFields('edit');
-
-		edit.addField('name');
-		edit.addField('filename');
-		edit.addField('type');
-
-		// Get the galery group
-		gallery = chimera.getActionFields('gallery');
-
-		gallery.addField('name');
-		gallery.addField('filename');
-		gallery.addField('type');
-		gallery.addField('extra');
-	}
 });
 
-MediaFile.addField('name', 'String');
-MediaFile.addField('filename', 'String');
-MediaFile.addField('type', 'Enum');
-MediaFile.addField('extra', 'Object');
-
-MediaFile.belongsTo('MediaRaw');
-
 MediaFile.setProperty('types', alchemy.shared('Media.types'));
+
+/**
+ * Constitute the class wide schema
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    1.0.0
+ * @version  1.0.0
+ */
+MediaFile.constitute(function addFields() {
+
+	this.addField('name', 'String');
+	this.addField('filename', 'String');
+	this.addField('type', 'Enum');
+	this.addField('extra', 'Object');
+
+	this.belongsTo('MediaRaw');
+});
+
+/**
+ * Configure chimera for this model
+ *
+ * @author   Jelle De Loecker <jelle@develry.be>
+ * @since    1.0.0
+ * @version  1.0.0
+ */
+MediaFile.constitute(function chimeraConfig() {
+
+	var gallery,
+	    list,
+	    edit;
+
+	if (!this.chimera) {
+		return;
+	}
+
+	// Get the list group
+	list = this.chimera.getActionFields('list');
+
+	list.addField('name');
+	list.addField('filename');
+	list.addField('type');
+
+	// Get the edit group
+	edit = this.chimera.getActionFields('edit');
+
+	edit.addField('name');
+	edit.addField('filename');
+	edit.addField('type');
+
+	// Get the galery group
+	gallery = this.chimera.getActionFields('gallery');
+
+	gallery.addField('name');
+	gallery.addField('filename');
+	gallery.addField('type');
+	gallery.addField('extra');
+});
 
 /**
  * Get a file based on its media file id
