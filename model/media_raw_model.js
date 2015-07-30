@@ -65,7 +65,7 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 	}
 
 	// If the given file is actually a url, we'll need to download it first
-	if (file.startsWith('http://')) {
+	if (file.startsWith('http://') || file.startsWith('https://')) {
 
 		if (!options.filename) {
 			options.filename = Url.parse(file).pathname.split('/').last();
@@ -133,13 +133,13 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 
 				if (createdNew || (!createdNew && !options.reusefile)) {
 
-					MediaFile.save(FileData, {document: false}, function(err, result) {
+					MediaFile.save(FileData, {document: false}, function savedNewRecord(err, result) {
 						if (err) return callback(err);
-						callback(null, result);
+						callback(null, result[0]);
 					});
 				} else {
 
-					MediaFile.find('first', {conditions: {media_raw_id: item._id}, recursive: 0, document: false}, function(err, items) {
+					MediaFile.find('first', {conditions: {media_raw_id: item._id}, recursive: 0, document: false}, function foundRecord(err, items) {
 
 						if (err) {
 							return callback(err);
