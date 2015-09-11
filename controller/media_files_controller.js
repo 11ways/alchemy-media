@@ -77,11 +77,18 @@ MediaFiles.setMethod(function placeholder(conduit, options) {
  * @param    {Conduit}   conduit
  */
 MediaFiles.setMethod(function static(conduit, path) {
+
 	var Image = new MediaTypes.image;
 
-	path = 'assets/images/' + path;
+	// Find the actual path to the image
+	alchemy.findImagePath(path, function gotPath(err, image_path) {
 
-	return Image.serve(conduit, path);
+		if (err) {
+			return conduit.error(err);
+		}
+
+		return Image.serve(conduit, image_path);
+	});
 });
 
 

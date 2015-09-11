@@ -249,6 +249,10 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		    ratio,
 		    data;
 
+		if (!options) {
+			options = {};
+		}
+
 		if (options.defaultStyle) {
 			style = 'background-size:cover;background-position:center;';
 		} else {
