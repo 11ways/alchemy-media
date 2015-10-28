@@ -64,6 +64,8 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 			}
 
 			url = this.parseURL(this.view.helpers.Router.routeUrl(routeName, {id: image_id}));
+		} else if (typeof image_id == 'string' && image_id.indexOf('http') === 0) {
+			url = this.parseURL(image_id);
 		} else if (image_id) {
 			url = this.parseURL('/media/static/' + image_id);
 		} else {
@@ -182,6 +184,7 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		switch (ua.family) {
 
 			case 'Mobile Safari':
+			case 'Chromium':
 			case 'Safari':
 			case 'Chrome':
 				prefix = ['-webkit-'];
@@ -230,6 +233,47 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	});
 
 	/**
+	 * Output an img element
+	 *
+	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @since    1.0.0
+	 * @version  1.0.0
+	 *
+	 * @param    {String}   image_id
+	 *
+	 * @return   {URL}
+	 */
+	Media.setMethod(function image(image_id, options) {
+
+		var srcset,
+		    clone,
+		    html,
+		    url;
+
+		if (!options) {
+			options = {};
+		} else {
+			options = Object.assign({}, options);
+		}
+
+		url = this.imageUrl(image_id, options);
+		clone = url.clone();
+		clone.addQuery('dpr', 2);
+
+		srcset = clone + ' 2x';
+
+		html = '<img src="' + url + '" srcset="' + srcset + '"';
+
+		if (options.alt) {
+			html += 'alt=' + JSON.stringify(options.alt) + '';
+		}
+
+		html += '>';
+
+		return html;
+	});
+
+	/**
 	 * Output a figure element
 	 *
 	 * @author   Jelle De Loecker   <jelle@codedor.be>
@@ -247,7 +291,8 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		    cssSet,
 		    style,
 		    ratio,
-		    data;
+		    data,
+		    html;
 
 		if (!options) {
 			options = {};
@@ -261,11 +306,11 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 
 		options = Object.assign({}, options);
 
-		if (typeof options.width == 'number') {
+		if (typeof options.width == 'number' || Number(options.width) == options.width) {
 			style += 'width: ' + options.width + 'px;';
 		}
 
-		if (typeof options.height == 'number') {
+		if (typeof options.height == 'number' || Number(options.height) == options.height) {
 			style += 'height: ' + options.height + 'px;';
 		}
 
@@ -293,14 +338,16 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 			style += cssSet;
 		}
 
-		this.print('<figure class="' + classes + '" ');
+		html = '<figure class="' + classes + '" ';
 
 		if (data) {
-			this.print('data-lazy="' + data + '" ');
+			html += 'data-lazy="' + data + '" ';
 		}
 
-		this.print('style="' + style + '"');
-		this.print('></figure>');
+		html += 'style="' + style + '"';
+		html += '></figure>';
+
+		return html;
 	});
 
 	/**

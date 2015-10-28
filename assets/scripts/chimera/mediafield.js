@@ -1,20 +1,23 @@
-hawkejs.require('chimera/chimera', function onChimeraLoad() {
+hawkejs.require([
+	{name: 'jquery', path: '//code.jquery.com/jquery-1.11.3.min.js'},
+	'jqueryui1.10/jquery.ui.widget',
+	'fileupload/jquery.fileupload',
+	'chimera/chimera'], function onChimeraLoad() {
 
 var MediaFields = [];
 
 /**
  * The MediaFileInput class
  */
-function MediaFileField($element) {
+function MediaFileField(chimera_field) {
+
+	this.chimera_field = chimera_field;
 
 	// Get the index in the MediaFields array
 	this.index = (MediaFields.push(this)-1);
 
-	// The hawkejs element
-	this.element = $element;
-
 	// The original input
-	this.input = $element.find('.chimeraEditor-input');
+	this.input = chimera_field.input;
 
 	// The wrapper div
 	this.wrapper = false;
@@ -51,20 +54,17 @@ MediaFileField.prototype.init = function init() {
 	this.preview = $('.preview', this.wrapper);
 	this.controls = $('.controls', this.wrapper);
 
-	// Add the wrapper after the hidden input
-	this.input.after(this.wrapper);
+	$(this.input).append(this.wrapper);
 
-	this.readOnly = this.input.attr('readonly') != null;
+	// @todo: implement readOnly
+	//this.readOnly = this.input.attr('readonly') != null;
 
 	if (this.readOnly) {
 		this.controls.hide();
 	}
 
-	// And now put the hidden input into the wrapper
-	this.wrapper.prepend(this.input);
-
 	// Get the current value
-	value = this.input.val();
+	value = this.chimera_field.value;
 
 	// If the value is set, generate the preview
 	if (value) {
@@ -92,16 +92,16 @@ MediaFileField.prototype.setId = function setId(id) {
 	html += '</span>';
 
 	// See if this is an arrayable field
-	this.array = !!this.wrapper.parents('.mediafieldgroup').find('button[data-chimera-add-entry]').length;
+	this.array = this.chimera_field.isArray;
+	//this.array = !!this.wrapper.parents('.mediafieldgroup').find('button[data-chimera-add-entry]').length;
+
+	this.chimera_field.setValue(id);
 
 	// Set the preview image
 	this.preview.html(html);
 
 	// Hide the controls
 	this.controls.hide();
-
-	// Set the value in the hidden input
-	this.input.val(id);
 
 	// Show the preview
 	this.preview.show();
@@ -148,13 +148,13 @@ MediaFileField.prototype.setControls = function setControls() {
 		return;
 	}
 
-	html = '<span class="btn btn-inline fileinput-button">';
+	html = '<span class="btn btn-success fileinput-button">';
 	html += '<span>Upload file</span>';
 
 	html += '<input class="fileupload" type="file" name="newfile">';
 	html += '</span>';
 
-	html += '<span class="btn btn-inline fileinput-pick">';
+	html += '<span class="btn btn-primary fileinput-pick">';
 	html += '<span>Pick file</span>';
 	html += '</span>';
 
@@ -163,7 +163,7 @@ MediaFileField.prototype.setControls = function setControls() {
 	html += '</div>';
 
 	// Remove the current value
-	this.input.val('');
+	this.chimera_field.setValue();
 
 	// Set the html
 	this.controls.html(html);
@@ -189,7 +189,6 @@ MediaFileField.prototype.setControls = function setControls() {
 			// We only allow 1 file to be uploaded
 			var file = data.result.files[0];
 			that.setId(file.id);
-			that.element.data('new-value', file.id);
 		},
 		progressall: function (e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -207,7 +206,6 @@ MediaFileField.prototype.setControls = function setControls() {
 			}
 
 			that.setId(id);
-			that.chimerafield.setValue(id);
 		});
 
 		e.preventDefault();
@@ -226,20 +224,23 @@ MediaFileField.prototype.setControls = function setControls() {
  * @param    {DOMElement}   container
  * @param    {Object}       variables
  */
-var FileChimeraField = ChimeraField.extend(function FileChimeraField(container, variables) {
-	FileChimeraField.super.call(this, container, variables);
+var FileChimeraField = ChimeraField.extend(function FileChimeraField(parent, value, container, variables, prefix) {
+	FileChimeraField.super.call(this, parent, value, container, variables, prefix);
 });
 
 /**
- * Initialize the field in the edit action
+ * Create the edit input element
  *
- * @param    {Mixed}   value
+ * @author   Jelle De Loecker   <jelle@kipdola.be>
+ * @since    1.0.0
+ * @version  1.0.0
  */
-FileChimeraField.setMethod(function initEdit() {
-	this.mediafile = new MediaFileField(this.intake);
-	this.mediafile.chimerafield = this;
-});
+FileChimeraField.setMethod(function renderEdit() {
+	var html = '<div class="mediafieldgroup"></div>';
+	this.setMainElement(html);
 
+	this.mediafile = new MediaFileField(this);
+	this.mediafile.chimerafield = this;
 });
 
 hawkejs.scene.on('filebrowser', function onFilebrowse(input, dialog, filebrowser) {
@@ -314,3 +315,4 @@ function pickMediaId(callback) {
 		}
 	});
 }
+});

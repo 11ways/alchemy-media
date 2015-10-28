@@ -128,11 +128,13 @@ MediaFiles.setMethod(function image(conduit, id) {
  *
  * @param    {Conduit}   Conduit
  */
-MediaFiles.setMethod(function file(conduit, id) {
+MediaFiles.setMethod(function file(conduit, id, extension) {
 
 	if (!id) {
 		return conduit.notFound('No valid id given');
 	}
+
+	console.log('ID:', id, 'extension:', extension);
 
 	this.getModel('MediaFile').getFile(id, function(err, file, record) {
 
