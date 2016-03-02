@@ -49,6 +49,7 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	Media.setMethod(function imageUrl(image_id, options) {
 
 		var routeName,
+		    base_url,
 		    url;
 
 		if (!options) {
@@ -84,6 +85,14 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 			if (options.height) {
 				url.addQuery('height', options.height);
 			}
+		}
+
+		if (options.full) {
+			base_url = this.view.internal('url');
+			url.protocol = base_url.protocol;
+			url.host = base_url.host;
+			url.hostname = base_url.hostname;
+			url.port = base_url.port;
 		}
 
 		return url;
@@ -245,9 +254,9 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	 */
 	Media.setMethod(function image(image_id, options) {
 
-		var srcset,
+		var element,
+		    srcset,
 		    clone,
-		    html,
 		    url;
 
 		if (!options) {
@@ -262,15 +271,26 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 
 		srcset = clone + ' 2x';
 
-		html = '<img src="' + url + '" srcset="' + srcset + '"';
+		// Create the element
+		element = Hawkejs.ElementBuilder.create('img');
 
-		if (options.alt) {
-			html += 'alt=' + JSON.stringify(options.alt) + '';
+		// Set the source attribute
+		element.attr('src', url);
+
+		// Set the srcset if it's available
+		if (srcset) {
+			element.attr('srcset', srcset);
 		}
 
-		html += '>';
+		// Set the alt description
+		if (options.alt) {
+			element.attr('alt', options.alt);
+		}
 
-		return html;
+		// Set other attributes
+		element.setAttribute(options);
+
+		return element;
 	});
 
 	/**
