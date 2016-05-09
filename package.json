@@ -11,7 +11,7 @@
 		"veronica": "0.1.x"
 	},
 	"optionalDependencies": {
-		"faced": "skerit/faced#f5761b0"
+		"faced": "skerit/faced#104eef2"
 	},
 	"license": "MIT",
 	"engines": {
