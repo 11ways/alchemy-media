@@ -8,6 +8,7 @@
 	},
 	"dependencies": {
 		"exiv2": "~0.6.1",
+		"gm": "~1.21.1",
 		"veronica": "0.1.x"
 	},
 	"optionalDependencies": {

@@ -1,5 +1,4 @@
 var fs = require('fs'),
-    async      = alchemy.use('async'),
     MediaTypes = alchemy.shared('Media.types'),
     MediaType  = alchemy.classes.MediaType,
     child      = require('child_process');
