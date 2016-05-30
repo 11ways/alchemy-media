@@ -7,9 +7,9 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	/**
 	 * Function to execute on the client side, when the scene is made
 	 *
-	 * @author   Jelle De Loecker   <jelle@codedor.be>
-	 * @since    1.0.0
-	 * @version  1.0.0
+	 * @author   Jelle De Loecker   <jelle@develry.be>
+	 * @since    0.2.0
+	 * @version  0.2.0
 	 *
 	 * @param    {Scene}   scene
 	 */
@@ -38,9 +38,9 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	/**
 	 * Get the base url for a single image
 	 *
-	 * @author   Jelle De Loecker   <jelle@codedor.be>
-	 * @since    1.0.0
-	 * @version  1.0.0
+	 * @author   Jelle De Loecker   <jelle@develry.be>
+	 * @since    0.2.0
+	 * @version  0.2.0
 	 *
 	 * @param    {String}   image_id
 	 *
@@ -101,9 +101,9 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	/**
 	 * Create a base placeholder image url
 	 *
-	 * @author   Jelle De Loecker   <jelle@codedor.be>
-	 * @since    1.0.0
-	 * @version  1.0.0
+	 * @author   Jelle De Loecker   <jelle@develry.be>
+	 * @since    0.2.0
+	 * @version  0.2.0
 	 *
 	 * @param    {Object}   options
 	 *
@@ -140,9 +140,9 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	/**
 	 * Get an array of srcset image urls
 	 *
-	 * @author   Jelle De Loecker   <jelle@codedor.be>
-	 * @since    1.0.0
-	 * @version  1.0.0
+	 * @author   Jelle De Loecker   <jelle@develry.be>
+	 * @since    0.2.0
+	 * @version  0.2.0
 	 *
 	 * @param    {String}   image_id
 	 * @parma    {Object}   options
@@ -170,9 +170,9 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	/**
 	 * Get background-image CSS, including srcset
 	 *
-	 * @author   Jelle De Loecker   <jelle@codedor.be>
-	 * @since    1.0.0
-	 * @version  1.0.0
+	 * @author   Jelle De Loecker   <jelle@develry.be>
+	 * @since    0.2.0
+	 * @version  0.2.0
 	 *
 	 * @param    {String}   image_id
 	 * @parma    {Object}   options
@@ -244,9 +244,9 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	/**
 	 * Output an img element
 	 *
-	 * @author   Jelle De Loecker   <jelle@codedor.be>
-	 * @since    1.0.0
-	 * @version  1.0.0
+	 * @author   Jelle De Loecker   <jelle@develry.be>
+	 * @since    0.2.0
+	 * @version  0.2.0
 	 *
 	 * @param    {String}   image_id
 	 *
@@ -257,6 +257,7 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		var element,
 		    srcset,
 		    clone,
+		    key,
 		    url;
 
 		if (!options) {
@@ -272,23 +273,25 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 		srcset = clone + ' 2x';
 
 		// Create the element
-		element = Hawkejs.ElementBuilder.create('img');
+		element = this.view.createElement('img');
 
 		// Set the source attribute
-		element.attr('src', url);
+		element.setAttribute('src', url);
 
 		// Set the srcset if it's available
 		if (srcset) {
-			element.attr('srcset', srcset);
+			element.setAttribute('srcset', srcset);
 		}
 
 		// Set the alt description
 		if (options.alt) {
-			element.attr('alt', options.alt);
+			element.setAttribute('alt', options.alt);
 		}
 
-		// Set other attributes
-		element.setAttribute(options);
+		for (key in options) {
+			// Set other attributes
+			element.setAttribute(key, options[key]);
+		}
 
 		return element;
 	});
@@ -296,9 +299,9 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	/**
 	 * Output a figure element
 	 *
-	 * @author   Jelle De Loecker   <jelle@codedor.be>
-	 * @since    1.0.0
-	 * @version  1.0.0
+	 * @author   Jelle De Loecker   <jelle@develry.be>
+	 * @since    0.2.0
+	 * @version  0.2.0
 	 *
 	 * @param    {String}   image
 	 * @parma    {Object}   options
@@ -373,9 +376,9 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 	/**
 	 * Serve a placeholder image
 
-	 * @author   Jelle De Loecker   <jelle@codedor.be>
+	 * @author   Jelle De Loecker   <jelle@develry.be>
 	 * @since    0.1.0
-	 * @version  1.0.0
+	 * @version  0.2.0
 	 *
 	 * @param    {Object}    options
 	 */

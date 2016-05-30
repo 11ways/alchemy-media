@@ -1,10 +1,10 @@
 {
 	"name": "alchemy-media",
 	"description": "The media plugin for Alchemy",
-	"version": "1.0.0-alpha",
+	"version": "0.2.0",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/codedor/alchemy-media.git"
+		"url": "https://github.com/skerit/alchemy-media.git"
 	},
 	"dependencies": {
 		"exiv2": "~0.6.1",
@@ -16,6 +16,6 @@
 	},
 	"license": "MIT",
 	"engines": {
-		"node": ">=0.10"
+		"node": "~4.5.0"
 	}
 }

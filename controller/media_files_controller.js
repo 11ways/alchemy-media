@@ -9,9 +9,9 @@ var fs = require('fs'),
  * @constructor
  * @extends       alchemy.classes.AppController
  *
- * @author        Jelle De Loecker   <jelle@codedor.be>
+ * @author        Jelle De Loecker   <jelle@develry.be>
  * @since         0.0.1
- * @version       1.0.0
+ * @version       0.2.0
  */
 var MediaFiles = Function.inherits('Controller', function MediaFilesController(conduit, options) {
 	this.constructor.super.call(this, conduit, options);
@@ -20,9 +20,9 @@ var MediaFiles = Function.inherits('Controller', function MediaFilesController(c
 /**
  * Serve a thumbnail
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  1.0.0
+ * @version  0.2.0
  *
  * @param    {Conduit}   conduit
  */
@@ -55,7 +55,7 @@ MediaFiles.setMethod(function thumbnail(conduit, id) {
 /**
  * Serve a placeholder
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.1.0
  * @version  0.1.0
  *
@@ -69,9 +69,9 @@ MediaFiles.setMethod(function placeholder(conduit, options) {
 /**
  * Serve a static image file
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  1.0.0
+ * @version  0.2.0
  *
  * @param    {Conduit}   conduit
  */
@@ -94,7 +94,7 @@ MediaFiles.setMethod(function static(conduit, path) {
 /**
  * Serve an image file
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
  * @version  0.1.0
  *
@@ -121,9 +121,9 @@ MediaFiles.setMethod(function image(conduit, id) {
 /**
  * Serve a file
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  1.0.0
+ * @version  0.2.0
  *
  * @param    {Conduit}   Conduit
  */
@@ -161,7 +161,7 @@ MediaFiles.setMethod(function file(conduit, id, extension) {
 /**
  * Handle file uploads
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
  * @version  0.0.1
  *
@@ -227,9 +227,9 @@ MediaFiles.setMethod(function upload(conduit) {
 /**
  * Upload a single file and return the path
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
- * @since    1.0.0
- * @version  1.0.0
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.2.0
+ * @version  0.2.0
  *
  * @param    {Conduit}   conduit
  */

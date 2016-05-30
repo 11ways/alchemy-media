@@ -217,9 +217,9 @@ MediaFileField.prototype.setControls = function setControls() {
  *
  * @constructor
  *
- * @author   Jelle De Loecker   <jelle@kipdola.be>
- * @since    1.0.0
- * @version  1.0.0
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.2.0
+ * @version  0.2.0
  *
  * @param    {DOMElement}   container
  * @param    {Object}       variables
@@ -231,9 +231,9 @@ var FileChimeraField = ChimeraField.extend(function FileChimeraField(parent, val
 /**
  * Create the edit input element
  *
- * @author   Jelle De Loecker   <jelle@kipdola.be>
- * @since    1.0.0
- * @version  1.0.0
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.2.0
+ * @version  0.2.0
  */
 FileChimeraField.setMethod(function renderEdit() {
 	var html = '<div class="mediafieldgroup"></div>';

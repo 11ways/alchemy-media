@@ -5,7 +5,7 @@
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  1.0.0
+ * @version  0.2.0
  */
 var MediaFile = Function.inherits('Model', function MediaFileModel(options) {
 
@@ -23,8 +23,8 @@ MediaFile.setProperty('types', alchemy.shared('Media.types'));
  * Constitute the class wide schema
  *
  * @author   Jelle De Loecker <jelle@develry.be>
- * @since    1.0.0
- * @version  1.0.0
+ * @since    0.2.0
+ * @version  0.2.0
  */
 MediaFile.constitute(function addFields() {
 
@@ -40,8 +40,8 @@ MediaFile.constitute(function addFields() {
  * Configure chimera for this model
  *
  * @author   Jelle De Loecker <jelle@develry.be>
- * @since    1.0.0
- * @version  1.0.0
+ * @since    0.2.0
+ * @version  0.2.0
  */
 MediaFile.constitute(function chimeraConfig() {
 
@@ -79,7 +79,7 @@ MediaFile.constitute(function chimeraConfig() {
 /**
  * Get a file based on its media file id
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
  * @version  0.0.1
  *
@@ -122,9 +122,9 @@ MediaFile.setMethod(function getFile(id, callback) {
 /**
  * Add a new file
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  1.0.0
+ * @version  0.2.0
  *
  * @param    {String}   file      The path to the file, can be a URL
  * @param    {Object}   options

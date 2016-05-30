@@ -9,7 +9,7 @@ var fs     = alchemy.use('fs'),
  *
  * @constructor
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
  * @version  0.0.1
  */
@@ -22,8 +22,8 @@ var MediaRaw = Function.inherits('Model', function MediaRawModel(options) {
  * Constitute the class wide schema
  *
  * @author   Jelle De Loecker <jelle@develry.be>
- * @since    1.0.0
- * @version  1.0.0
+ * @since    0.2.0
+ * @version  0.2.0
  */
 MediaRaw.constitute(function addFields() {
 
@@ -45,9 +45,9 @@ MediaRaw.setProperty('types', alchemy.shared('Media.types'));
 /**
  * Add a file
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  1.0.0
+ * @version  0.2.0
  *
  * @param    {String}   file      The path to the file, can be a URL
  * @param    {Object}   options
@@ -165,9 +165,9 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 /**
  * Get a file based on its raw id
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  1.0.0
+ * @version  0.2.0
  *
  * @param    {String|ObjectID}   id
  * @param    {Function}          callback
@@ -207,9 +207,9 @@ MediaRaw.setMethod(function getFile(id, callback) {
  * Store the given raw file in our own folder structure and database,
  * this makes sure there are no duplicates
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  1.0.0
+ * @version  0.2.0
  *
  * @param    {String}   file      The path to the file
  * @param    {Object}   options   Optional options
@@ -276,9 +276,9 @@ MediaRaw.setMethod(function storeFile(file, options, callback) {
  *
  * This does NOT copy the file to our own folder structure!
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  1.0.0
+ * @version  0.2.0
  */
 var prepareId = function prepareId(file, options, callback) {
 
@@ -346,9 +346,9 @@ var prepareId = function prepareId(file, options, callback) {
 /**
  * Construct the filepath of the given ObjectId
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  1.0.0
+ * @version  0.2.0
  *
  * @param    {ObjectID|String}   objectId
  *

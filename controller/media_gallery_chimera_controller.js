@@ -1,9 +1,9 @@
 /**
  * The Media Gallery Gallery Controller class
  *
- * @author        Jelle De Loecker   <jelle@codedor.be>
- * @since         1.0.0
- * @version       1.0.0
+ * @author        Jelle De Loecker   <jelle@develry.be>
+ * @since         0.2.0
+ * @version       0.2.0
  */
 var MediaGallery = Function.inherits('EditorChimeraController', function MediaGalleryChimeraController(conduit, options) {
 

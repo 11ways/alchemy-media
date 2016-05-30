@@ -63,7 +63,7 @@ options.veronica = new Veronica({
 /**
  * Register a profile under the given name
  *
- * @author   Jelle De Loecker   <jelle@codedor.be>
+ * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
  * @version  0.0.1
  *
