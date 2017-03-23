@@ -1,20 +1,20 @@
 var fs = require('fs'),
-    MediaTypes = alchemy.shared('Media.types'),
-    MediaType  = alchemy.classes.MediaType,
+    MediaTypes = alchemy.getClassGroup('media_type'),
+    MediaType  = Classes.Alchemy.MediaType,
     child      = require('child_process');
 
 /**
  * The Media File Controller class
  *
  * @constructor
- * @extends       alchemy.classes.AppController
+ * @extends       Alchemy.AppController
  *
  * @author        Jelle De Loecker   <jelle@develry.be>
  * @since         0.0.1
- * @version       0.2.0
+ * @version       0.3.0
  */
-var MediaFiles = Function.inherits('Controller', function MediaFilesController(conduit, options) {
-	this.constructor.super.call(this, conduit, options);
+var MediaFiles = Function.inherits('Alchemy.Controller', function MediaFilesController(conduit, options) {
+	MediaFilesController.super.call(this, conduit, options);
 });
 
 /**
@@ -42,6 +42,10 @@ MediaFiles.setMethod(function thumbnail(conduit, id) {
 		}
 
 		Type = MediaTypes[file.type];
+
+		if (!Type) {
+			Type = Classes.Alchemy.MediaType;
+		}
 
 		if (Type) {
 			Type = new Type();
@@ -75,7 +79,7 @@ MediaFiles.setMethod(function placeholder(conduit, options) {
  *
  * @param    {Conduit}   conduit
  */
-MediaFiles.setMethod(function static(conduit, path) {
+MediaFiles.setMethod(function serveStatic(conduit, path) {
 
 	var Image = new MediaTypes.image;
 

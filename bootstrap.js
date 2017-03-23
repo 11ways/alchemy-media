@@ -37,7 +37,7 @@ alchemy.createDir(options.scratch);
 alchemy.createDir(options.cache);
 
 // Create routes
-Router.get('Media::static', /\/media\/static\/(.*)*/, 'MediaFile#static');
+Router.get('Media::static', /\/media\/static\/(.*)*/, 'MediaFile#serveStatic');
 Router.get('Media::image', options.url + '/:id', 'MediaFile#image');
 
 // Allow dummy extensions

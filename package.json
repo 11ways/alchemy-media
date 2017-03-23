@@ -1,13 +1,13 @@
 {
 	"name": "alchemy-media",
 	"description": "The media plugin for Alchemy",
-	"version": "0.2.0",
+	"version": "0.4.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/skerit/alchemy-media.git"
 	},
 	"dependencies": {
-		"exiv2": "~0.6.1",
+		"exiv2": "daiheitan/exiv2node#85bd6dcef348773430f060a025fad912f6ccdc96",
 		"gm": "~1.21.1",
 		"veronica": "0.1.x"
 	},

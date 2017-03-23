@@ -5,9 +5,9 @@
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.2.0
+ * @version  0.3.0
  */
-var MediaFile = Function.inherits('Model', function MediaFileModel(options) {
+var MediaFile = Function.inherits('Alchemy.Model', function MediaFileModel(options) {
 
 	MediaFileModel.super.call(this, options);
 

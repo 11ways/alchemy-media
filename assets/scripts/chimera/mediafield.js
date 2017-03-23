@@ -235,12 +235,39 @@ var FileChimeraField = ChimeraField.extend(function FileChimeraField(parent, val
  * @since    0.2.0
  * @version  0.2.0
  */
-FileChimeraField.setMethod(function renderEdit() {
-	var html = '<div class="mediafieldgroup"></div>';
-	this.setMainElement(html);
+FileChimeraField.setMethod(function renderEdit(callback) {
+
+	var element = Blast.parseHTML('<div class="mediafieldgroup"></div>');
+
+	this.entry = element;
+	this.input = element;
+	this.parent.addEntry(this);
 
 	this.mediafile = new MediaFileField(this);
 	this.mediafile.chimerafield = this;
+
+	if (callback) callback(null);
+});
+
+/**
+ * Initialize the field in the edit action
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.3.0
+ * @version  0.3.0
+ *
+ * @param    {Mixed}   value   Optional value to override
+ */
+FileChimeraField.setMethod(function initEdit(value) {
+
+	var that = this;
+
+	// Override the value if given
+	if (typeof value == 'undefined') {
+		value = this.value;
+	}
+
+	this.renderEdit();
 });
 
 hawkejs.scene.on('filebrowser', function onFilebrowse(input, dialog, filebrowser) {

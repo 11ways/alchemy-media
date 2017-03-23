@@ -3,9 +3,9 @@
  *
  * @author        Jelle De Loecker   <jelle@develry.be>
  * @since         0.2.0
- * @version       0.2.0
+ * @version       0.3.0
  */
-var MediaGallery = Function.inherits('EditorChimeraController', function MediaGalleryChimeraController(conduit, options) {
+var MediaGallery = Function.inherits('Alchemy.EditorChimeraController', function MediaGalleryChimeraController(conduit, options) {
 
 	MediaGalleryChimeraController.super.call(this, conduit, options);
 

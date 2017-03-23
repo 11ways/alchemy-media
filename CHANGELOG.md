@@ -1,3 +1,5 @@
+## 0.4.0 (WIP)
+
 ## 0.2.0 (2016-05-30)
 
 * Dependency updates

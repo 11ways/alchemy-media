@@ -11,11 +11,11 @@ var fs     = alchemy.use('fs'),
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.0.1
+ * @version  0.3.0
  */
-var MediaRaw = Function.inherits('Model', function MediaRawModel(options) {
+var MediaRaw = Function.inherits('Alchemy.Model', function MediaRawModel(options) {
 	MediaRawModel.super.call(this, options);
-	this.MediaType = alchemy.classes.MediaType;
+	this.MediaType = Classes.Alchemy.MediaType;
 });
 
 /**
@@ -40,7 +40,7 @@ MediaRaw.constitute(function addFields() {
 
 MediaRaw.setProperty('basePath', alchemy.plugins.media.path);
 MediaRaw.setProperty('hash', alchemy.plugins.media.hash);
-MediaRaw.setProperty('types', alchemy.shared('Media.types'));
+MediaRaw.setProperty('types', alchemy.getClassGroup('media_type'));
 
 /**
  * Add a file
@@ -106,6 +106,7 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 		}
 
 		type = that.MediaType.determineType(info.mimetype, options);
+
 
 		type.normalize(file, info, function afterNormalize(err, rawPath, rawInfo, rawExtra, extra) {
 

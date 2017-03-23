@@ -17,8 +17,8 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 
 		// Get the screen size of this client, so we can send them correct pictures
 		scene.cookie('mediaResolution', {
-			width: Math.max(320, screen.availWidth||0, window.outerWidth||0),
-			height: Math.max(240, screen.availHeight||0, window.outerHeight||0)
+			width: Math.max(1024, screen.availWidth||0, window.outerWidth||0),
+			height: Math.max(768, screen.availHeight||0, window.outerHeight||0)
 		});
 
 		// Look for lazy load images
@@ -33,6 +33,24 @@ module.exports = function HawkejsMedia(Hawkejs, Blast) {
 			// Remove the data-lazy attribute
 			el.dataset.lazy = '';
 		});
+	});
+
+	/**
+	 * Get a file anchor
+	 *
+	 * @author   Jelle De Loecker   <jelle@develry.be>
+	 * @since    0.4.0
+	 * @version  0.4.0
+	 *
+	 * @param    {String}   image_id
+	 *
+	 * @return   {HTMLElement}
+	 */
+	Media.setMethod(function fileAnchor(file_id, options) {
+
+		var url;
+
+		return this.view.helpers.Router.printRoute('Media::file', {id: file_id}, options);
 	});
 
 	/**
