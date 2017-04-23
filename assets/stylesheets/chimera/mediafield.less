@@ -123,10 +123,27 @@
 	height: 15rem;
 }
 
-.vex.chimeraMedia-picker .vex-content {
+.js-he-dialog[data-template="chimera/editor/gallery_picker"] {
 	width: 80vw;
 
-	.chimeraGallery-thumb, .chimeraGallery-pickup {
+	.chimeraGallery {
+		display: flex;
+		flex-flow: row wrap;
+
+		> * {
+			margin-right: 1rem;
+			flex: 1 auto;
+		}
+	}
+
+	.chimeraGallery-thumb {
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	.chimeraGallery-thumb,
+	.chimeraGallery-pickup {
 		margin-bottom: 1rem;
 		cursor: pointer;
 		position: relative;

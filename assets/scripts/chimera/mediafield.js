@@ -233,11 +233,20 @@ var FileChimeraField = ChimeraField.extend(function FileChimeraField(parent, val
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.4.0
  */
 FileChimeraField.setMethod(function renderEdit(callback) {
 
-	var element = Blast.parseHTML('<div class="mediafieldgroup"></div>');
+	var element;
+
+	if (this._rendered) {
+		if (callback) callback(null);
+		return;
+	}
+
+	this._rendered = true;
+
+	element = Blast.parseHTML('<div class="mediafieldgroup"></div>');
 
 	this.entry = element;
 	this.input = element;
@@ -286,60 +295,62 @@ function pickMediaId(callback) {
 
 	var madeSelection;
 
-	vex.open({
-		className: vex.defaultOptions.className + ' chimeraMedia-picker',
-		content: '<x-hawkejs class="" data-type="block" data-name="mediaGalleryPicker"></x-hawkejs>',
-		afterOpen: function($vexContent) {
-			hawkejs.scene.openUrl('/chimera/media_gallery/media_files/gallery_picker', {history: false}, function(err, viewRender) {
+	hawkejs.scene.openUrl('/chimera/media_gallery/media_files/gallery_picker', {history: false}, function(err, viewRender) {
 
-				var $bar = $('.progress-bar', $vexContent),
-				    $fileupload = $('.fileupload', $vexContent);
+		var $fileupload,
+		    element,
+		    $bar;
 
-				$fileupload.fileupload({
-					url: '/media/upload',
-					dataType: 'json',
-					formData: {},
-					done: function (e, data) {
+		element = viewRender.dialog_element;
+		$fileupload = $('.fileupload', element);
+		$bar = $('.progress-bar', element);
 
-						var renderer = new hawkejs.constructor.ViewRender(hawkejs),
-						    file = data.result.files[0],
-						    html;
+		$fileupload.fileupload({
+			url: '/media/upload',
+			dataType: 'json',
+			formData: {},
+			done: function (e, data) {
 
-						renderer.initHelpers();
+				var renderer = new hawkejs.constructor.ViewRender(hawkejs),
+				    file = data.result.files[0],
+				    html;
 
-						html = '<figure class="chimeraGallery-thumb" data-id="' + file.id + '" style="';
-						html += renderer.helpers.Media.imageCssSet(file.id, {profile: 'pickerThumb'});
-						html += '"><div class="chimeraGallery-thumbInfo"><span>Select</span></div></figure>';
+				renderer.initHelpers();
 
-						$('.chimeraGallery-pickup', $vexContent).after(html);
-						$bar.css('width', '');
-					},
-					progressall: function (e, data) {
-						var progress = parseInt(data.loaded / data.total * 100, 10);
-						$bar.css('width', progress + '%');
-					}
-				});
+				html = '<figure class="chimeraGallery-thumb" data-id="' + file.id + '" style="';
+				html += renderer.helpers.Media.imageCssSet(file.id, {profile: 'pickerThumb'});
+				html += '"><div class="chimeraGallery-thumbInfo"><span>Select</span></div></figure>';
 
-				$vexContent.on('click', '.chimeraGallery-thumb', function onThumbClick(e) {
+				$('.chimeraGallery-pickup', element).after(html);
+				$bar.css('width', '');
+			},
+			progressall: function (e, data) {
+				var progress = parseInt(data.loaded / data.total * 100, 10);
+				$bar.css('width', progress + '%');
+			}
+		});
 
-					var $thumb = $(this),
-					    id = $thumb.data('id');
 
-					madeSelection = true;
+		$(element).on('click', '.chimeraGallery-thumb', function onThumbClick(e) {
 
-					if (callback) {
-						callback(null, id);
-					}
+			var $thumb = $(this),
+			    id = $thumb.data('id');
 
-					vex.close();
-				});
-			});
-		},
-		afterClose: function() {
+			madeSelection = true;
+
+			if (callback) {
+				callback(null, id);
+			}
+
+			element.parentElement.remove();
+		});
+
+		viewRender.afterOnce('dialog_close', function afterClosed() {
 			if (!madeSelection && callback) {
 				callback(null, false);
 			}
-		}
+		});
 	});
+
 }
 });
