@@ -1,5 +1,10 @@
 ## 0.4.0 (WIP)
 
+* Temporary files will now include an 'alchemy_' and pseudohex prefix
+* Placeholders are now 300x300 by default
+* Add `origin` field to MediaRaw model
+* Upgrade `veronica` version, will no longer make images bigger when resizing
+
 ## 0.2.0 (2016-05-30)
 
 * Dependency updates

@@ -7,15 +7,15 @@
 		"url": "https://github.com/skerit/alchemy-media.git"
 	},
 	"dependencies": {
-		"exiv2": "daiheitan/exiv2node#85bd6dcef348773430f060a025fad912f6ccdc96",
-		"gm": "~1.21.1",
-		"veronica": "0.1.x"
+		"exiv2"    : "~0.6.3",
+		"gm"       : "~1.21.1",
+		"veronica" : "~0.1.3"
 	},
 	"optionalDependencies": {
 		"faced": "skerit/faced#104eef2"
 	},
 	"license": "MIT",
 	"engines": {
-		"node": "~4.5.0"
+		"node": ">=6.6.0"
 	}
 }
