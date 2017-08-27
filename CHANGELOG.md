@@ -1,4 +1,4 @@
-## 0.4.0 (WIP)
+## 0.4.0 (2017-08-27)
 
 * Temporary files will now include an 'alchemy_' and pseudohex prefix
 * Placeholders are now 300x300 by default
