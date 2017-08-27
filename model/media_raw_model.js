@@ -23,12 +23,15 @@ var MediaRaw = Function.inherits('Alchemy.Model', function MediaRawModel(options
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.4.0
  */
 MediaRaw.constitute(function addFields() {
 
 	this.addField('name', 'String');
 	this.addField('extension', 'String');
+
+	// Remember the origin of the file (url or path)
+	this.addField('origin', 'String');
 
 	// Hash & size should be one unique index together
 	this.addField('hash', 'String');
@@ -47,7 +50,7 @@ MediaRaw.setProperty('types', alchemy.getClassGroup('media_type'));
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.2.0
+ * @version  0.4.0
  *
  * @param    {String}   file      The path to the file, can be a URL
  * @param    {Object}   options
@@ -67,17 +70,28 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 	// If the given file is actually a url, we'll need to download it first
 	if (file.startsWith('http://') || file.startsWith('https://')) {
 
-		if (!options.filename) {
-			options.filename = Url.parse(file).pathname.split('/').last();
-		}
+		// Set the url as the origin
+		options.origin = file;
 
 		// Don't keep the original, temporary file
 		options.move = true;
 
-		alchemy.downloadFile(file, options, function(err, tempfile) {
+		alchemy.downloadFile(file, options, function downloadedFile(err, tempfile, filename) {
 
 			if (err) {
 				return callback(err);
+			}
+
+			if (!options.filename) {
+				options.filename = filename;
+			}
+
+			if (!options.filename) {
+				options.filename = Url.parse(file).pathname.split('/').last();
+			}
+
+			if (!options.name) {
+				options.name = options.filename.beforeLast('.') || options.filename;
 			}
 
 			that.addFile(tempfile, options, callback);
@@ -124,11 +138,11 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 
 				var FileData = {
 					MediaFile: {
-						media_raw_id: item._id,
-						name: options.name || info.name,
-						filename: options.filename || info.filename,
-						extra: extra,
-						type: type.typeName
+						media_raw_id   : item._id,
+						name           : options.name || info.name,
+						filename       : options.filename || info.filename,
+						extra          : extra,
+						type           : type.typeName
 					}
 				};
 
@@ -318,14 +332,18 @@ var prepareId = function prepareId(file, options, callback) {
 				// If not: save the data to the database
 				data = {
 					MediaRaw: {
-						name: options.name || info.name,
-						extension: options.extension || info.extension,
-						mimetype: info.mimetype,
-						hash: info.hash,
-						size: info.size,
-						extra: options.rawExtra
+						name      : options.name || info.name,
+						extension : options.extension || info.extension,
+						mimetype  : info.mimetype,
+						hash      : info.hash,
+						size      : info.size,
+						extra     : options.rawExtra
 					}
 				};
+
+				if (options.origin) {
+					data.MediaRaw.origin = options.origin;
+				}
 
 				that.save(data, {document: false}, function getSaveResult(err, result) {
 
