@@ -7,9 +7,9 @@
  * @since    0.0.1
  * @version  0.3.0
  */
-var MediaFile = Function.inherits('Alchemy.Model', function MediaFileModel(options) {
+var MediaFile = Function.inherits('Alchemy.Model', function MediaFile(options) {
 
-	MediaFileModel.super.call(this, options);
+	MediaFile.super.call(this, options);
 
 	this.queue = Function.createQueue();
 	this.queue.limit = 5;
@@ -77,11 +77,27 @@ MediaFile.constitute(function chimeraConfig() {
 });
 
 /**
+ * Path to this file
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.4.1
+ * @version  0.4.1
+ *
+ * @type    {String}
+ */
+MediaFile.Document.setFieldGetter(function path() {
+
+	var MediaRaw = this.getModel('MediaRaw');
+
+	return MediaRaw.getPathFromId(this.media_raw_id);
+});
+
+/**
  * Get a file based on its media file id
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.0.1
+ * @version  0.4.1
  *
  * @param    {String|ObjectID}   id
  * @param    {Function}          callback
@@ -89,8 +105,9 @@ MediaFile.constitute(function chimeraConfig() {
 MediaFile.setMethod(function getFile(id, callback) {
 
 	var that = this,
-	    Raw  = this.getModel('MediaRaw'),
-	    options;
+	    options,
+	    result,
+	    item;
 
 	options = {
 		conditions: {
@@ -98,24 +115,54 @@ MediaFile.setMethod(function getFile(id, callback) {
 		}
 	};
 
-	this.find('first', options, function gotResult(err, result) {
+	Function.series(function findInExtra(next) {
+		if (!alchemy.plugins.media.extra_media_model) {
+			return next();
+		}
 
-		var item;
+		let ExtraModel = that.getModel(alchemy.plugins.media.extra_media_model);
 
-		if (err != null) {
+		ExtraModel.getFile(id, function gotResult(err, _item, record) {
+
+			if (err) {
+				log.error('Error in extra model:', err);
+				return next();
+			}
+
+			if (!_item) {
+				return next();
+			}
+
+			item = _item;
+			result = record;
+			next();
+		});
+	}, function useDefaultModel(next) {
+
+		if (result) {
+			return next();
+		}
+
+		that.find('first', options, function gotResult(err, record) {
+
+			if (err != null) {
+				return callback(err);
+			}
+
+			if (record) {
+				result = record;
+				next();
+			} else {
+				next(new Error('No image found'));
+			}
+		});
+	}, function done(err) {
+
+		if (err) {
 			return callback(err);
 		}
 
-		if (result.length) {
-			item = result.MediaFile;
-
-			item.path = Raw.getPathFromId(item.media_raw_id);
-
-			callback(null, item, result);
-
-		} else {
-			callback(new Error('No image found'));
-		}
+		callback(null, result);
 	});
 });
 

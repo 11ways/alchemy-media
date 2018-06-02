@@ -185,10 +185,15 @@ MediaFileField.prototype.setControls = function setControls() {
 		url: '/media/upload',
 		dataType: 'json',
 		formData: {},
-		done: function (e, data) {
+		done: function onDone(e, data) {
+
+			var result = JSON.undry(data.result),
+			    file;
+
 			// We only allow 1 file to be uploaded
-			var file = data.result.files[0];
-			that.setId(file.id);
+			file = result.files[0];
+
+			that.setId(file._id);
 		},
 		progressall: function (e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -309,27 +314,30 @@ function pickMediaId(callback) {
 			url: '/media/upload',
 			dataType: 'json',
 			formData: {},
-			done: function (e, data) {
+			done: function onDone(e, data) {
 
 				var renderer = new hawkejs.constructor.ViewRender(hawkejs),
-				    file = data.result.files[0],
+				    result = JSON.undry(data.result),
+				    file,
 				    html;
+
+				// We only allow 1 file to be uploaded
+				file = result.files[0];
 
 				renderer.initHelpers();
 
-				html = '<figure class="chimeraGallery-thumb" data-id="' + file.id + '" style="';
-				html += renderer.helpers.Media.imageCssSet(file.id, {profile: 'pickerThumb'});
+				html = '<figure class="chimeraGallery-thumb" data-id="' + file._id + '" style="';
+				html += renderer.helpers.Media.imageCssSet(file._id, {profile: 'pickerThumb'});
 				html += '"><div class="chimeraGallery-thumbInfo"><span>Select</span></div></figure>';
 
 				$('.chimeraGallery-pickup', element).after(html);
 				$bar.css('width', '');
 			},
-			progressall: function (e, data) {
+			progressall: function onProgressAll(e, data) {
 				var progress = parseInt(data.loaded / data.total * 100, 10);
 				$bar.css('width', progress + '%');
 			}
 		});
-
 
 		$(element).on('click', '.chimeraGallery-thumb', function onThumbClick(e) {
 

@@ -1,5 +1,8 @@
 ## 0.4.1 (WIP)
 
+* `image-set` still has no support in Firefox & IE, so...
+* If `window.devicePixelRatio` is available it's stored in the `mediaResolution` cookie, and then THAT will be used if an image request has no DPR set
+
 ## 0.4.0 (2017-08-27)
 
 * Temporary files will now include an 'alchemy_' and pseudohex prefix

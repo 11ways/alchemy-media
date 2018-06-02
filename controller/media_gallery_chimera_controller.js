@@ -5,9 +5,9 @@
  * @since         0.2.0
  * @version       0.3.0
  */
-var MediaGallery = Function.inherits('Alchemy.EditorChimeraController', function MediaGalleryChimeraController(conduit, options) {
+var MediaGallery = Function.inherits('Alchemy.Controller.Chimera.Editor', function MediaGallery(conduit, options) {
 
-	MediaGalleryChimeraController.super.call(this, conduit, options);
+	MediaGallery.super.call(this, conduit, options);
 
 	this.addComponent('paginate');
 
@@ -23,8 +23,8 @@ var MediaGallery = Function.inherits('Alchemy.EditorChimeraController', function
  *
  * @param   {Conduit}   conduit
  */
-MediaGallery.setMethod(function gallery(conduit) {
-	return this.listing(conduit, 'gallery');
+MediaGallery.setAction(function gallery(conduit) {
+	return this.doAction('listing', [conduit, 'gallery']);
 });
 
 /**
@@ -32,6 +32,6 @@ MediaGallery.setMethod(function gallery(conduit) {
  *
  * @param   {Conduit}   conduit
  */
-MediaGallery.setMethod(function gallery_picker(conduit) {
-	return this.listing(conduit, 'gallery', 'gallery_picker');
+MediaGallery.setAction(function gallery_picker(conduit) {
+	return this.doAction('listing', [conduit, 'gallery', 'gallery_picker']);
 });

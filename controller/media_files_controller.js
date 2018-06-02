@@ -13,8 +13,8 @@ var fs = require('fs'),
  * @since         0.0.1
  * @version       0.3.0
  */
-var MediaFiles = Function.inherits('Alchemy.Controller', function MediaFilesController(conduit, options) {
-	MediaFilesController.super.call(this, conduit, options);
+var MediaFiles = Function.inherits('Alchemy.Controller', function MediaFile(conduit, options) {
+	MediaFile.super.call(this, conduit, options);
 });
 
 /**
@@ -22,18 +22,18 @@ var MediaFiles = Function.inherits('Alchemy.Controller', function MediaFilesCont
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.2.0
+ * @version  0.4.1
  *
  * @param    {Conduit}   conduit
  */
-MediaFiles.setMethod(function thumbnail(conduit, id) {
+MediaFiles.setAction(function thumbnail(conduit, id) {
 
 	if (!id) {
 		return conduit.notFound('No valid id given');
 	}
 
 	// Get the requested file
-	this.getModel('MediaFile').getFile(id, function gotFile(err, file, record) {
+	this.getModel('MediaFile').getFile(id, function gotFile(err, record) {
 
 		var Type;
 
@@ -41,7 +41,7 @@ MediaFiles.setMethod(function thumbnail(conduit, id) {
 			return conduit.notFound(err);
 		}
 
-		Type = MediaTypes[file.type];
+		Type = MediaTypes[record.type];
 
 		if (!Type) {
 			Type = Classes.Alchemy.MediaType;
@@ -51,7 +51,7 @@ MediaFiles.setMethod(function thumbnail(conduit, id) {
 			Type = new Type();
 			Type.thumbnail(conduit, record);
 		} else {
-			conduit.error('Error generating thumbnail of ' + file.type);
+			conduit.error('Error generating thumbnail of ' + record.type);
 		}
 	});
 });
@@ -61,11 +61,11 @@ MediaFiles.setMethod(function thumbnail(conduit, id) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.1.0
- * @version  0.1.0
+ * @version  0.4.1
  *
  * @param    {Conduit}   conduit
  */
-MediaFiles.setMethod(function placeholder(conduit, options) {
+MediaFiles.setAction(function placeholder(conduit, options) {
 	var Image = new MediaTypes.image;
 	return Image.placeholder(conduit, options);
 });
@@ -75,13 +75,15 @@ MediaFiles.setMethod(function placeholder(conduit, options) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.2.0
+ * @version  0.4.1
  *
  * @param    {Conduit}   conduit
  */
-MediaFiles.setMethod(function serveStatic(conduit, path) {
+MediaFiles.setAction(function serveStatic(conduit, path) {
 
 	var Image = new MediaTypes.image;
+
+	console.log('Serving static', conduit, path);
 
 	// Find the actual path to the image
 	alchemy.findImagePath(path, function gotPath(err, image_path) {
@@ -100,21 +102,21 @@ MediaFiles.setMethod(function serveStatic(conduit, path) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.1.0
+ * @version  0.4.1
  *
  * @param    {Conduit}   conduit
  */
-MediaFiles.setMethod(function image(conduit, id) {
+MediaFiles.setAction(function image(conduit, id) {
 
 	if (!id) {
 		return this.placeholder(conduit, {text: 'Invalid image ID', status: 404});
 	}
 
-	this.getModel('MediaFile').getFile(id, function(err, file, record) {
+	this.getModel('MediaFile').getFile(id, function gotFile(err, record) {
 
 		var Image = new MediaTypes.image;
 
-		if (!file) {
+		if (!record) {
 			return Image.placeholder(conduit, {text: 404, status: 404});
 		}
 
@@ -127,17 +129,15 @@ MediaFiles.setMethod(function image(conduit, id) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.2.0
+ * @version  0.4.1
  *
  * @param    {Conduit}   Conduit
  */
-MediaFiles.setMethod(function file(conduit, id, extension) {
+MediaFiles.setAction(function file(conduit, id, extension) {
 
 	if (!id) {
 		return conduit.notFound('No valid id given');
 	}
-
-	console.log('ID:', id, 'extension:', extension);
 
 	this.getModel('MediaFile').getFile(id, function(err, file, record) {
 
@@ -167,11 +167,11 @@ MediaFiles.setMethod(function file(conduit, id, extension) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.0.1
+ * @version  0.4.1
  *
  * @param    {Conduit}   conduit
  */
-MediaFiles.setMethod(function upload(conduit) {
+MediaFiles.setAction(function upload(conduit) {
 
 	var MediaFile = this.getModel('MediaFile'),
 	    files = conduit.files,
@@ -180,7 +180,7 @@ MediaFiles.setMethod(function upload(conduit) {
 	    key;
 
 	// Iterate over every file
-	Object.each(files, function(file, key) {
+	Object.each(files, function eachFile(file, key) {
 
 		tasks[tasks.length] = function storeFile(next) {
 			var options = {
@@ -211,20 +211,21 @@ MediaFiles.setMethod(function upload(conduit) {
 		var files;
 
 		if (err) {
-			throw err;
+			return conduit.error(err);
 		}
 
 		files = [];
 
-		result.forEach(function(file, index) {
+		result.forEach(function eachStoredFile(file, index) {
 			files.push({
-				name: file.filename,
-				media_raw_id: file.media_raw_id,
-				id: file._id
+				id            : file._id,
+				_id           : file._id,
+				name          : file.filename,
+				media_raw_id  : file.media_raw_id,
 			});
 		});
 
-		conduit.send(JSON.stringify({files: files}))
+		conduit.send({files: files})
 	});
 });
 
@@ -233,11 +234,11 @@ MediaFiles.setMethod(function upload(conduit) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.4.1
  *
  * @param    {Conduit}   conduit
  */
-MediaFiles.setMethod(function uploadsingle(conduit) {
+MediaFiles.setAction(function uploadsingle(conduit) {
 
 	var MediaFile = this.getModel('MediaFile'),
 	    options,

@@ -13,8 +13,8 @@ var fs     = alchemy.use('fs'),
  * @since    0.0.1
  * @version  0.3.0
  */
-var MediaRaw = Function.inherits('Alchemy.Model', function MediaRawModel(options) {
-	MediaRawModel.super.call(this, options);
+var MediaRaw = Function.inherits('Alchemy.Model', function MediaRaw(options) {
+	MediaRaw.super.call(this, options);
 	this.MediaType = Classes.Alchemy.MediaType;
 });
 
@@ -44,6 +44,19 @@ MediaRaw.constitute(function addFields() {
 MediaRaw.setProperty('basePath', alchemy.plugins.media.path);
 MediaRaw.setProperty('hash', alchemy.plugins.media.hash);
 MediaRaw.setProperty('types', alchemy.getClassGroup('media_type'));
+
+/**
+ * Path to this file
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.4.1
+ * @version  0.4.1
+ *
+ * @type    {String}
+ */
+MediaRaw.Document.setFieldGetter(function path() {
+	return this.$model.getPathFromId(this._id);
+});
 
 /**
  * Add a file
