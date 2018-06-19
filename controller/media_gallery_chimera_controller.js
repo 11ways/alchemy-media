@@ -1,3 +1,8 @@
+// This controller requires chimera already be loaded
+if (!alchemy.plugins.chimera) {
+	return;
+}
+
 /**
  * The Media Gallery Gallery Controller class
  *
