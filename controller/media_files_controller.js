@@ -83,8 +83,6 @@ MediaFiles.setAction(function serveStatic(conduit, path) {
 
 	var Image = new MediaTypes.image;
 
-	console.log('Serving static', conduit, path);
-
 	// Find the actual path to the image
 	alchemy.findImagePath(path, function gotPath(err, image_path) {
 
