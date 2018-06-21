@@ -2,6 +2,7 @@
 
 * `image-set` still has no support in Firefox & IE, so...
 * If `window.devicePixelRatio` is available it's stored in the `mediaResolution` cookie, and then THAT will be used if an image request has no DPR set
+* Default resolution basis to 1920x1080 instead of 1024x768
 
 ## 0.4.0 (2017-08-27)
 
