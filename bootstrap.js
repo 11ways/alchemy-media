@@ -40,11 +40,13 @@ alchemy.createDir(options.cache);
 Router.get('Media::static', /\/media\/static\/(.*)*/, 'MediaFile#serveStatic');
 Router.get('Media::image', options.url + '/{id}', 'MediaFile#image');
 
+Router.get('MediaFile#info', '/media/info', 'MediaFile#info');
+
 // Allow dummy extensions
 Router.get('Media::fileextension', '/media/file/{id}.{extension}', 'MediaFile#file');
 
 // Allow direct file downloads
-Router.get('Media::file', '/media/file/:id', 'MediaFile#file');
+Router.get('Media::file', '/media/file/{id}', 'MediaFile#file');
 
 Router.get('Media::thumb', '/media/thumbnail/{id}', 'MediaFile#thumbnail');
 Router.get('Media::placeholder', '/media/placeholder', 'MediaFile#placeholder');
