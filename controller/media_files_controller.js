@@ -137,7 +137,7 @@ MediaFiles.setAction(function file(conduit, id, extension) {
 		return conduit.notFound('No valid id given');
 	}
 
-	this.getModel('MediaFile').getFile(id, function(err, file, record) {
+	this.getModel('MediaFile').getFile(id, function gotFile(err, record) {
 
 		var Type;
 
@@ -145,17 +145,17 @@ MediaFiles.setAction(function file(conduit, id, extension) {
 			return conduit.error(err);
 		}
 
-		if (!file) {
+		if (!record) {
 			return conduit.notFound('File not found');
 		}
-		
-		Type = MediaTypes[file.type];
+
+		Type = MediaTypes[record.type];
 
 		if (Type) {
 			Type = new Type();
 			Type.serve(conduit, record);
 		} else {
-			conduit.error('Error serving type ' + file.type);
+			conduit.error('Error serving type ' + record.type);
 		}
 	});
 });
@@ -268,5 +268,48 @@ MediaFiles.setAction(function uploadsingle(conduit) {
 		}
 
 		conduit.response.end('/media/image/' + result._id);
+	});
+});
+
+/**
+ * Get info on a file
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.4.1
+ * @version  0.4.1
+ *
+ * @param    {Conduit}   conduit
+ * @param    {String}    path
+ */
+MediaFiles.setAction(function info(conduit) {
+
+	var Image = new MediaTypes.image,
+	    path = conduit.param('path');
+
+	if (!path) {
+		return conduit.error(new Error('No valid path given'));
+	}
+
+	// Find the actual path to the image
+	alchemy.findImagePath(path, function gotPath(err, image_path) {
+
+		if (err) {
+			return conduit.error(err);
+		}
+
+		var image = Image.veronica.image(image_path);
+
+		image.size(function gotSize(err, size) {
+
+			if (err) {
+				return conduit.error(err);
+			}
+
+			console.log('Created gm image:', image, size);
+
+			conduit.setHeader('cache-control', 'public, max-age=3600, must-revalidate');
+
+			conduit.end(size);
+		});
 	});
 });
