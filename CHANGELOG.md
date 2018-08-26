@@ -1,4 +1,4 @@
-## 0.4.1 (WIP)
+## 0.4.1 (2018-08-27)
 
 * `image-set` still has no support in Firefox & IE, so...
 * If `window.devicePixelRatio` is available it's stored in the `mediaResolution` cookie, and then THAT will be used if an image request has no DPR set
