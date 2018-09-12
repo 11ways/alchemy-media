@@ -155,7 +155,7 @@ MediaFiles.setAction(function file(conduit, id, extension) {
 			Type = new Type();
 			Type.serve(conduit, record);
 		} else {
-			conduit.error('Error serving type ' + record.type);
+			conduit.error('Unable to serve unknown type "' + record.type + '"');
 		}
 	});
 });

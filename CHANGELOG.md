@@ -1,3 +1,7 @@
+## 0.4.2 (WIP)
+
+* Fix generating thumbnail for records without a MediaRaw
+
 ## 0.4.1 (2018-08-27)
 
 * `image-set` still has no support in Firefox & IE, so...

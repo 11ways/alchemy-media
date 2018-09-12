@@ -316,7 +316,7 @@ function pickMediaId(callback) {
 			formData: {},
 			done: function onDone(e, data) {
 
-				var renderer = new hawkejs.constructor.ViewRender(hawkejs),
+				var renderer = new __Protoblast.Classes.Hawkejs.ViewRender(hawkejs),
 				    result = JSON.undry(data.result),
 				    file,
 				    html;
