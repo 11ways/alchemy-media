@@ -1,5 +1,6 @@
 var path      = alchemy.use('path'),
-    Veronica  = alchemy.use('veronica');
+    Veronica  = alchemy.use('veronica'),
+    fs        = alchemy.use('fs');
 
 // Define the default options
 var options = {
@@ -13,12 +14,6 @@ var options = {
 	// Which hash function to use
 	hash: 'sha1',
 
-	// The location of the exiv2 binary
-	exiv2: '/usr/bin/exiv2',
-
-	// The location of cwebp
-	cwebp: '/usr/bin/cwebp',
-
 	// Enable webp
 	webp: true,
 
@@ -31,6 +26,11 @@ var options = {
 
 // Inject the user-overridden options
 alchemy.plugins.media = Object.assign(options, alchemy.plugins.media);
+
+// Find the paths to these binaries
+options.convert = alchemy.findPathToBinarySync('convert', options.convert);
+options.exiv2 = alchemy.findPathToBinarySync('exiv2', options.exiv2);
+options.cwebp = alchemy.findPathToBinarySync('cwebp', options.cwebp);
 
 // Make sure these folders exist
 alchemy.createDir(options.scratch);

@@ -63,7 +63,7 @@ MediaRaw.Document.setFieldGetter(function path() {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.4.0
+ * @version  0.4.2
  *
  * @param    {String}   file      The path to the file, can be a URL
  * @param    {Object}   options
@@ -134,8 +134,11 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 
 		type = that.MediaType.determineType(info.mimetype, options);
 
-
 		type.normalize(file, info, function afterNormalize(err, rawPath, rawInfo, rawExtra, extra) {
+
+			if (err) {
+				return callback(err);
+			}
 
 			options.rawExtra = rawExtra;
 			options.move = true;
@@ -237,7 +240,7 @@ MediaRaw.setMethod(function getFile(id, callback) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.2.0
+ * @version  0.4.2
  *
  * @param    {String}   file      The path to the file
  * @param    {Object}   options   Optional options
@@ -251,6 +254,10 @@ MediaRaw.setMethod(function storeFile(file, options, callback) {
 	if (typeof options == 'function') {
 		callback = options;
 		options = {};
+	}
+
+	if (!file) {
+		return callback(new Error('Unable to store file: given path string is empty'));
 	}
 
 	if (typeof options.move == 'undefined') {
@@ -306,12 +313,16 @@ MediaRaw.setMethod(function storeFile(file, options, callback) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.2.0
+ * @version  0.4.2
  */
 var prepareId = function prepareId(file, options, callback) {
 
 	var that = this,
 	    data;
+
+	if (!file) {
+		return callback(new Error('Unable to prepare file ID: given path is empty'));
+	}
 
 	alchemy.getFileInfo(file, {hash: this.hashType}, function gotFileInfo(err, info) {
 
