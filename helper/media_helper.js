@@ -24,8 +24,8 @@ Media.setStatic(function onScene(scene) {
 
 	// Get the screen size of this client, so we can send them correct pictures
 	scene.cookie('mediaResolution', {
-		width  : Math.max(1024, screen.availWidth||0, window.outerWidth||0),
-		height : Math.max(768, screen.availHeight||0, window.outerHeight||0),
+		width  : Math.max(screen.availWidth||0, window.outerWidth||0) || 1024,
+		height : Math.max(screen.availHeight||0, window.outerHeight||0) || 768,
 		dpr    : window.devicePixelRatio
 	});
 
@@ -41,6 +41,51 @@ Media.setStatic(function onScene(scene) {
 		// Remove the data-lazy attribute
 		el.dataset.lazy = '';
 	});
+
+	//Media.loadImagesBasedOnSize();
+});
+
+/**
+ * Load images based on the element's dimensions
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.4.1
+ * @version  0.4.1
+ */
+Media.setStatic(function loadImagesBasedOnSize() {
+
+	var elements = document.querySelectorAll('img'),
+	    element,
+	    srcset,
+	    src,
+	    url,
+	    i;
+
+	for (i = 0; i < elements.length; i++) {
+		element = elements[i];
+		src = element.getAttribute('src');
+
+		if (!src) {
+			continue;
+		}
+
+		// Parse the url
+		url = Blast.Classes.RURL.parse(src);
+
+		url.addQuery('width', element.width);
+		url.addQuery('height', element.height);
+
+		// Set the new source
+		url.src = String(url);
+
+		// Add dpr info
+		url.addQuery('dpr', 2);
+
+		// Create sourceset
+		srcset = String(url) + ' 2x';
+
+		element.setAttribute('srcset', srcset);
+	}
 });
 
 /**
@@ -450,4 +495,42 @@ Media.setMethod(function placeholder(options) {
 	html += '>';
 
 	return html;
+});
+
+/**
+ * Test image
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.4.1
+ * @version  0.4.1
+ *
+ * @param    {Object}    options
+ */
+Media.setMethod(function testImage(image) {
+
+	var that = this,
+	    placeholder;
+
+	var start = Date.now();
+
+	placeholder = Blast.Classes.Hawkejs.Helper.Helper.prototype.placeholder.call(this, function imageResolver(callback) {
+
+		var html;
+
+		console.log('Getting resource with path', image);
+
+		that.view.helpers.Alchemy.getResource({name: 'MediaFile#info', params: {path: image}}, function gotResult(err, info) {
+
+			console.log('Result;', err, info);
+
+			callback(null, '<b>Hi: ' + (Date.now()-start) + '</b>');
+		});
+	});
+
+	var alimage = this.view.createElement('al-image');
+	alimage.setAttribute('src', image);
+
+	this.print(alimage);
+
+	return placeholder;
 });
