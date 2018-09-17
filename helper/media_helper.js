@@ -331,6 +331,7 @@ Media.setMethod(function image(image_id, options) {
 	var classes,
 	    element,
 	    srcset,
+	    image,
 	    clone,
 	    key,
 	    url;
@@ -339,6 +340,13 @@ Media.setMethod(function image(image_id, options) {
 		options = {};
 	} else {
 		options = Object.assign({}, options);
+	}
+
+	if (image_id && typeof image_id == 'object' && image_id._id) {
+		image = image_id;
+		image_id = image_id._id;
+	} else {
+		image = {};
 	}
 
 	url = this.imageUrl(image_id, options);
@@ -358,9 +366,13 @@ Media.setMethod(function image(image_id, options) {
 		element.setAttribute('srcset', srcset);
 	}
 
+	if (options.title || image.title) {
+		element.setAttribute('title', options.title || image.title);
+	}
+
 	// Set the alt description
-	if (options.alt) {
-		element.setAttribute('alt', options.alt);
+	if (options.alt || image.alt) {
+		element.setAttribute('alt', options.alt || image.alt);
 	}
 
 	classes = (options.class || options.className || '');
