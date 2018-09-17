@@ -340,15 +340,22 @@ FileChimeraField.setMethod(function initEdit(value) {
 	this.renderEdit();
 });
 
+// Intercept filebrowser event emitted in modified ckeditor code
 hawkejs.scene.on('filebrowser', function onFilebrowse(input, dialog, filebrowser) {
 
-	pickMediaId(function picked(err, result) {
+	pickMediaId(function picked(err, result, element) {
 
 		if (err) {
 			throw err;
 		}
 
 		input.setValue('/media/image/' + result);
+
+		// Set the alt text
+		if (element && element.getAttribute('alt')) {
+			var alt = $('#' + input.domId).parents('table').find('#cke_158_textInput');
+			alt.val(element.getAttribute('alt'));
+		}
 	});
 });
 
@@ -403,7 +410,7 @@ function pickMediaId(callback) {
 			madeSelection = true;
 
 			if (callback) {
-				callback(null, id);
+				callback(null, id, this);
 			}
 
 			element.parentElement.remove();

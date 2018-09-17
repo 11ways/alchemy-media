@@ -18,12 +18,28 @@
 			item = iterator.next();
 			record = item.value;
 
+			console.log('RECORD:', record, item);
+
+			if (record.fields[4].value) {
+				title = record.fields[4].value.encodeHTML();
+			} else {
+				title = '';
+			}
+
+			if (record.fields[5].value) {
+				alt = record.fields[5].value.encodeHTML();
+			} else {
+				alt = '';
+			}
+
 			//implement('chimera/elements/gallery_image', null, {item: item, record: record});
 			%>
 			<figure
 				class="chimeraGallery-thumb"
 				style="<%= Media.imageCssSet(record.id, {profile: 'pickerThumb'}) %>"
-				data-id="<%= record.id %>"
+				data-id="<%= record.id %>",
+				title="<%= title %>"
+				alt="<%= alt %>"
 			>
 				<div class="chimeraGallery-thumbInfo">
 					<span>Select</span>

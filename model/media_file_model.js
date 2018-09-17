@@ -62,6 +62,8 @@ MediaFile.constitute(function chimeraConfig() {
 	list.addField('name');
 	list.addField('filename');
 	list.addField('type');
+	list.addField('title');
+	list.addField('alt');
 
 	// Get the edit group
 	edit = this.chimera.getActionFields('edit');
@@ -77,6 +79,8 @@ MediaFile.constitute(function chimeraConfig() {
 	gallery.addField('filename');
 	gallery.addField('type');
 	gallery.addField('extra');
+	gallery.addField('title');
+	gallery.addField('alt');
 });
 
 /**
