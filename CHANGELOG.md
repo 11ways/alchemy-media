@@ -2,6 +2,7 @@
 
 * Fix generating thumbnail for records without a MediaRaw
 * `Media#image()` helper now accepts documents, and will use their alt & title tag if available
+* Add `alt` and `title` field to `MediaFile`, which can now be edited in chimera
 
 ## 0.4.1 (2018-08-27)
 

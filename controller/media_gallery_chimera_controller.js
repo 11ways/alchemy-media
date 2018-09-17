@@ -40,3 +40,34 @@ MediaGallery.setAction(function gallery(conduit) {
 MediaGallery.setAction(function gallery_picker(conduit) {
 	return this.doAction('listing', [conduit, 'gallery', 'gallery_picker']);
 });
+
+/**
+ * Let the user edit a file
+ *
+ * @param   {Conduit}   conduit
+ */
+MediaGallery.setAction(async function modify(conduit) {
+
+	var that = this,
+	    File = this.getModel('MediaFile');
+
+	let record = await File.findById(conduit.param('id'));
+
+	if (!record) {
+		return conduit.notFound();
+	}
+
+	if (conduit.method == 'post') {
+
+		record.title = conduit.body.title;
+		record.alt = conduit.body.alt;
+
+		await record.save();
+
+		return conduit.end({saved: true});
+	}
+
+	this.set('record', record);
+
+	this.render('chimera/editor/edit_image');
+});

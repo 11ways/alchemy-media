@@ -33,6 +33,9 @@ MediaFile.constitute(function addFields() {
 	this.addField('type', 'Enum');
 	this.addField('extra', 'Object');
 
+	this.addField('title', 'String');
+	this.addField('alt', 'String');
+
 	this.belongsTo('MediaRaw');
 });
 

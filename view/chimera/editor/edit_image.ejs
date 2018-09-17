@@ -1,0 +1,72 @@
+<% makeDialog() %>
+<% style('chimera/mediafield') %>
+
+<%
+if (record.title) {
+	title = record.title.encodeHTML();
+} else {
+	title = '';
+}
+
+if (record.alt) {
+	alt = record.alt.encodeHTML();
+} else {
+	alt = '';
+}
+%>
+
+<div class="chimera-image-edit">
+	<div class="form-horizontal">
+
+		<div class="form-group container-fluid">
+			<div class="row">
+				<div class="col-sm-12 chimeraField-left control-label">
+					<h2><%= record.name %></h2>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group container-fluid">
+			<div class="row">
+				<div class="col-sm-12 chimeraField-left control-label">
+					<label class="chimeraField-label" for="image-title-text">
+						Title
+					</label>
+				</div>
+			</div>
+			<div class="row">
+				<input
+					id="image-title-text"
+					class="chimeraField-prime chimeraField-string form-control"
+					value="<%= title %>"
+					type="text"
+				>
+			</div>
+		</div>
+
+		<div class="form-group container-fluid">
+			<div class="row">
+				<div class="col-sm-12 chimeraField-left control-label">
+					<label class="chimeraField-label" for="image-alt-text">
+						Alternatieve tekst
+					</label>
+				</div>
+			</div>
+			<div class="row">
+				<input
+					id="image-alt-text"
+					class="chimeraField-prime chimeraField-string form-control"
+					value="<%= alt %>"
+					type="text"
+				>
+			</div>
+		</div>
+	</div>
+
+	<a class="action-save-image btn btn-default btn-success"
+		title="save"
+		role="button"
+		style="color:white;"
+	>Save</a>
+
+</div>

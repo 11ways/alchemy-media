@@ -85,11 +85,20 @@ MediaFileField.prototype.setId = function setId(id) {
 	// Generate the image html
 	html = '<img src="/media/thumbnail/' + id + '" srcset="/media/thumbnail/' + id + '?dpr=2 2x" />';
 
+	html += '<div class="image-actions">';
+
+	html += '<span class="edit">';
+	html += '<span class="icon"><i class="fa fa fa-edit"></i></span>';
+	html += '<span class="message">Edit</span>';
+	html += '</span>';
+
 	// Add the button to remove the image
 	html += '<span class="remove">';
-	html += '<span class="icon"><i class="fa fa-times fa-inverse"></i></span>';
+	html += '<span class="icon"><i class="fa fa-times"></i></span>';
 	html += '<span class="message">Remove</span>';
 	html += '</span>';
+
+	html += '</div>';
 
 	// See if this is an arrayable field
 	this.array = this.chimera_field.isArray;
@@ -114,6 +123,10 @@ MediaFileField.prototype.setId = function setId(id) {
 			that.removeFile();
 		});
 	}
+
+	$('.edit', this.preview).on('click', function() {
+		that.editFile();
+	});
 };
 
 /**
@@ -132,6 +145,49 @@ MediaFileField.prototype.removeFile = function removeFile() {
 	}
 
 	this.chimerafield.setValue(null);
+};
+
+/**
+ * Edit the set file
+ */
+MediaFileField.prototype.editFile = function editFile() {
+
+	var that = this,
+	    options = {
+		history: false,
+		get: {
+			id: this.chimera_field.value
+		}
+	};
+
+	var url = '/chimera/media_gallery/media_files/modify';
+
+	hawkejs.scene.openUrl(url, options, function(err, viewRender) {
+
+		$('.action-save-image').on('click', function onClick(e) {
+
+			var save_options;
+
+			e.preventDefault();
+
+			save_options = {
+				history: false,
+				post: {
+					title: $('#image-title-text').val(),
+					alt: $('#image-alt-text').val()
+				}
+			};
+
+			hawkejs.scene.fetch(url + '?id=' + that.chimera_field.value, save_options, function saved(err, res, b) {
+
+				if (err) {
+					throw err;
+				}
+
+				viewRender.dialog_element.parentElement.remove();
+			});
+		});
+	});
 };
 
 /**
