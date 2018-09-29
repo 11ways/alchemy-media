@@ -165,7 +165,7 @@ MediaFiles.setAction(function file(conduit, id, extension) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.4.1
+ * @version  0.4.2
  *
  * @param    {Conduit}   conduit
  */
@@ -174,8 +174,11 @@ MediaFiles.setAction(function upload(conduit) {
 	var MediaFile = this.getModel('MediaFile'),
 	    files = conduit.files,
 	    tasks = [],
-	    file,
-	    key;
+	    file;
+
+	if (files && files.files && typeof files.files == 'object') {
+		files = files.files;
+	}
 
 	// Iterate over every file
 	Object.each(files, function eachFile(file, key) {

@@ -18,8 +18,6 @@
 			item = iterator.next();
 			record = item.value;
 
-			console.log('RECORD:', record, item);
-
 			if (record.fields[4].value) {
 				title = record.fields[4].value.encodeHTML();
 			} else {
