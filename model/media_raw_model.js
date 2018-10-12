@@ -59,6 +59,111 @@ MediaRaw.Document.setFieldGetter(function path() {
 });
 
 /**
+ * Export the actual file
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.4.1
+ * @version  0.4.1
+ *
+ * @type     {Stream}   output
+ *
+ * @return   {Pledge}
+ */
+MediaRaw.Document.setMethod(function extraExportToStream(output) {
+
+	var that = this,
+	    path = this.path,
+	    stats;
+
+	if (!path) {
+		return Pledge.resolve();
+	}
+
+	return Function.series(function getStats(next) {
+		fs.stat(path, function checked(err, result) {
+
+			if (err) {
+				return next();
+			}
+
+			stats = result;
+
+			next();
+		});
+	}, function streamFile(next) {
+
+		if (!stats) {
+			return next();
+		}
+
+		let hbuf = Buffer.allocUnsafe(5);
+
+		// 0xFF indicates an extra export
+		hbuf.writeUInt8(0xFF, 0);
+
+		// Now say how long it is
+		hbuf.writeUInt32BE(stats.size, 1);
+
+		// Write the header to the stream
+		output.write(hbuf);
+
+		// Create a read stream to the file
+		let read_stream = fs.createReadStream(path);
+
+		// Listen for the data
+		read_stream.on('data', function onData(data) {
+			output.write(data);
+		});
+
+		// Listen for the stream end
+		read_stream.on('end', next);
+
+	}, function done(err) {
+
+	});
+});
+
+/**
+ * Import the actual file
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.4.1
+ * @version  0.4.1
+ *
+ * @type     {Stream}   input
+ *
+ * @return   {Pledge}
+ */
+MediaRaw.Document.setMethod(function extraImportFromStream(input) {
+
+	var that = this,
+	    file_path = this.path,
+	    pledge = new Pledge(),
+	    stream;
+
+	input.pause();
+
+	alchemy.createDir(path.dirname(file_path), function done(err) {
+
+		if (err) {
+			return pledge.reject(err);
+		}
+
+		input.resume();
+
+		stream = fs.createWriteStream(file_path);
+
+		input.pipe(stream);
+
+		input.on('finish', function onEnd() {
+			pledge.resolve();
+		});
+	});
+
+	return pledge;
+});
+
+/**
  * Add a file
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
