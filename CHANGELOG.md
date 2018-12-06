@@ -1,4 +1,6 @@
-## 0.4.2 (WIP)
+## 0.4.3 (WIP)
+
+## 0.4.2 (2018-12-06)
 
 * Fix generating thumbnail for records without a MediaRaw
 * `Media#image()` helper now accepts documents, and will use their alt & title tag if available
