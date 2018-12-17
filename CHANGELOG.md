@@ -1,5 +1,7 @@
 ## 0.4.3 (WIP)
 
+* Throw error when path to serve is not a string
+
 ## 0.4.2 (2018-12-06)
 
 * Fix generating thumbnail for records without a MediaRaw
