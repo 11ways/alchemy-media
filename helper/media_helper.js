@@ -320,7 +320,7 @@ Media.setMethod(function imageCssSet(image_id, options) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.4.3
  *
  * @param    {String}   image_id
  *
@@ -371,9 +371,7 @@ Media.setMethod(function image(image_id, options) {
 	}
 
 	// Set the alt description
-	if (options.alt || image.alt) {
-		element.setAttribute('alt', options.alt || image.alt);
-	}
+	element.setAttribute('alt', options.alt || image.alt || '');
 
 	classes = (options.class || options.className || '');
 
