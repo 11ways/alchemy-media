@@ -1,4 +1,4 @@
-## 0.6.0 (WIP)
+## 0.5.0 (WIP)
 
 * Throw error when path to serve is not a string
 * Make compatible with Alchemy v1.1.0
