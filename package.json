@@ -9,7 +9,7 @@
 	"dependencies": {
 		"exiv2"    : "myfreeweb/exiv2node",
 		"gm"       : "~1.23.1",
-		"veronica" : "~0.2.1"
+		"veronica" : "skerit/veronica"
 	},
 	"peerDependencies": {
 		"alchemymvc": "~1.0.6"
