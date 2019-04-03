@@ -162,7 +162,7 @@ MediaFileField.prototype.editFile = function editFile() {
 
 	var url = '/chimera/media_gallery/media_files/modify';
 
-	hawkejs.scene.openUrl(url, options, function(err, viewRender) {
+	hawkejs.scene.openUrl(url, options, function(err, renderer) {
 
 		$('.action-save-image').on('click', function onClick(e) {
 
@@ -184,7 +184,7 @@ MediaFileField.prototype.editFile = function editFile() {
 					throw err;
 				}
 
-				viewRender.dialog_element.parentElement.remove();
+				renderer.dialog_element.parentElement.remove();
 			});
 		});
 	});
