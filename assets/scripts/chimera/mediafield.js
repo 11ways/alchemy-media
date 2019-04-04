@@ -214,7 +214,7 @@ MediaFileField.prototype.setControls = function setControls() {
 	html += '<span>Pick file</span>';
 	html += '</span>';
 
-	html += '<div class="chimeraMedia-progress progress">';
+	html += '<div class="chimeraMedia-progress progress" hidden>';
 	html += '<div class="progress-bar progress-bar-success"></div>';
 	html += '</div>';
 
@@ -250,10 +250,16 @@ MediaFileField.prototype.setControls = function setControls() {
 			file = result.files[0];
 
 			that.setId(file._id);
+
+			if ($progress && $progress[0]) {
+				$progress[0].hidden = true;
+			}
 		},
 		progressall: function (e, data) {
 			var progress = parseInt(data.loaded / data.total * 100, 10);
 			$bar.css('width', progress + '%');
+
+			$progress[0].hidden = false;
 		}
 	});
 
@@ -366,11 +372,13 @@ function pickMediaId(callback) {
 	hawkejs.scene.openUrl('/chimera/media_gallery/media_files/gallery_picker', {history: false}, function(err, viewRender) {
 
 		var $fileupload,
+		    $progress,
 		    element,
 		    $bar;
 
 		element = viewRender.dialog_element;
 		$fileupload = $('.fileupload', element);
+		$progress = $('.progress', element);
 		$bar = $('.progress-bar', element);
 
 		$fileupload.fileupload({
@@ -379,7 +387,7 @@ function pickMediaId(callback) {
 			formData: {},
 			done: function onDone(e, data) {
 
-				var renderer = new __Protoblast.Classes.Hawkejs.ViewRender(hawkejs),
+				var renderer = new __Protoblast.Classes.Hawkejs.Renderer(hawkejs),
 				    result = JSON.undry(data.result),
 				    file,
 				    html;
@@ -387,18 +395,24 @@ function pickMediaId(callback) {
 				// We only allow 1 file to be uploaded
 				file = result.files[0];
 
-				renderer.initHelpers();
-
 				html = '<figure class="chimeraGallery-thumb" data-id="' + file._id + '" style="';
 				html += renderer.helpers.Media.imageCssSet(file._id, {profile: 'pickerThumb'});
 				html += '"><div class="chimeraGallery-thumbInfo"><span>Select</span></div></figure>';
 
 				$('.chimeraGallery-pickup', element).after(html);
 				$bar.css('width', '');
+
+				if ($progress && $progress[0]) {
+					$progress[0].hidden = true;
+				}
 			},
 			progressall: function onProgressAll(e, data) {
 				var progress = parseInt(data.loaded / data.total * 100, 10);
 				$bar.css('width', progress + '%');
+
+				if ($progress && $progress[0]) {
+					$progress[0].hidden = false;
+				}
 			}
 		});
 

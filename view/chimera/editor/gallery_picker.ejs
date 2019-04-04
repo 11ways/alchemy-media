@@ -7,7 +7,7 @@
 			<span>Upload file</span>
 			<input class="fileupload" type="file" name="newfile">
 		</span>
-		<div class="chimeraMedia-progress progress">
+		<div class="chimeraMedia-progress progress" hidden>
 			<div class="progress-bar progress-bar-success"></div>
 		</div>
 	</div>
@@ -35,7 +35,7 @@
 			<figure
 				class="chimeraGallery-thumb"
 				style="<%= Media.imageCssSet(record.id, {profile: 'pickerThumb'}) %>"
-				data-id="<%= record.id %>",
+				data-id="<%= record.id %>"
 				title="<%= title %>"
 				alt="<%= alt %>"
 			>
