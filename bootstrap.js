@@ -62,6 +62,8 @@ options.veronica = new Veronica({
 	cache: options.cache
 });
 
+alchemy.hawkejs.addRawHtml(`<script>document.cookie = 'mediaResolution=' + encodeURIComponent(JSON.stringify({width:Math.max(screen.availWidth||0, window.outerWidth||0) || 1024,height:Math.max(screen.availHeight||0, window.outerHeight||0) || 768,dpr:window.devicePixelRatio}))</script>`);
+
 /**
  * Register a profile under the given name
  *
