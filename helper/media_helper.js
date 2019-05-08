@@ -380,7 +380,7 @@ Media.setMethod(function image(image_id, options) {
 	element.setAttribute('class', classes);
 
 	if (options.attributes) {
-		Hawkejs.Hawkejs.setAttributes(element, options.attributes);
+		Hawkejs.setAttributes(element, options.attributes);
 	}
 
 	return element;
