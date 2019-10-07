@@ -89,6 +89,63 @@ Media.setStatic(function loadImagesBasedOnSize() {
 });
 
 /**
+ * Apply directive to an element
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.5.0
+ * @version  0.5.0
+ *
+ * @param    {Element}   element    The element to apply to
+ * @param    {String}    image      The image identifier
+ * @param    {Object}    options
+ *
+ * @return   {Object}
+ */
+Media.setMethod(function applyDirective(element, image, options) {
+
+	var srcset,
+	    height = element.getAttribute('height'),
+	    clone,
+	    width = element.getAttribute('width'),
+	    url;
+
+	if (image && typeof image == 'object' && image._id) {
+		image = image._id;
+	}
+
+	if (!options) {
+		options = {};
+	}
+
+	if (width) {
+		if (width.indexOf('%') > -1) {
+			element.removeAttribute('width');
+		}
+
+		options.width = width;
+	}
+
+	if (height) {
+		if (height.indexOf('%') > -1) {
+			element.removeAttribute('height');
+		}
+
+		options.height = height;
+	}
+
+	url = this.imageUrl(image, options);
+	clone = url.clone();
+	clone.addQuery('dpr', 2);
+
+	srcset = clone + ' 2x';
+
+	// Set the source attribute
+	element.setAttribute('src', url);
+
+	element.setAttribute('srcset', srcset);
+});
+
+/**
  * Get a file anchor
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
