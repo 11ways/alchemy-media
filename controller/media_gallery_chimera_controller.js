@@ -49,7 +49,7 @@ MediaGallery.setAction(function gallery_picker(conduit) {
 MediaGallery.setAction(async function modify(conduit) {
 
 	var that = this,
-	    File = this.getModel('MediaFile');
+	    File = Model.get('MediaFile');
 
 	let record = await File.findById(conduit.param('id'));
 
@@ -58,7 +58,6 @@ MediaGallery.setAction(async function modify(conduit) {
 	}
 
 	if (conduit.method == 'post') {
-
 		record.title = conduit.body.title;
 		record.alt = conduit.body.alt;
 
@@ -67,7 +66,12 @@ MediaGallery.setAction(async function modify(conduit) {
 		return conduit.end({saved: true});
 	}
 
+	this.set('is_translatable', alchemy.plugins.media.translatable);
 	this.set('record', record);
+
+	if (alchemy.plugins.media.translatable) {
+		this.set('prefixes', Prefix.all());
+	}
 
 	this.render('chimera/editor/edit_image');
 });

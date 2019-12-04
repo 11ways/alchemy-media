@@ -24,7 +24,7 @@ MediaFile.setProperty('types', alchemy.shared('Media.types'));
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.5.0
  */
 MediaFile.constitute(function addFields() {
 
@@ -33,8 +33,14 @@ MediaFile.constitute(function addFields() {
 	this.addField('type', 'Enum');
 	this.addField('extra', 'Object');
 
-	this.addField('title', 'String');
-	this.addField('alt', 'String');
+	let options = {};
+
+	if (alchemy.plugins.media.translatable) {
+		options.translatable = true;
+	}
+
+	this.addField('title', 'String', options);
+	this.addField('alt', 'String', options);
 
 	this.belongsTo('MediaRaw');
 });

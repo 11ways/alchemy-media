@@ -166,16 +166,21 @@ MediaFileField.prototype.editFile = function editFile() {
 
 		$('.action-save-image').on('click', function onClick(e) {
 
-			var save_options;
+			var save_options,
+			    $fields = $('.chimera-image-edit input.media-edit-field'),
+			    post = {};
 
 			e.preventDefault();
 
+			$fields.each(function eachField() {
+				var field = this.dataset.field;
+
+				Object.setPath(post, field, this.value);
+			});
+
 			save_options = {
 				history: false,
-				post: {
-					title: $('#image-title-text').val(),
-					alt: $('#image-alt-text').val()
-				}
+				post: post
 			};
 
 			hawkejs.scene.fetch(url + '?id=' + that.chimera_field.value, save_options, function saved(err, res, b) {

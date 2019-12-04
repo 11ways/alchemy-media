@@ -13,6 +13,11 @@ if (record.alt) {
 } else {
 	alt = '';
 }
+
+if (!prefixes) {
+	prefixes = ['__'];
+}
+
 %>
 
 <div class="chimera-image-edit">
@@ -26,41 +31,86 @@ if (record.alt) {
 			</div>
 		</div>
 
-		<div class="form-group container-fluid">
-			<div class="row">
-				<div class="col-sm-12 chimeraField-left control-label">
-					<label class="chimeraField-label" for="image-title-text">
-						Title
-					</label>
-				</div>
-			</div>
-			<div class="row">
-				<input
-					id="image-title-text"
-					class="chimeraField-prime chimeraField-string form-control"
-					value="<%= title %>"
-					type="text"
-				>
-			</div>
-		</div>
+		{% with prefixes as prefix %}
+			{% each %}
+				<% language = ''; %>
+				<% value_title = record.title %>
+				<% value_alt = record.alt %>
+				<% element_id = '' %>
+				<% field_extension = '' %>
 
-		<div class="form-group container-fluid">
-			<div class="row">
-				<div class="col-sm-12 chimeraField-left control-label">
-					<label class="chimeraField-label" for="image-alt-text">
-						Alternatieve tekst
-					</label>
+				<% if (prefix != '__') { %>
+					<h3 class="language-title">{%= prefix.title %}</h3>
+					<% language = prefix.locale %>
+					<% element_id = '_' + language %>
+					<% field_extension = '.' + language %>
+
+					<% if (value_title) value_title = value_title[language] %>
+					<% if (value_alt) value_alt = value_alt[language] %>
+				<% } %>
+
+				<%
+					if (value_title) {
+						value_title = value_title.encodeHTML();
+					} else {
+						value_title = '';
+					}
+				%>
+
+				<%
+					if (value_alt) {
+						value_alt = value_alt.encodeHTML();
+					} else {
+						value_alt = '';
+					}
+				%>
+
+
+
+				<div class="form-group container-fluid">
+					<div class="row">
+						<div class="col-sm-12 chimeraField-left control-label">
+							<label class="chimeraField-label" for="image-title-text{% element_id %}">
+								<%= __('title') %>
+							</label>
+						</div>
+					</div>
+					<div class="row">
+						<input
+							id="image-title-text{% element_id %}"
+							class="chimeraField-prime chimeraField-string form-control media-edit-field"
+							value="<%= value_title %>"
+							type="text"
+							data-field="title{% field_extension %}"
+						>
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<input
-					id="image-alt-text"
-					class="chimeraField-prime chimeraField-string form-control"
-					value="<%= alt %>"
-					type="text"
-				>
-			</div>
-		</div>
+
+				<div class="form-group container-fluid">
+					<div class="row">
+						<div class="col-sm-12 chimeraField-left control-label">
+							<label class="chimeraField-label" for="image-alt-text{% element_id %}">
+								<%= __('Alternate text') %>
+							</label>
+						</div>
+					</div>
+					<div class="row">
+						<input
+							id="image-alt-text{% element_id %}"
+							class="chimeraField-prime chimeraField-string form-control media-edit-field"
+							value="<%= value_alt %>"
+							type="text"
+							data-field="alt{% field_extension %}"
+						>
+					</div>
+				</div>
+
+				<% if (prefix != '__') { %>
+					<br>
+					<br>
+				<% } %>
+			{% /each %}
+		{% /with %}
 	</div>
 
 	<a class="action-save-image btn btn-default btn-success"

@@ -308,8 +308,6 @@ MediaFiles.setAction(function info(conduit) {
 				return conduit.error(err);
 			}
 
-			console.log('Created gm image:', image, size);
-
 			conduit.setHeader('cache-control', 'public, max-age=3600, must-revalidate');
 
 			conduit.end(size);
