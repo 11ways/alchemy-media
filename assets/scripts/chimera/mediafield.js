@@ -87,6 +87,11 @@ MediaFileField.prototype.setId = function setId(id) {
 
 	html += '<div class="image-actions">';
 
+	html += '<a class="download" target="_blank" href="/media/download/' + id + '">';
+	html += '<span class="icon"><i class="fa fa fa-download"></i></span>';
+	html += '<span class="message">Download</span>';
+	html += '</a>';
+
 	html += '<span class="edit">';
 	html += '<span class="icon"><i class="fa fa fa-edit"></i></span>';
 	html += '<span class="message">Edit</span>';

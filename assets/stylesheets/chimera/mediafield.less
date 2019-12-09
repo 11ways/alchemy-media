@@ -21,8 +21,8 @@
 .mediafilechooser {
 
 	.preview {
-		min-width: 6rem;
-		min-height: 3rem;
+		min-width: 18rem;
+		min-height: 14rem;
 		position: relative;
 		float: left;
 		margin: 0 10px 10px 0;
@@ -30,8 +30,9 @@
 		// Make sure the image is shown, even when the link breaks
 		// That way the remove button will still be visible
 		img {
-			min-width: 100px;
-			min-height: 100px;
+			min-width: 100%;
+			min-height: 100%;
+			object-fit: contain;
 		}
 
 		.image-actions {
@@ -46,7 +47,8 @@
 		}
 
 		.edit,
-		.remove {
+		.remove,
+		.download {
 			flex: 1 1;
 			position: relative;
 

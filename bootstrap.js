@@ -47,6 +47,7 @@ Router.get('Media::fileextension', '/media/file/{id}.{extension}', 'MediaFile#fi
 
 // Allow direct file downloads
 Router.get('Media::file', '/media/file/{id}', 'MediaFile#file');
+Router.get('Media#download', '/media/download/{id}', 'MediaFile#downloadFile');
 
 Router.get('Media::thumb', '/media/thumbnail/{id}', 'MediaFile#thumbnail');
 Router.get('Media::placeholder', '/media/placeholder', 'MediaFile#placeholder');

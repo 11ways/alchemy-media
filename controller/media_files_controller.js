@@ -127,7 +127,7 @@ MediaFiles.setAction(function image(conduit, id) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.4.1
+ * @version  0.5.0
  *
  * @param    {Conduit}   Conduit
  */
@@ -153,11 +153,50 @@ MediaFiles.setAction(function file(conduit, id, extension) {
 
 		if (Type) {
 			Type = new Type();
-			Type.serve(conduit, record);
+			Type.serve(conduit, record, {download: true});
 		} else {
 			conduit.error('Unable to serve unknown type "' + record.type + '"');
 		}
 	});
+});
+
+/**
+ * Serve a file (not inline)
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.5.0
+ * @version  0.5.0
+ *
+ * @param    {Conduit}   Conduit
+ */
+MediaFiles.setAction(function downloadFile(conduit, id, extension) {
+
+	if (!id) {
+		return conduit.notFound('No valid id given');
+	}
+
+	this.getModel('MediaFile').getFile(id, function gotFile(err, record) {
+
+		var Type;
+
+		if (err) {
+			return conduit.error(err);
+		}
+
+		if (!record) {
+			return conduit.notFound('File not found');
+		}
+
+		Type = MediaTypes[record.type];
+
+		if (Type) {
+			Type = new Type();
+			Type.serve(conduit, record, {download: true, inline: false});
+		} else {
+			conduit.error('Unable to serve unknown type "' + record.type + '"');
+		}
+	});
+
 });
 
 /**

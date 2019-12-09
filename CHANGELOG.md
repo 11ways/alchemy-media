@@ -4,6 +4,7 @@
 * Make compatible with Alchemy v1.1.0
 * Always convert image to webp if supported by the browser
 * Accept vw & vh instead of % in width & height parameters
+* Allow downloading original file
 
 ## 0.4.2 (2018-12-06)
 
