@@ -110,7 +110,7 @@ MediaFile.Document.setFieldGetter(function path() {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.4.1
+ * @version  0.5.0
  *
  * @param    {String|ObjectID}   id
  * @param    {Function}          callback
@@ -169,10 +169,14 @@ MediaFile.setMethod(function getFile(id, callback) {
 				next(new Error('No image found'));
 			}
 		});
-	}, function done(err) {
+	}, async function done(err) {
 
 		if (err) {
 			return callback(err);
+		}
+
+		if (!result.MediaRaw) {
+			await result.populate('MediaRaw');
 		}
 
 		callback(null, result);
