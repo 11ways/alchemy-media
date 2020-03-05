@@ -12,20 +12,39 @@
 		</div>
 	</div>
 	<%
-		iterator = records.createIterator();
+		iterator = new Iterator(records);
 		while (iterator.hasNext()) {
 
 			item = iterator.next();
 			record = item.value;
 
+			console.log('RECORD:', record);
+
 			if (record.fields[4].value) {
-				title = record.fields[4].value.encodeHTML();
+				title = record.fields[4].value;
+
+				if (title && typeof title == 'object') {
+					title = title.nl || title.en || '';
+				}
+
+				if (title) {
+					title = title.encodeHTML();
+				}
+
 			} else {
 				title = '';
 			}
 
 			if (record.fields[5].value) {
-				alt = record.fields[5].value.encodeHTML();
+				alt = record.fields[5].value;
+
+				if (alt && typeof alt == 'object') {
+					alt = alt.nl || alt.en || '';
+				}
+
+				if (alt) {
+					alt = alt.encodeHTML();
+				}
 			} else {
 				alt = '';
 			}

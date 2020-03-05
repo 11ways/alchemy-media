@@ -11,7 +11,7 @@
 			</header>
 			<div class="chimeraGallery">
 				<%
-					iterator = records.createIterator();
+					iterator = new Iterator(records);
 					while (iterator.hasNext()) {
 
 						item = iterator.next();
