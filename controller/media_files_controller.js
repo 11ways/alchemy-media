@@ -223,13 +223,12 @@ MediaFiles.setAction(function upload(conduit) {
 	Object.each(files, function eachFile(file, key) {
 
 		tasks[tasks.length] = function storeFile(next) {
-			var options = {
+			let options = {
 				move: true,
 				filename: file.name
-			},
-			    name;
+			};
 
-			name = file.name.split('.');
+			let name = file.name.split('.');
 
 			// Remove the last piece if there are more than 1
 			if (name.length > 1) {
