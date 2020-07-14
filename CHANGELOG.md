@@ -5,6 +5,7 @@
 * Always convert image to webp if supported by the browser
 * Accept vw & vh instead of % in width & height parameters
 * Allow downloading original file
+* Remove the `faced` support
 
 ## 0.4.2 (2018-12-06)
 
