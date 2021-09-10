@@ -7,7 +7,7 @@
 		"url": "https://github.com/skerit/alchemy-media.git"
 	},
 	"dependencies": {
-		"exiv2"    : "myfreeweb/exiv2node",
+		"@11ways/exiv2" : "~0.6.4",
 		"gm"       : "~1.23.1",
 		"veronica" : "~0.2.2"
 	},
