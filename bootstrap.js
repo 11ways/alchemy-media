@@ -40,6 +40,7 @@ alchemy.createDir(options.cache);
 Router.get('Media::static', /\/media\/static\/(.*)*/, 'MediaFile#serveStatic');
 Router.get('Media::image', options.url + '/{id}', 'MediaFile#image');
 
+Router.get('MediaFile#data', '/media/data/{[MediaFile._id]id}', 'MediaFile#data');
 Router.get('MediaFile#info', '/media/info', 'MediaFile#info');
 
 // Allow dummy extensions

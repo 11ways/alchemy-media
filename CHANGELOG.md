@@ -1,3 +1,8 @@
+## 0.6.0 (WIP)
+
+* Add Media directive, which will load extra info (like alt & title attribute) for an image element automatically
+* If an image identifier is a valid hexadecimal string, it is assumed a record is wanted. If not, it's a static image. (We only used to check for ObjectIDs)
+
 ## 0.5.0 (2020-07-21)
 
 * Throw error when path to serve is not a string

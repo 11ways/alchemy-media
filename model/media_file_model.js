@@ -24,13 +24,17 @@ MediaFile.setProperty('types', alchemy.shared('Media.types'));
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.2.0
- * @version  0.5.0
+ * @version  0.5.1
  */
 MediaFile.constitute(function addFields() {
 
 	this.addField('name', 'String');
 	this.addField('filename', 'String');
-	this.addField('type', 'Enum');
+
+	this.addField('type', 'Enum', {
+		values: alchemy.getClassGroup('media_type')
+	});
+
 	this.addField('extra', 'Object');
 
 	let options = {};
@@ -50,7 +54,7 @@ MediaFile.constitute(function addFields() {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.5.1
  */
 MediaFile.constitute(function chimeraConfig() {
 
@@ -77,6 +81,8 @@ MediaFile.constitute(function chimeraConfig() {
 	edit.addField('name');
 	edit.addField('filename');
 	edit.addField('type');
+	edit.addField('title');
+	edit.addField('alt');
 
 	// Get the galery group
 	gallery = this.chimera.getActionFields('gallery');

@@ -313,6 +313,26 @@ MediaFiles.setAction(function uploadsingle(conduit) {
 });
 
 /**
+ * Get the file data
+ *
+ * @author   Jelle De Loecker   <jelle@develry.be>
+ * @since    0.5.1
+ * @version  0.5.1
+ *
+ * @param    {Conduit}               conduit
+ * @param    {Document.MediaFile}    media_file
+ */
+MediaFiles.setAction(function data(conduit, media_file) {
+	conduit.setHeader('cache-control', 'public, max-age=3600, must-revalidate');
+
+	conduit.end({
+		name   : media_file.name,
+		alt    : media_file.alt,
+		title  : media_file.title
+	});
+});
+
+/**
  * Get info on a file
  *
  * @author   Jelle De Loecker   <jelle@develry.be>

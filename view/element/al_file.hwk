@@ -1,0 +1,7 @@
+<div class="al-file-preview"></div>
+<div class="al-file-right">
+	<div class="al-file-toolbar">
+		<button class="al-file-select-file">Select file</button>
+	</div>
+	<input type="file" tabindex="-1" class="al-file-input" hidden>
+</div>

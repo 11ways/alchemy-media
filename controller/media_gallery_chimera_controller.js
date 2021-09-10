@@ -2,6 +2,7 @@
 if (!alchemy.plugins.chimera) {
 	return;
 }
+return;
 
 /**
  * The Media Gallery Gallery Controller class

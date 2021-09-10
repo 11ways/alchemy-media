@@ -7,9 +7,7 @@
  * @since    0.2.0
  * @version  0.6.0
  */
-var FileField = Function.inherits('Alchemy.Field.ObjectId', function File(schema, name, options) {
-	File.super.call(this, schema, name, options);
-});
+var FileField = Function.inherits('Alchemy.Field.ObjectId', 'File');
 
 /**
  * Defer casting when processing data?
@@ -17,6 +15,10 @@ var FileField = Function.inherits('Alchemy.Field.ObjectId', function File(schema
  * @type   {Boolean}
  */
 FileField.setProperty('deferCast', true);
+
+if (Blast.isBrowser) {
+	return;
+}
 
 /**
  * Make sure the file is really a file,

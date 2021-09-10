@@ -1,0 +1,8 @@
+<%
+script('chimera/mediafield');
+style('chimera/mediafield');
+%>
+<al-file
+	value=<% value %>
+	class="alchemy-field-value"
+></al-file>

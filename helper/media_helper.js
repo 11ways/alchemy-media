@@ -93,7 +93,7 @@ Media.setStatic(function loadImagesBasedOnSize() {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.5.0
- * @version  0.5.0
+ * @version  0.5.1
  *
  * @param    {Element}   element    The element to apply to
  * @param    {String}    image      The image identifier
@@ -103,13 +103,12 @@ Media.setStatic(function loadImagesBasedOnSize() {
  */
 Media.setMethod(function applyDirective(element, image, options) {
 
-	var srcset,
+	let record,
 	    height = element.getAttribute('height'),
-	    clone,
-	    width = element.getAttribute('width'),
-	    url;
+	    width = element.getAttribute('width');
 
 	if (image && typeof image == 'object' && image._id) {
+		record = image;
 		image = image._id;
 	}
 
@@ -133,16 +132,57 @@ Media.setMethod(function applyDirective(element, image, options) {
 		options.height = height;
 	}
 
-	url = this.imageUrl(image, options);
-	clone = url.clone();
+	let url = this.imageUrl(image, options),
+	    clone = url.clone();
+
 	clone.addQuery('dpr', 2);
 
-	srcset = clone + ' 2x';
+	let srcset = clone + ' 2x';
 
 	// Set the source attribute
 	element.setAttribute('src', url);
 
 	element.setAttribute('srcset', srcset);
+
+	if (element.hasAttribute('alt')) {
+		return;
+	}
+
+	if (record && record.alt) {
+		element.setAttribute('alt', record.alt);
+		return;
+	}
+
+	if (!String(image).isHex()) {
+		return;
+	}
+
+	let pledge = new Pledge();
+
+	this.view.helpers.Alchemy.getResource({
+		name: 'MediaFile#data',
+		params: {
+			id: image
+		}
+	}, function gotResult(err, data) {
+
+		if (!err && data) {
+			if (data.alt) {
+				element.setAttribute('alt', data.alt);
+			} else {
+				element.setAttribute('alt', '');
+			}
+
+			if (data.title && !element.hasAttribute('title')) {
+				element.setAttribute('title', data.title);
+			}
+
+		}
+
+		pledge.resolve();
+	});
+
+	return pledge;
 });
 
 /**
@@ -168,7 +208,7 @@ Media.setMethod(function fileAnchor(file_id, options) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.5.1
  *
  * @param    {String}   image_id
  *
@@ -184,7 +224,7 @@ Media.setMethod(function imageUrl(image_id, options) {
 		options = {};
 	}
 
-	if (String(image_id).isObjectId()) {
+	if (String(image_id).isHex()) {
 
 		if (options.route) {
 			routeName = options.route;
