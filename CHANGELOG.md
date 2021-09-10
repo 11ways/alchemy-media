@@ -1,3 +1,7 @@
+## 0.5.1 (2021-09-10)
+
+* Use `@11ways/exiv2` npm package instead of the Github repository
+
 ## 0.5.0 (2020-07-21)
 
 * Throw error when path to serve is not a string
