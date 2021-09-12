@@ -1,4 +1,4 @@
-## 0.6.0 (WIP)
+## 0.6.0 (2021-09-12)
 
 * Add Media directive, which will load extra info (like alt & title attribute) for an image element automatically
 * If an image identifier is a valid hexadecimal string, it is assumed a record is wanted. If not, it's a static image. (We only used to check for ObjectIDs)
