@@ -1,3 +1,5 @@
+## 0.6.1 (WIP)
+
 ## 0.6.0 (2021-09-12)
 
 * Add Media directive, which will load extra info (like alt & title attribute) for an image element automatically
