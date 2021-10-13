@@ -1,3 +1,7 @@
+## 0.5.2 (2021-10-13)
+
+* Fix image picker
+
 ## 0.5.1 (2021-09-10)
 
 * Use `@11ways/exiv2` npm package instead of the Github repository

@@ -386,7 +386,7 @@ function pickMediaId(callback) {
 		    element,
 		    $bar;
 
-		element = viewRender.dialog_element;
+		element = viewRender.dialog_element || document.querySelector('[data-he-template="chimera/editor/gallery_picker"]');
 		$fileupload = $('.fileupload', element);
 		$progress = $('.progress', element);
 		$bar = $('.progress-bar', element);
