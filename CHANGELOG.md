@@ -1,4 +1,6 @@
-## 0.6.1 (WIP)
+## 0.6.1 (2022-06-02)
+
+* Do not use `cwebp` if the binary could not be found
 
 ## 0.6.0 (2021-09-12)
 
