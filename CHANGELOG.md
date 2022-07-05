@@ -1,6 +1,7 @@
 ## 0.6.2 (WIP)
 
 * Upgrade to Fontawesome 6
+* Update `al-file` element
 
 ## 0.6.1 (2022-06-02)
 

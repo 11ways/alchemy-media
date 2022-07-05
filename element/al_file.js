@@ -5,9 +5,7 @@
  * @since    0.6.0
  * @version  0.6.0
  */
-const AlFile = Function.inherits('Alchemy.Element.App', function AlFile() {
-	return AlFile.super.call(this);
-});
+const AlFile = Function.inherits('Alchemy.Element.App', 'AlFile');
 
 /**
  * The template code
@@ -28,13 +26,13 @@ AlFile.setTemplateFile('element/al_file');
 AlFile.setStylesheetFile('element/alchemy_file');
 
 /**
- * Getter for the select button
+ * Getter for the drop target
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.2.0
- * @version  0.2.0
+ * @since    0.6.2
+ * @version  0.6.2
  */
-AlFile.addElementGetter('select_button', '.al-file-select-file');
+AlFile.addElementGetter('drop_target', '.al-file-drop-target');
 
 /**
  * Getter for the file input
@@ -55,13 +53,53 @@ AlFile.addElementGetter('file_input', '.al-file-input');
 AlFile.addElementGetter('preview_element', '.al-file-preview');
 
 /**
+ * Getter for the remove button
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.6.2
+ * @version  0.6.2
+ */
+AlFile.addElementGetter('remove_button', '.al-file-remove');
+
+/**
+ * Getter for the uploading-icon
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.6.2
+ * @version  0.6.2
+ */
+AlFile.addElementGetter('icon_uploading', '.uploading-icon');
+
+/**
+ * Getter for the empty-icon
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.6.2
+ * @version  0.6.2
+ */
+AlFile.addElementGetter('icon_empty', '.empty-icon');
+
+/**
  * Set the value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.6.0
- * @version  0.6.0
+ * @version  0.6.2
  */
 AlFile.setAttribute('value', null, function setValue(value) {
+
+	if (value == null) {
+		value = '';
+	}
+
+	if (this.remove_button) {
+		this.remove_button.hidden = !value;
+	}
+
+	if (this.icon_empty) {
+		this.icon_empty.hidden = !!value;
+	}
+
 	this.updatePreview(value);
 	return value;
 });
@@ -97,15 +135,15 @@ AlFile.setMethod(function updatePreview(value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.6.0
- * @version  0.6.0
+ * @version  0.6.2
  */
 AlFile.setMethod(async function uploadFile(config) {
-
-	const that = this;
 
 	let file     = config.file,
 	    filename = config.filename,
 	    format   = config.format;
+	
+	this.classList.add('uploading');
 
 	let form_data = new FormData(),
 	    url = this.dataset.uploadUrl;
@@ -121,10 +159,18 @@ AlFile.setMethod(async function uploadFile(config) {
 		form_data.append('format', format);
 	}
 
-	let response = await Blast.fetch({
-		url  : url,
-		post : form_data,
-	});
+	let response;
+
+	try {
+		response = await Blast.fetch({
+			url  : url,
+			post : form_data,
+		});
+	} catch (err) {
+		console.error('Failed to upload file:', err);
+	}
+
+	this.classList.remove('uploading');
 
 	if (!response || !response.files || !response.files[0]) {
 		return;
@@ -139,30 +185,64 @@ AlFile.setMethod(async function uploadFile(config) {
 });
 
 /**
- * Test image
+ * Added to the DOM for the first time
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.6.0
- * @version  0.6.0
+ * @version  0.6.2
  */
 AlFile.setMethod(function introduced() {
 
 	const that = this;
 
-	this.updatePreview();
-
-	this.select_button.addEventListener('click', e => {
+	this.addEventListener('dragenter', e => {
 		e.preventDefault();
-		this.file_input.click();
 	});
 
-	this.file_input.addEventListener('change', function onChange(e) {
+	this.addEventListener('dragover', e => {
+		this.classList.add('dropping');
+		e.preventDefault();
+	});
 
-		that.uploadFile({
-			file     : this.files[0],
-			filename : this.files[0].name,
+	this.addEventListener('dragend', e => {
+		this.classList.remove('dropping');
+	});
+
+	this.addEventListener('dragleave', e => {
+		this.classList.remove('dropping');
+	});
+
+	this.addEventListener('drop', e => {
+		this.classList.remove('dropping');
+		this.classList.add('dropped');
+
+		e.preventDefault();
+
+		let file = e.dataTransfer.files[0];
+
+		this.uploadFile({
+			file     : file,
+			filename : file.name,
 			format   : null,
 		});
+	});
+
+	this.updatePreview();
+
+	this.file_input.addEventListener('change', e => {
+
+		this.classList.remove('dropping');
+		this.classList.add('dropped');
+
+		this.uploadFile({
+			file     : this.file_input.files[0],
+			filename : this.file_input.files[0].name,
+			format   : null,
+		});
+	});
+
+	this.remove_button.addEventListener('click', e => {
+		this.value = null;
 	});
 
 });
