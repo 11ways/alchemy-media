@@ -1,3 +1,7 @@
+## 0.6.2 (WIP)
+
+* Upgrade to Fontawesome 6
+
 ## 0.6.1 (2022-06-02)
 
 * Do not use `cwebp` if the binary could not be found

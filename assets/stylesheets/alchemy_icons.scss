@@ -1,10 +1,14 @@
-@import "fontawesome5.15/fontawesome.scss";
-@import "fontawesome5.15/solid.scss";
-@import "fontawesome5.15/brands.scss";
+@import "fontawesome6/fontawesome.scss";
+@import "fontawesome6/solid.scss";
+@import "fontawesome6/brands.scss";
 
 al-ico {
-	display: inline-block;
+	--fa-display: inline-flex;
 	@extend %fa-icon;
+	flex-flow: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
 
 	&[type="arrow-left"] {
 		@extend .fas, .fa-angle-left;
@@ -56,5 +60,9 @@ al-ico {
 
 	&[type="plus"] {
 		@extend .fas, .fa-plus;
+	}
+
+	&[hidden] {
+		display: none !important;
 	}
 }

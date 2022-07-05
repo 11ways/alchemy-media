@@ -1,7 +1,7 @@
 {
 	"name": "alchemy-media",
 	"description": "The media plugin for Alchemy",
-	"version": "0.6.1",
+	"version": "0.6.2-alpha",
 	"repository": {
 		"type" : "git",
 		"url"  : "https://github.com/skerit/alchemy-media.git"
@@ -12,10 +12,10 @@
 		"veronica"      : "~0.2.2"
 	},
 	"peerDependencies": {
-		"alchemymvc" : ">=1.1.0"
+		"alchemymvc" : ">=1.2.0"
 	},
 	"license": "MIT",
 	"engines": {
-		"node" : ">=10.21.0"
+		"node" : ">=14.0.0"
 	}
 }
