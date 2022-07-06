@@ -2,6 +2,7 @@
 
 * Upgrade to Fontawesome 6
 * Update `al-file` element
+* Allow supplying a custom route for the !Media directive with `+` variables
 
 ## 0.6.1 (2022-06-02)
 

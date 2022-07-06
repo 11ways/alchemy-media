@@ -93,7 +93,7 @@ Media.setStatic(function loadImagesBasedOnSize() {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.5.0
- * @version  0.5.1
+ * @version  0.6.2
  *
  * @param    {Element}   element    The element to apply to
  * @param    {String}    image      The image identifier
@@ -114,6 +114,12 @@ Media.setMethod(function applyDirective(element, image, options) {
 
 	if (!options) {
 		options = {};
+	}
+
+	let variables = element[Hawkejs.VARIABLES];
+
+	if (!options.route) {
+		options.route = variables?.['media-route'];
 	}
 
 	if (width) {
