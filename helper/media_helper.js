@@ -1,3 +1,5 @@
+const PLACEHOLDER = Symbol('placeholder');
+
 /**
  * The Media helper
  *
@@ -7,9 +9,7 @@
  *
  * @param    {ViewRender}    view
  */
-var Media = Function.inherits('Alchemy.Helper', function Media(view) {
-	Media.super.call(this, view);
-});
+const Media = Function.inherits('Alchemy.Helper', 'Media');
 
 /**
  * Function to execute on the client side, when the scene is made
@@ -159,6 +159,11 @@ Media.setMethod(function applyDirective(element, image, options) {
 		return;
 	}
 
+	if (options[PLACEHOLDER]) {
+		element.setAttribute('alt', '');
+		element.setAttribute('role', 'presentation');
+	}
+
 	if (!String(image).isHex()) {
 		return;
 	}
@@ -275,9 +280,9 @@ Media.setMethod(function imageUrl(image_id, options) {
 /**
  * Create a base placeholder image url
  *
- * @author   Jelle De Loecker   <jelle@develry.be>
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.6.2
  *
  * @param    {Object}   options
  *
@@ -306,6 +311,8 @@ Media.setMethod(function placeholderUrl(options) {
 		if (options.text) {
 			url.addQuery('text', options.text);
 		}
+
+		options[PLACEHOLDER] = true;
 	}
 
 	return url;
