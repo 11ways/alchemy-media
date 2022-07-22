@@ -2,6 +2,7 @@
 
 * Fix `al-file` element showing wrong buttons on load
 * Always add `role="presentation"` to images that get a simple placeholder
+* Add support for Fontawesome Pro with the `media.fontawesome_pro` setting
 
 ## 0.6.2 (2022-07-06)
 

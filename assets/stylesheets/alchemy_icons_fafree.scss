@@ -1,0 +1,59 @@
+@use "fontawesome6/fontawesome.scss";
+@use "fontawesome6/solid.scss";
+@use "fontawesome6/brands.scss";
+
+al-ico {
+	@extend %fa-icon;
+
+	&[type="arrow-left"] {
+		@extend .fas, .fa-angle-left;
+	}
+
+	&[type="arrow-left-double"] {
+		@extend .fas, .fa-angle-double-left;
+	}
+
+	&[type="arrow-right"] {
+		@extend .fas, .fa-angle-right;
+	}
+
+	&[type="arrow-right-double"] {
+		@extend .fas, .fa-angle-double-right;
+	}
+
+	&[type="sorting-arrow"] {
+		@extend .fas;
+
+		&.down {
+			@extend .fa-sort-alpha-up;
+		}
+
+		&.up {
+			@extend .fa-sort-alpha-down;
+		}
+	}
+
+	&[type="menu"] {
+		@extend .fas, .fa-bars;
+	}
+
+	&[type="edit"] {
+		@extend .fas, .fa-pencil-alt;
+	}
+
+	&[type="zoom-in"] {
+		@extend .fas, .fa-search-plus;
+	}
+
+	&[type="microphone"] {
+		@extend .fas, .fa-microphone-alt;
+	}
+
+	&[type="video"] {
+		@extend .fas, .fa-video;
+	}
+
+	&[type="plus"] {
+		@extend .fas, .fa-plus;
+	}
+}
