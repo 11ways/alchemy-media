@@ -1,7 +1,7 @@
 <label class="al-file-drop-target">
 	<div class="al-file-preview"></div>
 	<al-ico class="uploading-icon fa-solid fa-spinner fa-spin-pulse"></al-ico>
-	<al-ico class="empty-icon fa-solid fa-file-arrow-up" hidden></al-ico>
+	<al-ico class="empty-icon fa-solid fa-file-arrow-up"><% if (self.value) $0.hidden = true %></al-ico>
 	<input type="file" tabindex="-1" class="al-file-input" hidden>
 </label>
 
@@ -12,6 +12,7 @@
 	</button>
 
 	<button class="al-file-remove">
+		<% if (!self.value) $0.hidden = true %>
 		<al-ico class="fa-solid fa-trash-can"></al-ico>
 		{%t "remove-current-file" %}
 	</button>
