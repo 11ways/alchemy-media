@@ -1,4 +1,4 @@
-## 0.6.3 (WIP)
+## 0.6.3 (2022-07-23)
 
 * Fix `al-file` element showing wrong buttons on load
 * Always add `role="presentation"` to images that get a simple placeholder
