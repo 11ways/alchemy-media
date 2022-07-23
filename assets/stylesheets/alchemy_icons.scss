@@ -1,5 +1,6 @@
 al-ico {
-	--fa-display: inline-flex;
+	// inline-flex breaks certain (duotone) icons
+	//--fa-display: inline-flex;
 	flex-flow: column;
 	justify-content: center;
 	align-content: center;

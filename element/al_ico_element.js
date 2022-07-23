@@ -68,6 +68,46 @@ Icon.setMethod(function introduced() {
 });
 
 /**
+ * Try to set the correct icon
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.6.3
+ * @version  0.6.3
+ */
+Icon.setMethod(function setIcon(info) {
+
+	if (!info) {
+		return;
+	}
+
+	if (typeof info == 'string') {
+		info = info.split(' ');
+
+		if (info.length == 2) {
+			this.icon_style = info[0];
+			this.icon_name = info[1];
+		} else {
+			this.icon_name = info[0];
+		}
+	} else if (typeof info == 'object') {
+		let style = info.style || info.icon_style,
+		    name = info.name || info.icon_name;
+		
+		if (style) {
+			this.icon_style = style;
+		}
+
+		if (name) {
+			this.icon_name = name;
+		}
+	}
+
+	if (!this.icon_style) {
+		this.icon_style = 'duotone';
+	}
+});
+
+/**
  * Set the CSS classes
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -80,12 +120,17 @@ Icon.setMethod(function setCssClasses() {
 		return;
 	}
 
-	let fa_pro = this.hawkejs_renderer.expose('fontawesome_pro');
+	let fa_pro = this.hawkejs_renderer.expose('fontawesome_pro'),
+	    style = this.icon_style || 'regular';
 
 	if (fa_pro) {
 		this.hawkejs_renderer.style(fa_pro);
 	} else {
 		this.hawkejs_renderer.style('alchemy_icons_fafree');
+
+		if (style == 'duotone' || style == 'light' || style == 'thin' || style == 'regular') {
+			style = 'solid';
+		}
 	}
 
 	let existing_classes = Array.cast(this.classList);
@@ -97,6 +142,6 @@ Icon.setMethod(function setCssClasses() {
 		}
 	}
 
-	this.classList.add('fa-' + (this.icon_style || 'regular'));
+	this.classList.add('fa-' + (this.icon_style || 'solid'));
 	this.classList.add('fa-' + this.icon_name);
 });
