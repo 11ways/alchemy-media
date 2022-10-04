@@ -89,6 +89,28 @@ Media.setStatic(function loadImagesBasedOnSize() {
 });
 
 /**
+ * Load the icon font
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.6.4
+ * @version  0.6.4
+ *
+ * @return   {string}
+ */
+Media.setMethod(function loadIconFont() {
+
+	let font_style = this.hawkejs_renderer.expose('fontawesome_pro');
+
+	if (!font_style) {
+		font_style = 'alchemy_icons_fafree';
+	}
+
+	this.hawkejs_renderer.style(font_style);
+
+	return font_style;
+});
+
+/**
  * Apply directive to an element
  *
  * @author   Jelle De Loecker   <jelle@develry.be>

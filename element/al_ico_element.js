@@ -112,7 +112,7 @@ Icon.setMethod(function setIcon(info) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.6.3
- * @version  0.6.3
+ * @version  0.6.4
  */
 Icon.setMethod(function setCssClasses() {
 
@@ -120,14 +120,13 @@ Icon.setMethod(function setCssClasses() {
 		return;
 	}
 
+	// Load the appropriate font style
+	this.hawkejs_renderer.helpers.Media.loadIconFont();
+
 	let fa_pro = this.hawkejs_renderer.expose('fontawesome_pro'),
 	    style = this.icon_style || 'regular';
 
-	if (fa_pro) {
-		this.hawkejs_renderer.style(fa_pro);
-	} else {
-		this.hawkejs_renderer.style('alchemy_icons_fafree');
-
+	if (!fa_pro) {
 		if (style == 'duotone' || style == 'light' || style == 'thin' || style == 'regular') {
 			style = 'solid';
 		}
