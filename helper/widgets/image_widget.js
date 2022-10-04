@@ -4,8 +4,8 @@
  * @constructor
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
+ * @since    0.6.0
+ * @version  0.6.0
  *
  * @param    {Object}   data
  */
@@ -15,8 +15,8 @@ const Image = Function.inherits('Alchemy.Widget', 'Image');
  * Prepare the schema
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
+ * @since    0.6.0
+ * @version  0.6.0
  */
 Image.constitute(function prepareSchema() {
 
@@ -29,8 +29,8 @@ Image.constitute(function prepareSchema() {
  * Populate the widget
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
- * @since    0.1.0
- * @version  0.1.0
+ * @since    0.6.0
+ * @version  0.6.4
  *
  * @param    {HTMLElement}   widget
  */
@@ -40,7 +40,7 @@ Image.setMethod(function populateWidget() {
 
 	this.hawkejs_renderer.helpers.Media.applyDirective(img, this.config.image);
 
-	populateWidget.super.call(this);
-
 	this.widget.append(img);
+
+	return populateWidget.super.call(this);
 });
