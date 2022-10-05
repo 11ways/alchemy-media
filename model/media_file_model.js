@@ -22,29 +22,36 @@ MediaFile.setProperty('types', alchemy.shared('Media.types'));
 /**
  * Constitute the class wide schema
  *
- * @author   Jelle De Loecker <jelle@develry.be>
+ * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.5.1
+ * @version  0.6.4
  */
 MediaFile.constitute(function addFields() {
 
-	this.addField('name', 'String');
-	this.addField('filename', 'String');
+	this.addField('name', 'String', {
+		description: 'The name of the file',
+	});
+
+	this.addField('filename', 'String', {
+		description : 'The actual filename',
+	});
 
 	this.addField('type', 'Enum', {
-		values: alchemy.getClassGroup('media_type')
+		values: alchemy.getClassGroup('media_type'),
+		description: 'The type of file',
 	});
 
 	this.addField('extra', 'Object');
 
-	let options = {};
+	this.addField('title', 'String', {
+		translatable : alchemy.plugins.media.translatable,
+		description  : 'The title of the file (will be used in the title attribute)',
+	});
 
-	if (alchemy.plugins.media.translatable) {
-		options.translatable = true;
-	}
-
-	this.addField('title', 'String', options);
-	this.addField('alt', 'String', options);
+	this.addField('alt', 'String', {
+		translatable : alchemy.plugins.media.translatable,
+		description  : 'The alternative information of the file (will be used in the alt attribute)',
+	});
 
 	this.belongsTo('MediaRaw');
 });
@@ -54,7 +61,7 @@ MediaFile.constitute(function addFields() {
  *
  * @author   Jelle De Loecker <jelle@develry.be>
  * @since    0.2.0
- * @version  0.5.1
+ * @version  0.6.4
  */
 MediaFile.constitute(function chimeraConfig() {
 
@@ -77,6 +84,14 @@ MediaFile.constitute(function chimeraConfig() {
 
 	// Get the edit group
 	edit = this.chimera.getActionFields('edit');
+
+	edit.addField('_id', {
+		view    : 'file_preview',
+		wrapper : 'file_preview',
+		widget_settings : {
+			title : 'Preview',
+		},
+	});
 
 	edit.addField('name');
 	edit.addField('filename');

@@ -93,3 +93,14 @@ al-file {
 		min-height: 2rem;
 	}
 }
+
+alchemy-field[field-view="file_preview"] {
+	[data-he-name="field"] .field {
+		padding: 0;
+
+		img {
+			max-height: 25rem;
+			object-fit: contain;
+		}
+	}
+}
