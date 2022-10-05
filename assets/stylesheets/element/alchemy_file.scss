@@ -103,6 +103,11 @@ alchemy-field[field-view="file_preview"] {
 			object-fit: contain;
 		}
 	}
+}
+
+alchemy-field[field-view="file_preview"],
+alchemy-field[field-view="file"],
+alchemy-field[field-type="file"] {
 
 	&[mode="inline"]  {
 		.field img {
