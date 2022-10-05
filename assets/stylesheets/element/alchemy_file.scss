@@ -103,4 +103,14 @@ alchemy-field[field-view="file_preview"] {
 			object-fit: contain;
 		}
 	}
+
+	&[mode="inline"]  {
+		.field img {
+			object-fit: contain;
+			width: 100px;
+			height: 100px;
+			display: block;
+			margin: auto;
+		}
+	}
 }

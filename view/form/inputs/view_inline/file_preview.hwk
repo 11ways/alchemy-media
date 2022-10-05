@@ -1,0 +1,6 @@
+<% style('element/alchemy_file') %>
+
+<img
+	!Media={% value %}
+	+media-route="Media::thumb"
+>

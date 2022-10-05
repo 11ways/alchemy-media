@@ -20,6 +20,15 @@ var MediaFile = Function.inherits('Alchemy.Model', function MediaFile(options) {
 MediaFile.setProperty('types', alchemy.shared('Media.types'));
 
 /**
+ * The default sort options
+ *
+ * @type {Object}
+ */
+MediaFile.prepareProperty('sort', function sort() {
+	return {created: -1};
+});
+
+/**
  * Constitute the class wide schema
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -76,6 +85,15 @@ MediaFile.constitute(function chimeraConfig() {
 	// Get the list group
 	list = this.chimera.getActionFields('list');
 
+	list.addField('_id', {
+		view     : 'file_preview',
+		wrapper  : 'file_preview',
+		title    : 'Thumbnail',
+		filter   : false,
+		sortable : false,
+	});
+
+	list.addField('created');
 	list.addField('name');
 	list.addField('filename');
 	list.addField('type');
@@ -88,9 +106,7 @@ MediaFile.constitute(function chimeraConfig() {
 	edit.addField('_id', {
 		view    : 'file_preview',
 		wrapper : 'file_preview',
-		widget_settings : {
-			title : 'Preview',
-		},
+		title   : 'Preview',
 	});
 
 	edit.addField('name');
