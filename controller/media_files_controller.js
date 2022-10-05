@@ -13,16 +13,14 @@ var fs = require('fs'),
  * @since         0.0.1
  * @version       0.3.0
  */
-var MediaFiles = Function.inherits('Alchemy.Controller', function MediaFile(conduit, options) {
-	MediaFile.super.call(this, conduit, options);
-});
+const MediaFiles = Function.inherits('Alchemy.Controller', 'MediaFile');
 
 /**
  * Serve a thumbnail
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.4.1
+ * @version  0.6.4
  *
  * @param    {Conduit}   conduit
  */
@@ -35,21 +33,15 @@ MediaFiles.setAction(function thumbnail(conduit, id) {
 	// Get the requested file
 	this.getModel('MediaFile').getFile(id, function gotFile(err, record) {
 
-		var Type;
-
 		if (err) {
 			return conduit.notFound(err);
 		}
 
-		Type = MediaTypes[record.type];
-
-		if (!Type) {
-			Type = Classes.Alchemy.MediaType;
-		}
+		const Type = MediaTypes[record.type] || Classes.Alchemy.MediaType;
 
 		if (Type) {
-			Type = new Type();
-			Type.thumbnail(conduit, record);
+			let instance = new Type();
+			instance.thumbnail(conduit, record);
 		} else {
 			conduit.error('Error generating thumbnail of ' + record.type);
 		}
@@ -100,7 +92,7 @@ MediaFiles.setAction(function serveStatic(conduit, path) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.4.1
+ * @version  0.6.4
  *
  * @param    {Conduit}   conduit
  */
@@ -112,10 +104,20 @@ MediaFiles.setAction(function image(conduit, id) {
 
 	this.getModel('MediaFile').getFile(id, function gotFile(err, record) {
 
-		var Image = new MediaTypes.image;
+		if (err) {
+			return conduit.error(err);
+		}
+
+		const Image = new MediaTypes.image;
 
 		if (!record) {
 			return Image.placeholder(conduit, {text: 404, status: 404});
+		}
+
+		if (record.type != 'image') {
+			const Type = MediaTypes[record.type] || Classes.Alchemy.MediaType;
+			let instance = new Type();
+			return instance.thumbnail(conduit, record);
 		}
 
 		Image.serve(conduit, record);

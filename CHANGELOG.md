@@ -1,6 +1,7 @@
 ## 0.6.4 (WIP)
 
 * Add the `Media#loadIconFont()` helper method
+* Make the `image` route serve up filetype thumbnails for non-images
 
 ## 0.6.3 (2022-07-23)
 
