@@ -43,7 +43,9 @@ alchemy.createDir(options.cache);
 Router.get('Media::static', /\/media\/static\/(.*)*/, 'MediaFile#serveStatic');
 Router.get('Media::image', options.url + '/{id}', 'MediaFile#image');
 
-Router.get('MediaFile#data', '/media/data/{[MediaFile._id]id}', 'MediaFile#data');
+// The prefix is added at the end of the route so it does not
+// change the user's active_prefix
+Router.get('MediaFile#data', '/media/data/{prefix}/{id}', 'MediaFile#data');
 Router.get('MediaFile#info', '/media/info', 'MediaFile#info');
 
 // Allow dummy extensions

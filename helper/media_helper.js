@@ -195,7 +195,8 @@ Media.setMethod(function applyDirective(element, image, options) {
 	this.view.helpers.Alchemy.getResource({
 		name: 'MediaFile#data',
 		params: {
-			id: image
+			id     : image,
+			prefix : this.view.expose('active_prefix') || '__',
 		}
 	}, function gotResult(err, data) {
 

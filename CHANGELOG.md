@@ -4,6 +4,7 @@
 * Make the `image` route serve up filetype thumbnails for non-images
 * Add file preview image to the chimera edit view of MediaFile
 * Add thumbnail column to MediaFile chimera index view
+* Add `prefix` parameter to the `MediaFile#data` route
 
 ## 0.6.3 (2022-07-23)
 
