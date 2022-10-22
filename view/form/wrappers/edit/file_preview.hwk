@@ -1,5 +1,5 @@
 <div class="form-field-info">
-	<alchemy-label>
+	<al-label>
 		<span
 			data-he-name="field-title"
 			data-he-slot="field-title"
@@ -8,6 +8,6 @@
 			data-he-name="field-description"
 			data-he-slot="field-description"
 		><%= alchemy_field.field_description %></small>
-	</alchemy-label>
+	</al-label>
 </div>
 <div data-he-name="field"></div>

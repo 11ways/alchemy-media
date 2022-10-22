@@ -3,9 +3,9 @@
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.6.0
- * @version  0.6.0
+ * @version  0.7.0
  */
-const AlFile = Function.inherits('Alchemy.Element.App', 'AlFile');
+const AlFile = Function.inherits('Alchemy.Element.Media.Base', 'AlFile');
 
 /**
  * The template code
@@ -15,15 +15,6 @@ const AlFile = Function.inherits('Alchemy.Element.App', 'AlFile');
  * @version  0.6.0
  */
 AlFile.setTemplateFile('element/al_file');
-
-/**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.6.0
- * @version  0.6.0
- */
-AlFile.setStylesheetFile('element/alchemy_file');
 
 /**
  * Getter for the drop target

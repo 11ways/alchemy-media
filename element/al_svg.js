@@ -3,18 +3,9 @@
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.5.1
- * @version  0.5.1
+ * @version  0.7.0
  */
-const Svg = Function.inherits('Alchemy.Element', 'AlSvg');
-
-/**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.5.1
- * @version  0.5.1
- */
-Svg.setStylesheetFile('alchemy_svg');
+const Svg = Function.inherits('Alchemy.Element.Media.Base', 'AlSvg');
 
 /**
  * The location of the svg

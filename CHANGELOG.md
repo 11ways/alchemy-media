@@ -1,3 +1,8 @@
+## 0.7.0 (WIP)
+
+* Use the `al-` prefix for custom elements
+* Rename `al-ico` to `al-icon`
+
 ## 0.6.4 (2022-10-13)
 
 * Add the `Media#loadIconFont()` helper method

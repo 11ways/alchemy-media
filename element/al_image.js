@@ -3,11 +3,9 @@
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.4.1
- * @version  0.4.1
+ * @version  0.7.0
  */
-var AlImage = Function.inherits('Alchemy.Element.App', function AlImage() {
-	return AlImage.super.call(this);
-});
+const AlImage = Function.inherits('Alchemy.Element.Media.Base', 'AlImage');
 
 /**
  * CSS
@@ -35,7 +33,7 @@ AlImage.setMethod(function introduced() {
 
 	var placeholder = this.querySelector('.placeholder'),
 	    final = this.querySelector('.final');
-console.log('Waiting for onload');
+
 	final.onload = function() {
 		console.log('Final is loaded!');
 		final.style.opacity = 1;

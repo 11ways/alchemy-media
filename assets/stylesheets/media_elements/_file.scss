@@ -37,7 +37,7 @@ al-file {
 			visibility: hidden;
 		}
 
-		al-ico {
+		al-icon {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -94,7 +94,7 @@ al-file {
 	}
 }
 
-alchemy-field[field-view="file_preview"] {
+al-field[field-view="file_preview"] {
 	[data-he-name="field"] .field {
 		padding: 0;
 
@@ -105,9 +105,9 @@ alchemy-field[field-view="file_preview"] {
 	}
 }
 
-alchemy-field[field-view="file_preview"],
-alchemy-field[field-view="file"],
-alchemy-field[field-type="file"] {
+al-field[field-view="file_preview"],
+al-field[field-view="file"],
+al-field[field-type="file"] {
 
 	&[mode="inline"]  {
 		.field img {

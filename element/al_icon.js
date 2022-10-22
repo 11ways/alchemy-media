@@ -1,20 +1,13 @@
+const BUSY = Symbol('busy');
+
 /**
- * The al-ico element
+ * The al-icon element
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.6.0
- * @version  0.6.0
+ * @version  0.7.0
  */
-const Icon = Function.inherits('Alchemy.Element', 'AlIco');
-
-/**
- * The stylesheet to load for this element
- *
- * @author   Jelle De Loecker <jelle@elevenways.be>
- * @since    0.6.0
- * @version  0.6.0
- */
-Icon.setStylesheetFile('alchemy_icons');
+const Icon = Function.inherits('Alchemy.Element.Media.Base', 'AlIcon');
 
 /**
  * The source to use
@@ -46,14 +39,34 @@ Icon.setAttribute('icon-style');
 Icon.setAttribute('icon-name');
 
 /**
+ * Extra options/flags
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.7.0
+ * @version  0.7.0
+ */
+Icon.setAttribute('icon-flags');
+
+/**
+ * Refresh the icon when these attributes change
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.7.0
+ * @version  0.7.0
+ */
+Icon.addObservedAttribute(['icon-style', 'icon-name', 'icon-flags'], function onChange() {
+	this.refresh();
+});
+
+/**
  * The element is being retained
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.6.3
- * @version  0.6.3
+ * @version  0.7.0
  */
 Icon.setMethod(function retained() {
-	this.setCssClasses();
+	this.refresh(true);
 });
 
 /**
@@ -61,10 +74,36 @@ Icon.setMethod(function retained() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.6.3
- * @version  0.6.3
+ * @version  0.7.0
  */
 Icon.setMethod(function introduced() {
+	this.refresh();
+});
+
+/**
+ * Refresh the icon
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.7.0
+ * @version  0.7.0
+ *
+ * @param    {Boolean}   force
+ */
+Icon.setMethod(function refresh(force) {
+
+	if (this[BUSY] && !force) {
+		return;
+	}
+
+	if (!force && Blast.isNode) {
+		return;
+	}
+
+	this[BUSY] = true;
+
 	this.setCssClasses();
+
+	this[BUSY] = false;
 });
 
 /**
@@ -79,6 +118,8 @@ Icon.setMethod(function setIcon(info) {
 	if (!info) {
 		return;
 	}
+
+	this[BUSY] = true;
 
 	if (typeof info == 'string') {
 		info = info.split(' ');
@@ -105,6 +146,8 @@ Icon.setMethod(function setIcon(info) {
 	if (!this.icon_style) {
 		this.icon_style = 'duotone';
 	}
+
+	this.refresh(true);
 });
 
 /**
@@ -143,4 +186,10 @@ Icon.setMethod(function setCssClasses() {
 
 	this.classList.add('fa-' + (this.icon_style || 'solid'));
 	this.classList.add('fa-' + this.icon_name);
+
+	let flags = (this.icon_flags || '').split(/\s+/);
+
+	for (let flag of flags) {
+		this.classList.add('fa-' + flag);
+	}
 });
