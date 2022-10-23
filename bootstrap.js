@@ -48,6 +48,13 @@ Router.get('Media::image', options.url + '/{id}', 'MediaFile#image');
 Router.get('MediaFile#data', '/media/data/{prefix}/{id}', 'MediaFile#data');
 Router.get('MediaFile#info', '/media/info', 'MediaFile#info');
 
+Router.add({
+	name       : 'MediaFile#recordsource',
+	methods    : ['get'],
+	paths      : '/media/recordsource',
+	permission : 'media.recordsource',
+});
+
 // Allow dummy extensions
 Router.get('Media::fileextension', '/media/file/{id}.{extension}', 'MediaFile#file');
 

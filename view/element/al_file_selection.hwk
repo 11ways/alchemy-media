@@ -1,0 +1,35 @@
+<% makeDialog() %>
+<% addClass('alchemy-file-selection-dialog') %>
+
+<%
+
+fieldset = new Blast.Classes.Alchemy.Criteria.FieldSet('list', 'MediaFile');
+
+fieldset.addField('_id', {
+	view     : 'file_preview',
+	wrapper  : 'file_preview',
+	title    : 'Thumbnail',
+	filter   : false,
+	sortable : false,
+});
+
+fieldset.addField('filename');
+fieldset.addField('type');
+%>
+
+<div class="alchemy-file-selection-wrapper">
+
+	<al-table
+		id="al-file-selection-table"
+		purpose="view"
+		mode="inline"
+		page-size=20
+		show-filters
+		#fieldset={% fieldset %}
+		#recordsource={% {route: 'MediaFile#recordsource'} %}
+	></al-table>
+
+	<button class="btn btn-apply">
+		Apply
+	</button>
+</div>

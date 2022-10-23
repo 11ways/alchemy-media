@@ -1,4 +1,4 @@
-<% style('element/alchemy_file') %>
+<% style('alchemy_media') %>
 
 {% if value %}
 	<img

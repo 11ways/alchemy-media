@@ -53,6 +53,15 @@ AlFile.addElementGetter('preview_element', '.al-file-preview');
 AlFile.addElementGetter('remove_button', '.al-file-remove');
 
 /**
+ * Getter for the select button
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.7.0
+ * @version  0.7.0
+ */
+AlFile.addElementGetter('select_button', '.al-file-select');
+
+/**
  * Getter for the uploading-icon
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -236,6 +245,11 @@ AlFile.setMethod(function introduced() {
 		this.value = null;
 	});
 
+	if (this.select_button) {
+		this.select_button.addEventListener('click', e => {
+			this.showExistingFileSelection();
+		});
+	}
 });
 
 /**
@@ -256,11 +270,52 @@ AlFile.setMethod(function _getContent(callback) {
 			return callback(err);
 		}
 
-		console.log('Size:', info);
-
 		that.innerHTML = '<img class="final" src="/media/static/' + src + '?width=50%25" width=' + info.width + ' height=' + info.height +' style="width:400px">'
 		               + '<img class="placeholder" src="/media/static/' + src + '?width=20px">';
 
 		callback(null);
 	});
+});
+
+/**
+ * Select existing files
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.7.0
+ * @version  0.7.0
+ */
+AlFile.setMethod(async function showExistingFileSelection() {
+
+	let variables = {};
+
+	await hawkejs.scene.render('element/al_file_selection', variables);
+
+	let dialog_contents = document.querySelector('he-dialog [data-he-template="element/al_file_selection"]');
+
+	if (!dialog_contents) {
+		return;
+	}
+
+	let dialog = dialog_contents.queryParents('he-dialog'),
+	    button = dialog_contents.querySelector('.btn-apply');
+
+	dialog_contents.classList.add('default-form-editor');
+	hawkejs.scene.enableStyle('chimera/chimera');
+
+	button.addEventListener('click', e => {
+		e.preventDefault();
+
+		let table = dialog.querySelector('al-table');
+		
+		if (table) {
+			let row = table.active_row;
+
+			if (row && row.dataset.pk) {
+				this.value = row.dataset.pk;
+			}
+		}
+
+		dialog.remove();
+	});
+
 });

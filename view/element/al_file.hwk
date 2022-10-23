@@ -33,4 +33,14 @@
 		></al-icon>
 		{%t "remove-current-file" %}
 	</button>
+
+	{% if Acl.hasPermission('media.recordsource') %}
+		<button class="al-file-select">
+			<al-icon
+				icon-name="gallery-thumbnails"
+				icon-style="duotone"
+			></al-icon>
+			{%t "select-existing-file" %}
+		</button>
+	{% /if %}
 </div>

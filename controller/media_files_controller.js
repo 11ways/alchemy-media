@@ -383,3 +383,73 @@ MediaFiles.setAction(function info(conduit) {
 		});
 	});
 });
+
+/**
+ * Recordsource action
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.7.0
+ * @version  0.7.0
+ *
+ * @param    {Conduit}   conduit
+ */
+MediaFiles.setAction(async function recordsource(conduit) {
+
+	const model = this.model;
+
+	let crit = model.find();
+
+	model.disableTranslations();
+
+	let page_size = conduit.param('page_size'),
+	    filters = conduit.param('filters'),
+	    fields = conduit.param('fields'),
+	    page = conduit.param('page'),
+	    sort = conduit.param('sort');
+	
+	if (fields) {
+
+		// @TODO: fix FieldSet being sent with regular json?
+		if (fields.fields) {
+			fields = fields.fields;
+		}
+
+		crit.select(fields);
+	}
+
+	if (page_size && !page) {
+		page = 1;
+	}
+
+	if (page) {
+		crit.page(page, page_size);
+	}
+
+	if (sort?.field && sort?.dir) {
+		crit.sort([sort.field, sort.dir]);
+	}
+
+	if (filters) {
+		let key,
+		    val;
+
+		for (key in filters) {
+			val = filters[key];
+
+			// The value should always be a string,
+			// so anything that is falsy can be ignored
+			if (!val) {
+				continue;
+			}
+
+			val = RegExp.interpretWildcard('*' + val + '*', 'i');
+			crit.where(key).equals(val);
+		}
+	}
+
+	let records = await model.find('all', crit);
+	
+	conduit.end({
+		records : records
+	});
+});

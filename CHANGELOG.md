@@ -2,6 +2,7 @@
 
 * Use the `al-` prefix for custom elements
 * Rename `al-ico` to `al-icon`
+* Allow selecting existing uploaded files in an `al-file` element
 
 ## 0.6.4 (2022-10-13)
 
