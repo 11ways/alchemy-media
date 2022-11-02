@@ -1,4 +1,4 @@
-## 0.7.0 (WIP)
+## 0.7.0 (2022-11-02)
 
 * Use the `al-` prefix for custom elements
 * Rename `al-ico` to `al-icon`
