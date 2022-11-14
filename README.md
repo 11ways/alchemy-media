@@ -75,7 +75,7 @@ you can do so like this on Debian/Ubuntu
 
 Install the requirements of the `veronica` module:
 
-    apt-get install graphicsmagick webp libgif-dev
+    apt-get install graphicsmagick webp libgif-dev libcairo2-dev libpango1.0-dev libjpeg-dev librsvg2-dev
 
 This plugin requires exiv2
 

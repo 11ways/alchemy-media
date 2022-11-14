@@ -1,3 +1,7 @@
+## 0.7.1 (WIP)
+
+* Cascade `al-svg` role attribute to child `svg` elements
+
 ## 0.7.0 (2022-11-02)
 
 * Use the `al-` prefix for custom elements

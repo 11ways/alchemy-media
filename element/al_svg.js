@@ -21,7 +21,7 @@ Svg.setAttribute('src');
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.5.1
- * @version  0.5.1
+ * @version  0.7.1
  */
 Svg.setMethod(async function injectSvg() {
 
@@ -49,6 +49,14 @@ Svg.setMethod(async function injectSvg() {
 	}
 
 	this.innerHTML = contents;
+
+	if (this.role) {
+		let svg = this.querySelector('svg');
+
+		if (svg) {
+			svg.role = this.role;
+		}
+	}
 
 	if (this._resolve_me_too) {
 		this._resolve_me_too.resolve();
