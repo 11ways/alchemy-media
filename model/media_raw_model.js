@@ -168,7 +168,7 @@ MediaRaw.Document.setMethod(function extraImportFromStream(input) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.4.2
+ * @version  0.7.1
  *
  * @param    {String}   file      The path to the file, can be a URL
  * @param    {Object}   options
@@ -183,6 +183,10 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 	if (typeof options == 'function') {
 		callback = options;
 		options = {};
+	}
+
+	if (file && typeof file == 'object' && file instanceof Classes.Alchemy.Inode.File) {
+		file = file.path;
 	}
 
 	// If the given file is actually a url, we'll need to download it first
