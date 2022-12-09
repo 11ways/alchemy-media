@@ -48,6 +48,15 @@ Icon.setAttribute('icon-name');
 Icon.setAttribute('icon-flags');
 
 /**
+ * Set the default role
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.7.1
+ * @version  0.7.1
+ */
+Icon.setRole('graphics-symbol');
+
+/**
  * Refresh the icon when these attributes change
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
@@ -85,7 +94,7 @@ Icon.setMethod(function introduced() {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.7.0
- * @version  0.7.0
+ * @version  0.7.1
  *
  * @param    {Boolean}   force
  */
@@ -93,6 +102,14 @@ Icon.setMethod(function refresh(force) {
 
 	if (this[BUSY] && !force) {
 		return;
+	}
+
+	if (this.role == 'graphics-symbol') {
+		this.role = 'graphics-symbol img';
+
+		if (!this.hasAttribute('aria-label')) {
+			this.setAttribute('aria-label', '');
+		}
 	}
 
 	if (!force && Blast.isNode) {

@@ -2,6 +2,7 @@
 
 * Cascade `al-svg` role attribute to child `svg` elements
 * Add `img` role fallback when using `graphics-symbol`
+* Also add default role to `al-icon` element
 
 ## 0.7.0 (2022-11-02)
 
