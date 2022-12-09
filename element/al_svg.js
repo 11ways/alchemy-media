@@ -51,10 +51,23 @@ Svg.setMethod(async function injectSvg() {
 	this.innerHTML = contents;
 
 	if (this.role) {
+
+		if (this.role == 'graphics-symbol') {
+			this.role = 'graphics-symbol img';
+
+			if (!this.hasAttribute('aria-label')) {
+				this.setAttribute('aria-label', '');
+			}
+		}
+
 		let svg = this.querySelector('svg');
 
 		if (svg) {
-			svg.role = this.role;
+			svg.setAttribute('role', this.role);
+
+			if (this.hasAttribute('aria-label')) {
+				svg.setAttribute('aria-label', this.getAttribute('aria-label'));
+			}
 		}
 	}
 
