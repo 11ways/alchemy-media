@@ -16,6 +16,48 @@ var FileField = Function.inherits('Alchemy.Field.ObjectId', 'File');
  */
 FileField.setProperty('deferCast', true);
 
+/**
+ * Get the accepted types
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.7.1
+ * @version  0.7.1
+ *
+ * @return   {Array|null}
+ */
+FileField.setMethod(function getAcceptedTypes() {
+
+	let accept = this.options?.accept;
+
+	if (!accept) {
+		return null;
+	}
+
+	accept = Array.cast(accept);
+
+	return accept;
+});
+
+/**
+ * Get the accepted types string, for the input element
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.7.1
+ * @version  0.7.1
+ *
+ * @return   {String|null}
+ */
+FileField.setMethod(function getAcceptedTypesString() {
+
+	let types = this.getAcceptedTypes();
+
+	if (!types?.length) {
+		return null;
+	}
+
+	return types.join(', ');
+});
+
 if (Blast.isBrowser) {
 	return;
 }

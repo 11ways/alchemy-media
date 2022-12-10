@@ -3,6 +3,7 @@ script('chimera/mediafield');
 style('chimera/mediafield');
 %>
 <al-file
-	value=<% value %>
 	class="alchemy-field-value"
+	value=<% value %>
+	accept={% alchemy_field.config.getAcceptedTypesString() %}
 ></al-file>

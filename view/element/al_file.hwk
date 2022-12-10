@@ -13,7 +13,13 @@
 		class="empty-icon"
 	><% if (self.value) $0.hidden = true %></al-icon>
 
-	<input type="file" tabindex="-1" class="al-file-input" hidden>
+	<input
+		class="al-file-input"
+		type="file"
+		tabindex="-1"
+		accept={% self.accept %}
+		hidden
+	>
 </label>
 
 <div class="al-file-right">

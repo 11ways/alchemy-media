@@ -25,6 +25,7 @@ fieldset.addField('type');
 		mode="inline"
 		page-size=20
 		show-filters
+		#filters={% filters %}
 		#fieldset={% fieldset %}
 		#recordsource={% {route: 'MediaFile#recordsource'} %}
 	></al-table>

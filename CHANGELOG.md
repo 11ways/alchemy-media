@@ -4,6 +4,8 @@
 * Add `img` role fallback when using `graphics-symbol`
 * Also add default role to `al-icon` element
 * Make `al-file` catch errors and report them to a possible `al-field` parent
+* Add the `accept` attribute to `al-file`
+* Add the `accept` option to `File` fields
 
 ## 0.7.0 (2022-11-02)
 

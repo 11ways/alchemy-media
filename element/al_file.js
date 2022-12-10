@@ -80,6 +80,15 @@ AlFile.addElementGetter('icon_uploading', '.uploading-icon');
 AlFile.addElementGetter('icon_empty', '.empty-icon');
 
 /**
+ * Set the accepted types
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.7.1
+ * @version  0.7.1
+ */
+AlFile.setAttribute('accept');
+
+/**
  * Set the value
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
@@ -157,6 +166,10 @@ AlFile.setMethod(async function uploadFile(config) {
 
 	if (format) {
 		form_data.append('format', format);
+	}
+
+	if (this.accept) {
+		form_data.append('accept', this.accept);
 	}
 
 	let response;
@@ -290,11 +303,19 @@ AlFile.setMethod(function _getContent(callback) {
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.7.0
- * @version  0.7.0
+ * @version  0.7.1
  */
 AlFile.setMethod(async function showExistingFileSelection() {
 
 	let variables = {};
+
+	if (this.accept) {
+		let filters = {
+			type : this.accept,
+		};
+		
+		variables.filters = filters;
+	}
 
 	await hawkejs.scene.render('element/al_file_selection', variables);
 
