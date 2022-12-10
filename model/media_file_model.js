@@ -225,20 +225,33 @@ MediaFile.setMethod(function getFile(id, callback) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.2.0
+ * @version  0.7.1
  *
  * @param    {String}   file      The path to the file, can be a URL
  * @param    {Object}   options
  * @param    {Function} callback
+ *
+ * @return   {Pledge}
  */
 MediaFile.setMethod(function addFile(file, options, callback) {
 
-	var that = this;
+	const that = this,
+	      pledge = new Pledge();
+
+	pledge.done(callback);
 
 	this.queue.add(function(done) {
 		that.getModel('MediaRaw').addFile(file, options, function(err, response) {
-			callback(err, response);
+
 			done();
+
+			if (err) {
+				pledge.reject(err);
+			} else {
+				pledge.resolve(response);
+			}
 		});
 	});
+
+	return pledge;
 });

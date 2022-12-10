@@ -185,6 +185,10 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 		options = {};
 	}
 
+	if (!options) {
+		options = {};
+	}
+
 	if (file && typeof file == 'object' && file instanceof Classes.Alchemy.Inode.File) {
 		file = file.path;
 	}
