@@ -206,7 +206,7 @@ MediaFiles.setAction(function downloadFile(conduit, id, extension) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.4.2
+ * @version  0.7.1
  *
  * @param    {Conduit}   conduit
  */
@@ -215,16 +215,16 @@ MediaFiles.setAction(function upload(conduit) {
 	var MediaFile = this.getModel('MediaFile'),
 	    files = conduit.files,
 	    tasks = [],
-	    file;
+		accept = conduit.body?.accept;
 
 	if (files && files.files && typeof files.files == 'object') {
 		files = files.files;
 	}
 
-	// Iterate over every file
-	Object.each(files, function eachFile(file, key) {
+	for (let key in files) {
+		let file = files[key];
 
-		tasks[tasks.length] = function storeFile(next) {
+		tasks.push(async next => {
 			let options = {
 				move: true,
 				filename: file.name
@@ -242,9 +242,20 @@ MediaFiles.setAction(function upload(conduit) {
 
 			options.name = name;
 
+			// @TODO: don't trust the browser to dictate the type
+			if (accept) {
+				let file_type = await file.getMimetype();
+
+				if (file_type === accept || accept.includes(file_type)) {
+					// OK!
+				} else {
+					return next(new Error('File upload failed: Expected filetype "' + accept + '", but got "' + file_type + '"'));
+				}
+			}
+
 			MediaFile.addFile(file.path, options, next);
-		};
-	});
+		});
+	}
 
 	// Store every file
 	Function.parallel(tasks, function storedFiles(err, result) {
