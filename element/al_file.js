@@ -135,7 +135,7 @@ AlFile.setMethod(function updatePreview(value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.6.0
- * @version  0.6.2
+ * @version  0.7.1
  */
 AlFile.setMethod(async function uploadFile(config) {
 
@@ -167,7 +167,15 @@ AlFile.setMethod(async function uploadFile(config) {
 			post : form_data,
 		});
 	} catch (err) {
-		console.error('Failed to upload file:', err);
+
+		let alchemy_field = this.queryUp('al-field');
+
+		if (alchemy_field) {
+			alchemy_field.showError(err);
+		} else {
+			console.error('Failed to upload file:', err);
+			alert('Failed to upload file: ' + err);
+		}
 	}
 
 	this.classList.remove('uploading');
