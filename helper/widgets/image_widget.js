@@ -30,6 +30,12 @@ Image.constitute(function prepareSchema() {
 		widget_config_editable: true,
 		default: '25%',
 	});
+
+	this.schema.addField('lazy_load', 'Boolean', {
+		description : 'Determines whether the image should be loaded lazily or not',
+		widget_config_editable: true,
+		default: true,
+	});
 });
 
 /**
@@ -45,13 +51,18 @@ Image.setMethod(function populateWidget() {
 
 	let img = this.createElement('img');
 
-	let width_hint = this.config.width_hint;
+	let width_hint = this.config.width_hint,
+	    lazy_load = this.config.lazy_load;
 
 	if (width_hint === null || width_hint === '' || typeof width_hint == 'undefined') {
 		width_hint = '25%';
 	}
 
-	this.hawkejs_renderer.helpers.Media.applyDirective(img, this.config.image, {width: width_hint});
+	if (lazy_load == null) {
+		lazy_load = true;
+	}
+
+	this.hawkejs_renderer.helpers.Media.applyDirective(img, this.config.image, {width: width_hint, lazy_load});
 
 	this.widget.append(img);
 

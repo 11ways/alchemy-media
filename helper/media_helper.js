@@ -115,7 +115,7 @@ Media.setMethod(function loadIconFont() {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.5.0
- * @version  0.6.2
+ * @version  0.7.1
  *
  * @param    {Element}   element    The element to apply to
  * @param    {String}    image      The image identifier
@@ -158,6 +158,12 @@ Media.setMethod(function applyDirective(element, image, options) {
 		}
 
 		options.height = height;
+	}
+
+	if (options.lazy_load) {
+		if (!element.hasAttribute('loading')) {
+			element.setAttribute('loading', 'lazy');
+		}
 	}
 
 	let url = this.imageUrl(image, options),
