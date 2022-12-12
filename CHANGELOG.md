@@ -6,6 +6,7 @@
 * Make `al-file` catch errors and report them to a possible `al-field` parent
 * Add the `accept` attribute to `al-file`
 * Add the `accept` option to `File` fields
+* Add `width_hint` field to `image` widget. This field allows users to specify the approximate maximum width of an image in pixels or as a percentage of the total page width.
 
 ## 0.7.0 (2022-11-02)
 
