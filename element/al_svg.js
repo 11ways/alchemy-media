@@ -52,8 +52,10 @@ Svg.setMethod(async function injectSvg() {
 
 	if (this.role) {
 
+		// Do not allow `graphics-symbol` role, because it is not widely supported
+		// and google doesn't know it either
 		if (this.role == 'graphics-symbol') {
-			this.role = 'graphics-symbol img';
+			this.role = 'img';
 
 			if (!this.hasAttribute('aria-label')) {
 				this.setAttribute('aria-label', '');
