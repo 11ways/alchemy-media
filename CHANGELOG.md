@@ -1,3 +1,7 @@
+## 0.7.2 (WIP)
+
+* Make `al-icon` center its contents
+
 ## 0.7.1 (2022-12-23)
 
 * Cascade `al-svg` role attribute to child `svg` elements
