@@ -1,6 +1,7 @@
 ## 0.7.2 (WIP)
 
 * Make `al-icon` center its contents
+* Make the file upload action use the extra given filename
 
 ## 0.7.1 (2022-12-23)
 

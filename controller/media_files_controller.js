@@ -206,7 +206,7 @@ MediaFiles.setAction(function downloadFile(conduit, id, extension) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.7.1
+ * @version  0.7.2
  *
  * @param    {Conduit}   conduit
  */
@@ -215,7 +215,7 @@ MediaFiles.setAction(function upload(conduit) {
 	var MediaFile = this.getModel('MediaFile'),
 	    files = conduit.files,
 	    tasks = [],
-		accept = conduit.body?.accept;
+	    accept = conduit.body?.accept;
 
 	if (files && files.files && typeof files.files == 'object') {
 		files = files.files;
@@ -225,12 +225,19 @@ MediaFiles.setAction(function upload(conduit) {
 		let file = files[key];
 
 		tasks.push(async next => {
+
+			let filename = file.name;
+
+			if (key == 'uploaded_file' && conduit.body.filename) {
+				filename = conduit.body.filename;
+			}
+
 			let options = {
 				move: true,
-				filename: file.name
+				filename: filename,
 			};
 
-			let name = file.name.split('.');
+			let name = filename.split('.');
 
 			// Remove the last piece if there are more than 1
 			if (name.length > 1) {
