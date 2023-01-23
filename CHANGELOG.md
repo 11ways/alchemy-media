@@ -2,6 +2,7 @@
 
 * Make `al-icon` center its contents
 * Make the file upload action use the extra given filename
+* Rename most route names & make them not-postponable
 
 ## 0.7.1 (2022-12-23)
 

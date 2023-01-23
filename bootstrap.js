@@ -40,32 +40,95 @@ alchemy.createDir(options.scratch);
 alchemy.createDir(options.cache);
 
 // Create routes
-Router.get('Media::static', /\/media\/static\/(.*)*/, 'MediaFile#serveStatic');
-Router.get('Media::image', options.url + '/{id}', 'MediaFile#image');
+Router.add({
+	name             : 'MediaFile#serveStatic',
+	methods          : ['get'],
+	can_be_postponed : false,
+	paths            : /\/media\/static\/(.*)*/,
+});
+
+Router.add({
+	name             : 'MediaFile#image',
+	methods          : ['get'],
+	can_be_postponed : false,
+	paths            : options.url + '/{id}',
+});
 
 // The prefix is added at the end of the route so it does not
 // change the user's active_prefix
-Router.get('MediaFile#data', '/media/data/{prefix}/{id}', 'MediaFile#data');
-Router.get('MediaFile#info', '/media/info', 'MediaFile#info');
+Router.add({
+	name             : 'MediaFile#data',
+	methods          : ['get'],
+	can_be_postponed : false,
+	paths            : '/media/data/{prefix}/{id}',
+});
 
 Router.add({
-	name       : 'MediaFile#recordsource',
-	methods    : ['get'],
-	paths      : '/media/recordsource',
-	permission : 'media.recordsource',
+	name             : 'MediaFile#info',
+	methods          : ['get'],
+	can_be_postponed : false,
+	paths            : '/media/info',
+});
+
+Router.add({
+	name             : 'MediaFile#recordsource',
+	methods          : ['get'],
+	can_be_postponed : false,
+	paths            : '/media/recordsource',
+	permission       : 'media.recordsource',
 });
 
 // Allow dummy extensions
-Router.get('Media::fileextension', '/media/file/{id}.{extension}', 'MediaFile#file');
+Router.add({
+	name             : 'Media#fileextension',
+	methods          : ['get'],
+	can_be_postponed : false,
+	paths            : '/media/file/{id}.{extension}',
+	handler          : 'MediaFile#file'
+});
 
 // Allow direct file downloads
-Router.get('Media::file', '/media/file/{id}', 'MediaFile#file');
-Router.get('Media#download', '/media/download/{id}', 'MediaFile#downloadFile');
+Router.add({
+	name             : 'MediaFile#file',
+	methods          : ['get'],
+	can_be_postponed : false,
+	paths            : '/media/file/{id}',
+});
 
-Router.get('Media::thumb', '/media/thumbnail/{id}', 'MediaFile#thumbnail');
-Router.get('Media::placeholder', '/media/placeholder', 'MediaFile#placeholder');
-Router.post('Media::upload', '/media/upload', 'MediaFile#upload');
-Router.post('Media::uploadsingle', '/media/uploadsingle', 'MediaFile#uploadsingle');
+Router.add({
+	name             : 'MediaFile#downloadFile',
+	methods          : ['get'],
+	can_be_postponed : false,
+	paths            : '/media/download/{id}',
+});
+
+Router.add({
+	name             : 'MediaFile#thumbnail',
+	methods          : ['get'],
+	can_be_postponed : false,
+	paths            : '/media/thumbnail/{id}',
+});
+
+Router.add({
+	name             : 'MediaFile#placeholder',
+	methods          : ['get'],
+	can_be_postponed : false,
+	paths            : '/media/placeholder',
+});
+
+Router.add({
+	name             : 'MediaFile#upload',
+	methods          : ['post'],
+	can_be_postponed : false,
+	paths            : '/media/upload',
+});
+
+Router.add({
+	name             : 'MediaFile#uploadsingle',
+	methods          : ['post'],
+	can_be_postponed : false,
+	paths            : '/media/uploadsingle',
+});
 
 var profiles = alchemy.shared('Media.profiles');
 

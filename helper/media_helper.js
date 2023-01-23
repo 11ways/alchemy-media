@@ -230,7 +230,7 @@ Media.setMethod(function applyDirective(element, image, options) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.4.0
- * @version  0.4.0
+ * @version  0.7.2
  *
  * @param    {String}   image_id
  *
@@ -240,7 +240,7 @@ Media.setMethod(function fileAnchor(file_id, options) {
 
 	var url;
 
-	return this.view.helpers.Router.printRoute('Media::file', {id: file_id}, options);
+	return this.view.helpers.Router.printRoute('MediaFile#file', {id: file_id}, options);
 });
 
 /**
@@ -248,7 +248,7 @@ Media.setMethod(function fileAnchor(file_id, options) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.2.0
- * @version  0.5.1
+ * @version  0.7.2
  *
  * @param    {String}   image_id
  *
@@ -269,7 +269,7 @@ Media.setMethod(function imageUrl(image_id, options) {
 		if (options.route) {
 			routeName = options.route;
 		} else {
-			routeName = 'Media::image';
+			routeName = 'MediaFile#image';
 		}
 
 		url = this.parseURL(this.view.helpers.Router.routeUrl(routeName, {id: image_id}));
@@ -311,7 +311,7 @@ Media.setMethod(function imageUrl(image_id, options) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.6.2
+ * @version  0.7.2
  *
  * @param    {Object}   options
  *
@@ -321,7 +321,7 @@ Media.setMethod(function placeholderUrl(options) {
 
 	var url;
 
-	url = this.parseURL(this.view.helpers.Router.routeUrl('Media::placeholder'));
+	url = this.parseURL(this.view.helpers.Router.routeUrl('MediaFile#placeholder'));
 
 	if (options != null) {
 
