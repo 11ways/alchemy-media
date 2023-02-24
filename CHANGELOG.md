@@ -3,6 +3,7 @@
 * Add `Media#downloadImage()` method to the Media helper
 * Add `al-icon-stack` element, to stack items on top of each other
 * Fix `svg` files not being able to be uploaded or served
+* Round image resizes to the highest 100 pixels
 
 ## 0.7.2 (2023-01-23)
 
