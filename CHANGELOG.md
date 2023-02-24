@@ -4,6 +4,7 @@
 * Add `al-icon-stack` element, to stack items on top of each other
 * Fix `svg` files not being able to be uploaded or served
 * Round image resizes to the highest 100 pixels
+* Add `max_page_width` plugin option, which will be applied to the user's max screen size
 
 ## 0.7.2 (2023-01-23)
 
