@@ -1,6 +1,7 @@
 ## 0.7.3 (WIP)
 
 * Add `Media#downloadImage()` method to the Media helper
+* Add `al-icon-stack` element, to stack items on top of each other
 
 ## 0.7.2 (2023-01-23)
 

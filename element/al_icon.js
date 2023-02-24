@@ -48,6 +48,15 @@ Icon.setAttribute('icon-name');
 Icon.setAttribute('icon-flags');
 
 /**
+ * Set the size attribute
+ *
+ * @author   Jelle De Loecker <jelle@elevenways.be>
+ * @since    0.7.3
+ * @version  0.7.3
+ */
+Icon.setAttribute('size', {type: 'number'});
+
+/**
  * Set the default role
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>

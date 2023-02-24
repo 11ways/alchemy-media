@@ -23,4 +23,26 @@ al-icon {
 			transform: translate(-50%, -50%);
 		}
 	}
+
+	&[size="2"] {
+		font-size: 2em;
+	}
+
+	&[size="3"] {
+		font-size: 3em;
+	}
+
+	&[size="4"] {
+		font-size: 4em;
+	}
+}
+
+al-icon-stack {
+	display: inline-grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+
+	al-icon {
+		grid-area: 1 / 1;
+	}
 }
