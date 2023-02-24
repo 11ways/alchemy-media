@@ -1,3 +1,7 @@
+## 0.7.3 (WIP)
+
+* Add `Media#downloadImage()` method to the Media helper
+
 ## 0.7.2 (2023-01-23)
 
 * Make `al-icon` center its contents

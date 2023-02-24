@@ -457,13 +457,14 @@ Media.setMethod(function imageCssSet(image_id, options) {
 /**
  * Output an img element
  *
- * @author   Jelle De Loecker   <jelle@develry.be>
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.7.3
  *
  * @param    {String}   image_id
+ * @param    {Object}   options
  *
- * @return   {URL}
+ * @return   {HTMLElement}
  */
 Media.setMethod(function image(image_id, options) {
 
@@ -497,6 +498,10 @@ Media.setMethod(function image(image_id, options) {
 	// Create the element
 	element = this.view.createElement('img');
 
+	if (options.onload) {
+		element.onload = options.onload;
+	}
+
 	// Set the source attribute
 	element.setAttribute('src', url);
 
@@ -523,6 +528,36 @@ Media.setMethod(function image(image_id, options) {
 	}
 
 	return element;
+});
+
+/**
+ * Get a downloaded image
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.7.3
+ * @version  0.7.3
+ *
+ * @param    {String}   image_id
+ * @param    {Object}   options
+ *
+ * @return   {HTMLElement}
+ */
+Media.setMethod(function downloadImage(image_id, options) {
+
+	let pledge = new Pledge(),
+	    element;
+
+	if (!options) {
+		options = {};
+	}
+
+	options.onload = () => {
+		pledge.resolve(element);
+	};
+
+	element = this.image(image_id, options);
+
+	return pledge;
 });
 
 /**
