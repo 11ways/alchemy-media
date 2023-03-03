@@ -21,7 +21,7 @@ Svg.setAttribute('src');
  *
  * @author   Jelle De Loecker <jelle@elevenways.be>
  * @since    0.5.1
- * @version  0.7.1
+ * @version  0.7.4
  */
 Svg.setMethod(async function injectSvg() {
 
@@ -59,6 +59,9 @@ Svg.setMethod(async function injectSvg() {
 
 			if (!this.hasAttribute('aria-label')) {
 				this.setAttribute('aria-label', '');
+
+				// graphics-symbol images are not important, so they can be hidden
+				this.setAttribute('aria-hidden', 'true');
 			}
 		}
 

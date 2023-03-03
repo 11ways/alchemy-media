@@ -1,3 +1,7 @@
+## 0.7.4 (WIP)
+
+* By default, conceal SVGs that have the `graphics-symbol` role from assistive technologies
+
 ## 0.7.3 (2023-02-26)
 
 * Add `Media#downloadImage()` method to the Media helper
