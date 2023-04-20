@@ -1,3 +1,7 @@
+## 0.7.5 (WIP)
+
+* Remove old reference to `chimera/mediafield` script
+
 ## 0.7.4 (2023-03-13)
 
 * By default, conceal SVGs that have the `graphics-symbol` role from assistive technologies

@@ -1,7 +1,3 @@
-<%
-script('chimera/mediafield');
-style('chimera/mediafield');
-%>
 <al-file
 	class="alchemy-field-value"
 	value=<% value %>
