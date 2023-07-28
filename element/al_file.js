@@ -144,7 +144,7 @@ AlFile.setMethod(function updatePreview(value) {
  *
  * @author   Jelle De Loecker   <jelle@elevenways.be>
  * @since    0.6.0
- * @version  0.7.1
+ * @version  0.7.5
  */
 AlFile.setMethod(async function uploadFile(config) {
 
@@ -172,13 +172,30 @@ AlFile.setMethod(async function uploadFile(config) {
 		form_data.append('accept', this.accept);
 	}
 
+	let upload_percentage = this.querySelector('.upload-percentage');
+
+	if (upload_percentage) {
+		upload_percentage.textContent = '';
+	}
+
 	let response;
 
 	try {
-		response = await Blast.fetch({
-			url  : url,
-			post : form_data,
+		let pledge = Blast.fetch({
+			url     : url,
+			post    : form_data,
+			timeout : 60 * 1000,
 		});
+
+		let request = pledge.request;
+
+		request.on('progress_upload', data => {
+			if (upload_percentage) {
+				upload_percentage.textContent = Math.round(data.percentage) + '%';
+			}
+		});
+
+		response = await pledge;
 	} catch (err) {
 
 		let alchemy_field = this.queryUp('al-field');

@@ -4,7 +4,8 @@
 	<al-icon
 		icon-name="spinner"
 		icon-style="duotone"
-		class="uploading-icon fa-spin-pulse"
+		icon-flags="spin-pulse"
+		class="uploading-icon"
 	></al-icon>
 
 	<al-icon
@@ -12,6 +13,8 @@
 		icon-style="duotone"
 		class="empty-icon"
 	><% if (self.value) $0.hidden = true %></al-icon>
+
+	<span class="upload-percentage"></span>
 
 	<input
 		class="al-file-input"

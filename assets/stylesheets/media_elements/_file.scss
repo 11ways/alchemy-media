@@ -10,13 +10,28 @@ al-file {
 		display: none !important;
 	}
 
-	&:not(.uploading) .uploading-icon {
-		display: none;
+	&:not(.uploading) {
+		.upload-percentage,
+		.uploading-icon {
+			display: none;
+		}
 	}
 
 	&.uploading {
 		.empty-icon {
 			display: none !important;
+		}
+
+		.upload-percentage {
+			position: absolute;
+			bottom: 4px;
+			width: 100%;
+			text-align: center;
+			font-size: 1.5rem;
+		}
+
+		.uploading-icon {
+			margin-top: -7px;
 		}
 	}
 
