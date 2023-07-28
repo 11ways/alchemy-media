@@ -1,4 +1,4 @@
-## 0.7.5 (WIP)
+## 0.7.5 (2023-07-28)
 
 * Remove old reference to `chimera/mediafield` script
 * Add upload percentage feedback to `al-file` element
