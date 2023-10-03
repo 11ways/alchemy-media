@@ -1,3 +1,7 @@
+## 0.7.6 (WIP)
+
+* Let `Media#imageUrl()` helper handle image instructions that start with a slash
+
 ## 0.7.5 (2023-07-28)
 
 * Remove old reference to `chimera/mediafield` script

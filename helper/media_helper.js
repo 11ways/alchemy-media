@@ -248,7 +248,7 @@ Media.setMethod(function fileAnchor(file_id, options) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.2.0
- * @version  0.7.2
+ * @version  0.7.6
  *
  * @param    {String}   image_id
  *
@@ -273,7 +273,7 @@ Media.setMethod(function imageUrl(image_id, options) {
 		}
 
 		url = this.parseURL(this.view.helpers.Router.routeUrl(routeName, {id: image_id}));
-	} else if (typeof image_id == 'string' && image_id.indexOf('http') === 0) {
+	} else if (typeof image_id == 'string' && (image_id.indexOf('http') === 0 || image_id[0] == '/')) {
 		url = this.parseURL(image_id);
 	} else if (image_id) {
 		url = this.parseURL('/media/static/' + image_id);
