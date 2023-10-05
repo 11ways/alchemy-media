@@ -1,4 +1,4 @@
-## 0.7.6 (WIP)
+## 0.7.6 (2023-10-05)
 
 * Let `Media#imageUrl()` helper handle image instructions that start with a slash
 
