@@ -1,3 +1,7 @@
+## 0.9.0 (WIP)
+
+* Upgrade to Alchemy v1.4.0
+
 ## 0.8.0 (2023-10-17)
 
 * Upgrade `@11ways/exiv2` to v0.7.0

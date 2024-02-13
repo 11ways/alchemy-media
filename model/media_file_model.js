@@ -53,12 +53,12 @@ MediaFile.constitute(function addFields() {
 	this.addField('extra', 'Object');
 
 	this.addField('title', 'String', {
-		translatable : alchemy.plugins.media.translatable,
+		translatable : alchemy.settings.plugins.media.translatable,
 		description  : 'The title of the file (will be used in the title attribute)',
 	});
 
 	this.addField('alt', 'String', {
-		translatable : alchemy.plugins.media.translatable,
+		translatable : alchemy.settings.plugins.media.translatable,
 		description  : 'The alternative information of the file (will be used in the alt attribute)',
 	});
 

@@ -41,9 +41,33 @@ MediaRaw.constitute(function addFields() {
 	this.addField('extra', 'Object');
 });
 
-MediaRaw.setProperty('basePath', alchemy.plugins.media.path);
-MediaRaw.setProperty('hash', alchemy.plugins.media.hash);
 MediaRaw.setProperty('types', alchemy.getClassGroup('media_type'));
+
+/**
+ * Get the hash algorithm
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.9.0
+ * @version  0.9.0
+ *
+ * @type     {string}
+ */
+MediaRaw.setProperty(function hashType() {
+	return alchemy.settings.plugins.media.file_hash_algorithm;
+});
+
+/**
+ * Get the base path
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.9.0
+ * @version  0.9.0
+ *
+ * @type     {string}
+ */
+MediaRaw.setProperty(function basePath() {
+	return alchemy.settings.plugins.media.file_storage_path;
+});
 
 /**
  * Path to this file
