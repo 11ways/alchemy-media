@@ -12,7 +12,7 @@
 		"veronica"      : "~0.2.2"
 	},
 	"peerDependencies": {
-		"alchemymvc" : ">=1.4.0"
+		"alchemymvc" : ">=1.4.0||>=1.4.0-alpha"
 	},
 	"license": "MIT",
 	"engines": {

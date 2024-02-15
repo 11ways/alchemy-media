@@ -263,13 +263,11 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 
 	alchemy.getFileInfo(file, {hash: this.hashType}, function gotFileInfo(err, info) {
 
-		var type;
-
 		if (err) {
 			return callback(err);
 		}
 
-		type = that.MediaType.determineType(info.mimetype, options);
+		let type = that.MediaType.determineType(info.mimetype, options);
 
 		type.normalize(file, info, function afterNormalize(err, rawPath, rawInfo, rawExtra, extra) {
 
