@@ -558,3 +558,16 @@ MediaRaw.setMethod(function getPathFromId(objectId) {
 
 	return filePath;
 });
+
+/**
+ * Get a Inode.File instance
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.9.0
+ * @version  0.9.0
+ *
+ * @return   {Alchemy.Inode.File}
+ */
+MediaRaw.setDocumentMethod(function getFile() {
+	return new Classes.Alchemy.Inode.File(this.path);
+});

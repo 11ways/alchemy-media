@@ -1,3 +1,7 @@
+## 0.9.0-alpha.2
+
+* Add `getFile()` method to `MediaFile` and `MediaRaw` documents
+
 ## 0.9.0-alpha.1 (2024-02-15)
 
 * Upgrade to Alchemy v1.4.0

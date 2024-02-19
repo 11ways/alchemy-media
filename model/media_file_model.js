@@ -255,3 +255,16 @@ MediaFile.setMethod(function addFile(file, options, callback) {
 
 	return pledge;
 });
+
+/**
+ * Get a Inode.File instance
+ *
+ * @author   Jelle De Loecker   <jelle@elevenways.be>
+ * @since    0.9.0
+ * @version  0.9.0
+ *
+ * @return   {Alchemy.Inode.File}
+ */
+MediaFile.setDocumentMethod(function getFile() {
+	return new Classes.Alchemy.Inode.File(this.path);
+});
