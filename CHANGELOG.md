@@ -1,4 +1,4 @@
-## 0.9.0-alpha.2
+## 0.9.0-alpha.2 (2024-02-19)
 
 * Add `getFile()` method to `MediaFile` and `MediaRaw` documents
 
