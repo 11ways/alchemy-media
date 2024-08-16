@@ -151,6 +151,8 @@ MediaFile.Document.setFieldGetter(function path() {
  *
  * @param    {String|ObjectID}   id
  * @param    {Function}          callback
+ *
+ * @return   {Pledge<Alchemy.Document.MediaFile>}
  */
 MediaFile.setMethod(function getFile(id, callback) {
 
@@ -164,6 +166,9 @@ MediaFile.setMethod(function getFile(id, callback) {
 			'_id': id
 		}
 	};
+
+	let pledge = new Swift();
+	pledge.done(callback);
 
 	Function.series(function findInExtra(next) {
 		if (!alchemy.plugins.media.extra_media_model) {
@@ -209,15 +214,17 @@ MediaFile.setMethod(function getFile(id, callback) {
 	}, async function done(err) {
 
 		if (err) {
-			return callback(err);
+			return pledge.reject(err);
 		}
 
 		if (!result.MediaRaw) {
 			await result.populate('MediaRaw');
 		}
 
-		callback(null, result);
+		pledge.resolve(result);
 	});
+
+	return pledge;
 });
 
 /**

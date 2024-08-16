@@ -68,30 +68,31 @@ if (Blast.isBrowser) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.2.0
- * @version  0.2.0
+ * @version  0.9.0
  *
- * @param    {Mixed}        value
- * @param    {Object}       data
- * @param    {Datasource}   datasource
- * @param    {Function}     callback
+ * @param    {Alchemy.OperationalContext.SaveFieldToDatasource}   context
+ * @param    {*} value
  *
- * @return   {Mixed}
+ * @return   {Pledge<ObjectId>|ObjectId}
  */
-FileField.setMethod(function _toDatasource(value, data, datasource, callback) {
+FileField.setMethod(function _toDatasource(context, value) {
 
-	var options = Object.assign({}, this.options);
+	let options = Object.assign({}, this.options);
 
-	if (typeof value == 'string' && (value.startsWith('http') || value.startsWith('/'))) {
+	let pass_through_media_file = typeof value == 'string' && (value.startsWith('http') || value.startsWith('/'));
 
-		this.getModel('MediaFile').addFile(value, options, function addedFile(err, result) {
-
-			if (err != null) {
-				return callback(err);
-			}
-
-			callback(null, result._id);
-		});
-	} else {
-		callback(null, this.cast(value));
+	if (!pass_through_media_file) {
+		if (value && typeof value == 'object' && !alchemy.isObjectId(value)) {
+			pass_through_media_file = true;
+		}
 	}
+
+	if (!pass_through_media_file) {
+		return this.cast(value);
+	}
+
+	return Swift.waterfall(
+		() => this.getModel('MediaFile').addFile(value, options),
+		result => result._id,
+	);
 });

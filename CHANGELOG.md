@@ -1,3 +1,7 @@
+## 0.9.0-alpha.3 (2024-08-16) 
+
+* Implement Alchemy v1.4 `Field` changes 
+
 ## 0.9.0-alpha.2 (2024-02-19)
 
 * Add `getFile()` method to `MediaFile` and `MediaRaw` documents
