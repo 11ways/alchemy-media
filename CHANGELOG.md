@@ -1,6 +1,7 @@
 ## 0.9.0-alpha.3 (2024-08-16) 
 
-* Implement Alchemy v1.4 `Field` changes 
+* Implement Alchemy v1.4 `Field` changes
+* Make `MediaRaw#addFile(url)` support data uris too
 
 ## 0.9.0-alpha.2 (2024-02-19)
 

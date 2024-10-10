@@ -192,7 +192,7 @@ MediaRaw.Document.setMethod(function extraImportFromStream(input) {
  *
  * @author   Jelle De Loecker   <jelle@develry.be>
  * @since    0.0.1
- * @version  0.7.1
+ * @version  0.9.0
  *
  * @param    {String}   file      The path to the file, can be a URL
  * @param    {Object}   options
@@ -217,8 +217,11 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 		file = file.path;
 	}
 
+	let is_url = file.startsWith('http://') || file.startsWith('https://'),
+	    is_data_uri = !is_url && file.startsWith('data:');
+
 	// If the given file is actually a url, we'll need to download it first
-	if (file.startsWith('http://') || file.startsWith('https://')) {
+	if (is_url || is_data_uri) {
 
 		// Set the url as the origin
 		options.origin = file;
@@ -232,16 +235,18 @@ MediaRaw.setMethod(function addFile(file, options, callback) {
 				return callback(err);
 			}
 
-			if (!options.filename) {
-				options.filename = filename;
-			}
+			if (!is_data_uri) {
+				if (!options.filename) {
+					options.filename = filename;
+				}
 
-			if (!options.filename) {
-				options.filename = Url.parse(file).pathname.split('/').last();
-			}
+				if (!options.filename) {
+					options.filename = Url.parse(file).pathname.split('/').last();
+				}
 
-			if (!options.name) {
-				options.name = options.filename.beforeLast('.') || options.filename;
+				if (!options.name) {
+					options.name = options.filename.beforeLast('.') || options.filename;
+				}
 			}
 
 			that.addFile(tempfile, options, callback);
