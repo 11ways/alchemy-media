@@ -460,13 +460,12 @@ MediaFiles.setAction(async function recordsource(conduit) {
 				continue;
 			}
 
-			val = RegExp.interpretWildcard('*' + val + '*', 'i');
-			crit.where(key).equals(val);
+			crit.where(key).matchesFilter(val);
 		}
 	}
 
 	let records = await model.find('all', crit);
-	
+
 	conduit.end({
 		records : records
 	});

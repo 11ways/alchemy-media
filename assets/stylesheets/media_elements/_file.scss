@@ -134,3 +134,15 @@ al-field[field-type="file"] {
 		}
 	}
 }
+
+.alchemy-file-selection-dialog {
+	.alchemy-file-selection-wrapper {
+		max-height: 85vh;
+
+		al-table {
+			max-height: 76vh;
+			margin-bottom: 1rem;
+			overflow: auto;
+		}
+	}
+}

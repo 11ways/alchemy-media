@@ -15,6 +15,14 @@ fieldset.addField('_id', {
 
 fieldset.addField('filename');
 fieldset.addField('type');
+fieldset.addField('MediaRaw.size');
+
+if (!filters) {
+	filters = {
+		'MediaRaw.size': '>500000'
+	};
+}
+
 %>
 
 <div class="alchemy-file-selection-wrapper">

@@ -1,3 +1,9 @@
+## 0.9.0-alpha.5 (WIP)
+
+* Add `size` to the media file chooser
+* Allow using filters in the table
+* Limit the height of the media file chooser
+
 ## 0.9.0-alpha.4 (2024-10-10)
 
 * Make `MediaRaw#addFile(url)` support data uris too
