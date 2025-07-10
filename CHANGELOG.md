@@ -1,4 +1,4 @@
-## 0.9.0-alpha.5 (WIP)
+## 0.9.0-alpha.5 (2025-07-10)
 
 * Add `size` to the media file chooser
 * Allow using filters in the table
