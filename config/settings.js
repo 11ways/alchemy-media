@@ -27,19 +27,6 @@ MEDIA_PLUGIN_GROUP.addSetting('file_storage_path', {
 	description : 'Where to store uploaded files',
 });
 
-MEDIA_PLUGIN_GROUP.addSetting('scratch_path', {
-	type        : 'string',
-	default     : libpath.resolve(PATH_TEMP, 'scratch'),
-	description : 'Temporary map for intermediate file changes',
-	action      : (value, value_instance) => {
-
-		if (value) {
-			alchemy.createDir(value);
-		}
-
-		createVeronicaInstance();
-	},
-});
 
 MEDIA_PLUGIN_GROUP.addSetting('cache_path', {
 	type        : 'string',
@@ -72,24 +59,12 @@ MEDIA_PLUGIN_GROUP.addSetting('max_page_width', {
 
 const BINARIES = MEDIA_PLUGIN_GROUP.createGroup('binaries');
 
-BINARIES.addSetting('convert', {
-	type        : 'string',
-	default     : alchemy.findPathToBinarySync('convert'),
-	description : 'The path to the `convert` binary',
-});
-
 BINARIES.addSetting('exiv2', {
 	type        : 'string',
 	default     : alchemy.findPathToBinarySync('exiv2'),
 	description : 'The path to the `exiv2` binary',
 });
 
-BINARIES.addSetting('cwebp', {
-	type        : 'string',
-	default     : alchemy.findPathToBinarySync('cwebp'),
-	description : 'The path to the `cwebp` binary',
-	action      : createVeronicaInstance,
-});
 
 /**
  * Recreate the Veronica instance
@@ -104,8 +79,6 @@ function createVeronicaInstance() {
 	const media = alchemy.settings.plugins.media;
 
 	alchemy.plugins.media.veronica = new Veronica({
-		cwebp  : media.binaries.cwebp,
-		temp   : media.scratch_path,
 		cache  : media.cache_path,
 	});
 }

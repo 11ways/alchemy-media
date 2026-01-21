@@ -34,14 +34,8 @@ var options = {
 	// The location of the exiv2 binary
 	exiv2: '/usr/bin/exiv2',
 
-	// The location of cwebp
-	cwebp: '/usr/bin/cwebp',
-
 	// Enable webp
 	webp: true,
-
-	// Temporary map for intermediate file changes
-	scratch: path.resolve(PATH_TEMP, 'scratch'),
 
 	// The cache map for resized images & thumbnails
 	cache: path.resolve(PATH_TEMP, 'imagecache')
@@ -70,21 +64,21 @@ The supplied width percentage isn't relative to the image itself, but to the use
 
 ## System dependencies
 
-You will have to install certain packages on your system,
-you can do so like this on Debian/Ubuntu
+This plugin uses `sharp` for image processing, which comes with pre-built binaries for all major platforms (no system packages needed).
 
-Install the requirements of the `veronica` module:
+For placeholder image generation, you'll need the canvas dependencies:
 
-    apt-get install graphicsmagick webp libgif-dev libcairo2-dev libpango1.0-dev libjpeg-dev librsvg2-dev
+```bash
+# Debian/Ubuntu
+sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 
-This plugin requires exiv2
+# macOS
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+
+# Arch Linux
+sudo pacman -S cairo pango giflib libjpeg-turbo librsvg
+```
+
+This plugin uses exiv2 for reading image metadata:
 
     apt-get install exiv2 libexiv2-dev
-
-This plugin requires libopencv packages
-
-    apt-get install libopencv-dev
-
-This plugin requires magick++
-
-    apt-get install libmagick++-dev

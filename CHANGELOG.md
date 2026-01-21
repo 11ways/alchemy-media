@@ -1,3 +1,11 @@
+## 0.9.0-alpha.6 (WIP)
+
+* Update to veronica v0.3.0
+* Requires Node.js >= 18.17.0
+* Remove direct `sharp` dependency - all image processing now goes through veronica
+* Remove `cwebp` binary requirement - veronica/sharp has native WebP support
+* Remove `scratch_path` setting - veronica now uses single cache directory
+
 ## 0.9.0-alpha.5 (2025-07-10)
 
 * Add `size` to the media file chooser

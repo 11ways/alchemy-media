@@ -1,21 +1,20 @@
 {
 	"name": "alchemy-media",
 	"description": "The media plugin for Alchemy",
-	"version": "0.9.0-alpha.5",
+	"version": "0.9.0-alpha.6",
 	"repository": {
 		"type" : "git",
 		"url"  : "https://github.com/11ways/alchemy-media.git"
 	},
 	"dependencies": {
-		"@11ways/exiv2" : "~0.7.0",
-		"gm"            : "~1.23.1",
-		"veronica"      : "~0.2.2"
+		"@11ways/exiv2" : "~0.7.3",
+		"veronica"      : "~0.3.0"
 	},
 	"peerDependencies": {
 		"alchemymvc" : ">=1.4.0||>=1.4.0-alpha"
 	},
 	"license": "MIT",
 	"engines": {
-		"node" : ">=16.20.1"
+		"node" : ">=18.17.0"
 	}
 }
