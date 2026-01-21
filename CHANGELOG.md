@@ -1,4 +1,4 @@
-## 0.9.0-alpha.6 (WIP)
+## 0.9.0 (2026-01-21)
 
 * Update to veronica v0.3.0
 * Requires Node.js >= 18.17.0
