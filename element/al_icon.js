@@ -210,7 +210,7 @@ Icon.setMethod(function setCssClasses() {
 		}
 	}
 
-	this.classList.add('fa-' + (this.icon_style || 'solid'));
+	this.classList.add('fa-' + (style || 'solid'));
 	this.classList.add('fa-' + this.icon_name);
 
 	let flags = (this.icon_flags || '').split(/\s+/);
