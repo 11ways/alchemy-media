@@ -1,0 +1,14 @@
+// Font Awesome 6 Free bundle, served under the name `alchemy_icons_fafree`.
+//
+// The Media helper's `loadIconFont()` requests this stylesheet whenever no
+// `fontawesome_pro` style is exposed (i.e. the default, license-free case).
+// Without this entry file the request 404s and every <al-icon> renders blank.
+//
+// The `fontawesome6/*` partials and the referenced fonts (`/fonts/fontawesome6`)
+// already ship with this plugin; this file just binds them into one stylesheet.
+// NOTE: these partials share state through the classic `@import` scope
+// (e.g. `$fa-css-prefix`), so `@use` would break them - keep `@import`.
+@import "fontawesome6/fontawesome";  // base .fa + every .fa-{name} glyph class
+@import "fontawesome6/solid";        // @font-face weight 900 + .fa-solid / .fas
+@import "fontawesome6/regular";      // @font-face weight 400 + .fa-regular / .far
+@import "fontawesome6/brands";       // @font-face brands   + .fa-brands / .fab
